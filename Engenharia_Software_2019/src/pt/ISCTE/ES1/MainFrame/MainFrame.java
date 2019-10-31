@@ -17,16 +17,17 @@ public class MainFrame {
 	private JPanel southPanel;
 
 
-	public MainFrame(){ //receber por argumento o ficheiro excel
+	//TODO: receber por argumento o ficheiro excel
+	public MainFrame() {
 		mainFrame = new JFrame();
 		mainFrame.setLayout(new BorderLayout());
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		addContants();
+		addContents();
 		mainFrame.pack();
 		mainFrame.setVisible(true);
 	}
 
-	private void addContants() {
+	private void addContents() {
 		createCentralPanel();
 		mainFrame.add(centralPanel, BorderLayout.CENTER);
 		createSouthPanel();
@@ -47,7 +48,7 @@ public class MainFrame {
 		}
 
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
-		JButton add_editButton = new JButton("Add/Edit rule");
+		JButton add_editButton = new JButton("Add/ Edit Rules");
 		buttonsPanel.add(add_editButton);
 		add_editButton.addActionListener(new ActionListener() {
 			@Override
@@ -57,7 +58,7 @@ public class MainFrame {
 		});		
 		JButton checkQualityButton = new JButton("Check quality");
 		buttonsPanel.add(checkQualityButton);
-		add_editButton.addActionListener(new ActionListener() {
+		checkQualityButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//TODO create method for listener
@@ -84,11 +85,12 @@ public class MainFrame {
 		fileResultsPanel.add(new JLabel("h"));
 	}
 
-	private void createCentralPanel() { //deve utilizar o argumento excel
+//TODO: Usar argumento Excel
+	private void createCentralPanel() { 
 		centralPanel = new JPanel();
 		centralPanel.setLayout(new BorderLayout());
-		JScrollPane excelScroolPane = new JScrollPane();
-		centralPanel.add(excelScroolPane);
+		JScrollPane excelScrollPane = new JScrollPane();
+		centralPanel.add(excelScrollPane);
 	}
 	
 }
