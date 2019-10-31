@@ -4,14 +4,11 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 
 public class MainFrame {
@@ -48,7 +45,6 @@ public class MainFrame {
 		addContentToButtonsPanel(buttonsPanel);
 		southPanel.add(buttonsPanel, BorderLayout.EAST);
 		}
-
 
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 		JButton add_editButton = new JButton("Add/Edit rule");
