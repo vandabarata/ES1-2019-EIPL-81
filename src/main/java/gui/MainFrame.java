@@ -15,7 +15,8 @@ public class MainFrame {
 	private JFrame mainFrame;
 	private JPanel centralPanel;
 	private JPanel southPanel;
-
+	private JButton add_editButton;
+	private JButton checkQualityButton;
 
 	//TODO: receber por argumento o ficheiro excel
 	public MainFrame() {
@@ -25,6 +26,13 @@ public class MainFrame {
 		addContents();
 		mainFrame.pack();
 		mainFrame.setVisible(true);
+	}
+
+	private void createCentralPanel() { 
+		centralPanel = new JPanel();
+		centralPanel.setLayout(new BorderLayout());
+		JScrollPane excelScrollPane = new JScrollPane();
+		centralPanel.add(excelScrollPane);
 	}
 
 	private void addContents() {
@@ -48,22 +56,11 @@ public class MainFrame {
 		}
 
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
-		JButton add_editButton = new JButton("Add/ Edit Rules");
+		add_editButton = new JButton("Add/ Edit Rules");
 		buttonsPanel.add(add_editButton);
-		add_editButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//TODO create method for listener
-			}
-		});		
-		JButton checkQualityButton = new JButton("Check quality");
+				
+		checkQualityButton = new JButton("Check quality");
 		buttonsPanel.add(checkQualityButton);
-		checkQualityButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//TODO create method for listener
-			}
-		});
 	}
 
 	//This Method must receive The results of the excel  
@@ -86,11 +83,13 @@ public class MainFrame {
 	}
 
 //TODO: Usar argumento Excel
-	private void createCentralPanel() { 
-		centralPanel = new JPanel();
-		centralPanel.setLayout(new BorderLayout());
-		JScrollPane excelScrollPane = new JScrollPane();
-		centralPanel.add(excelScrollPane);
+	
+	public JButton getAdd_editButton() {
+		return add_editButton;
+	}
+
+	public JButton getCheckQualityButton() {
+		return checkQualityButton;
 	}
 	
 }
