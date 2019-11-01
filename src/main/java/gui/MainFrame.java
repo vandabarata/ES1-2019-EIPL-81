@@ -1,4 +1,4 @@
-package pt.ISCTE.ES1.MainFrame;
+package main.java.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
