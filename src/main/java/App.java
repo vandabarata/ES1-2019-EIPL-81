@@ -7,7 +7,8 @@ public class App {
 
 	public static void main(String[] args) {
 		MainFrame m = new MainFrame();
-		MainController c = new MainController(m);
+		String file = "Long-Method.xlsx";
+		MainController c = new MainController(m, file);
 		c.init();
 	}
 }

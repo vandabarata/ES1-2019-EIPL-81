@@ -1,12 +1,15 @@
 package main.java.controller;
 
 import main.java.gui.MainFrame;
+import main.java.model.ExcelImporter;
 
 public class MainController {
 	
 	private MainFrame gui;
+	private ExcelImporter ei;
 	
-	public MainController(MainFrame gui) {
+	public MainController(MainFrame gui, String file) {
+		this.ei = new ExcelImporter(file);
 		this.gui = gui;
 	}
 	
