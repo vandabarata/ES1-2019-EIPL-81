@@ -1,6 +1,7 @@
 package main.java.controller;
 
 import main.java.gui.MainFrame;
+import main.java.gui.Popup_UploadFile;
 
 public class MainController {
 	
@@ -11,6 +12,8 @@ public class MainController {
 	}
 	
 	public void init() {
+		Popup_UploadFile m = new Popup_UploadFile();
+		
 		// TODO add action listeners to gui
 		gui.getAdd_editButton().addActionListener(e -> {
 			// TODO action listener to add/edit btn
