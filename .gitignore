@@ -1,8 +1,17 @@
-# Default ignored files
+# Files to be ignored
 
 # Eclipse
-.classpath
-.project
+# These 2 are remaining committed to ease configuration of the eclipse projects for the whole group
+
+# Why they're needed
+# .classpath
+# Classpath specifies which Java source files and resource files in a project are considered by the Java builder and specifies how to find types outside of the project. The Java builder compiles the Java source files into the output folder and also copies the resources into it.
+
+# .project
+# Project description file automatically generated that describes the project. The sole purpose of this file is to make the project self-describing, so that a project that is zipped up or released to a server can be correctly recreated in another workspace.
+
+
+
 .settings/
 .metadata
 bin/
