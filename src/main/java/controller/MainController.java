@@ -16,10 +16,11 @@ import main.java.gui.Popup_UploadFile;
 public class MainController {
 	
 	private MainFrame gui;
+	private String path;
 	
 	public void init() {
-		Popup_UploadFile m = new Popup_UploadFile();
-		JButton import_button = m.getJButton();
+		Popup_UploadFile uploadFile = new Popup_UploadFile();
+		JButton import_button = uploadFile.getJButton();
 		
 		import_button.addActionListener(new ActionListener() {
 			@Override
@@ -29,16 +30,17 @@ public class MainController {
 				int returnValue = jfc.showOpenDialog(null);
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File selectedFile = jfc.getSelectedFile();
-					String path = selectedFile.getAbsolutePath();
+					 path = selectedFile.getAbsolutePath();
 					
 					if(path.endsWith(".xlsx") || path.endsWith(".xls"))
 					{
 						System.out.println(selectedFile.getAbsolutePath());
-						m.close();
+						uploadFile.close();
+						// TODO implementar o pop para mostrar o Excel
 						
 					}
 					else {
-						m.displayErrorMessage("Não é um ficheiro Excel!");
+						uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
 					}
 					
 				}

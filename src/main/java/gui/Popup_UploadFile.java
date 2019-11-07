@@ -24,7 +24,7 @@ public class Popup_UploadFile {
 		frame = new JFrame("Upload File");
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		createCentralPanel();
+		createPanel();
 		frame.add(panel, BorderLayout.CENTER);
 		frame.setPreferredSize(new Dimension(300, 200));
 		frame.pack();
@@ -34,7 +34,7 @@ public class Popup_UploadFile {
 
 	
 //TODO: Usar argumento Excel
-	private void createCentralPanel() { 
+	private void createPanel() { 
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 	    JLabel label = new JLabel("Choose a file excel to import", SwingConstants.CENTER);
