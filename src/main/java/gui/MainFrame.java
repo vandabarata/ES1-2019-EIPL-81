@@ -2,8 +2,6 @@ package main.java.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,21 +27,35 @@ public class MainFrame {
 		mainFrame.pack();
 		mainFrame.setVisible(true);
 	}
-
-	private void createCentralPanel() { 
-		centralPanel = new JPanel();
-		centralPanel.setLayout(new BorderLayout());
-		JScrollPane excelScrollPane = new JScrollPane();
-		centralPanel.add(excelScrollPane);
-	}
-
+	
+	/**
+	 * Calls methods that will create a central panel and a south panel
+	 * and adds it to the mainFrame.
+	 */
 	private void addContents() {
 		createCentralPanel();
 		mainFrame.add(centralPanel, BorderLayout.CENTER);
 		createSouthPanel();
 		mainFrame.add(southPanel, BorderLayout.SOUTH);
 	}
-
+	
+	/**
+	 * Creates the central panel for the mainFrame that will be used 
+	 * to display the excel file. Its also created a ScrollPane so that the
+	 * excel file can fits in the panel 
+	 */
+	private void createCentralPanel() { 
+		centralPanel = new JPanel();
+		centralPanel.setLayout(new BorderLayout());
+		JScrollPane excelScrollPane = new JScrollPane();
+		centralPanel.add(excelScrollPane);
+	}
+	
+	/**
+	 * This method creates the south panel of the main frame and adds to it a
+	 * panel that will display the results of reading the excel file, and 
+	 * another panel that will display buttons.
+	 */
 	private void createSouthPanel() {
 		southPanel= new JPanel();
 		southPanel.setBorder(new EmptyBorder(6, 6, 6, 6));
@@ -57,7 +69,11 @@ public class MainFrame {
 		addContentToButtonsPanel(buttonsPanel);
 		southPanel.add(buttonsPanel, BorderLayout.EAST);
 		}
-
+	
+	/**
+	 * This method creates and adds the add/edit and checkQuality buttons to a panel
+	 * @param buttonsPanel is the panel user to display the buttons.
+	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 		add_editButton = new JButton("Add/ Edit Rules");
 		buttonsPanel.add(add_editButton);
@@ -66,19 +82,20 @@ public class MainFrame {
 		buttonsPanel.add(checkQualityButton);
 	}
 
-	//This Method must receive The results of the excel 
-	
 	/**
-	 * @param fileResultsPanel
+	 * This method fills a panel with a grid layout of 3 by 5 with JLabels.
+	 * Which one of the JLabels is added accordingly with the layout pretended and displays
+	 * the results extracted from reading the excel file. 
+	 * @param fileResultsPanel is the panel used to add the JLabels and display the results.
 	 */
-	private void addContentToFileResultsforPanel(JPanel fileResultsPanel) {
-		
+	//TODO: This Method must receive The results of the excel 
+	private void addContentToFileResultsforPanel(JPanel fileResultsPanel) {		
 		fileResultsPanel.add(new JLabel(""));
 		fileResultsPanel.add(new JLabel("DCI"));
 		fileResultsPanel.add(new JLabel("DII"));
 		fileResultsPanel.add(new JLabel("ADCI"));
 		fileResultsPanel.add(new JLabel("ADII"));
-		fileResultsPanel.add(new JLabel("iPlasma  "));
+		fileResultsPanel.add(new JLabel("iPlasma"));
 		fileResultsPanel.add(new JLabel("a"));
 		fileResultsPanel.add(new JLabel("b"));
 		fileResultsPanel.add(new JLabel("c"));
@@ -90,8 +107,7 @@ public class MainFrame {
 		fileResultsPanel.add(new JLabel("h"));
 	}
 
-//TODO: Usar argumento Excel
-	
+	//TODO: Usar argumento Excel	
 	public JButton getAdd_editButton() {
 		return add_editButton;
 	}
