@@ -22,7 +22,7 @@ public class ExcelRow {
 	private boolean is_feature_envy;
 
 	/**
-	 * Create and ExcelRow
+	 * Create an ExcelRow
 	 * 
 	 * @param unformatted row's data
 	 * @return row's is_feature_envy value
