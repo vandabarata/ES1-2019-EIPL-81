@@ -1,14 +1,12 @@
 package main.java.gui;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,17 +17,28 @@ import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import java.awt.event.*;
 
-
+/**
+ * GUI pop-up responsible for allowing the user to edit and add different rules
+ * for visualizing the excel table.
+ * 
+ * @author Hugo Barroca
+ */
 public class EditRulePopup {
 	private ArrayList<String> ruleMetrics = new ArrayList<String>();
 	private JFrame frame;
 	private JTextField nameText;
+	private JScrollPane metricsScrollpane;
+	private JComboBox<String> condition;
+
 	private JPanel namePanel;
 	private JPanel metricsPanel;
+	private JPanel metricsListPanel;
+	private JPanel addNewMetricPanel;
 	private JPanel controlPanel;
-	
-	
 
+	/**
+	 * Constructs and initializes the GUI pop-up.
+	 */
 	public EditRulePopup() {
 		frame = new JFrame("Personalized Rules");
 		frame.setLayout(new BorderLayout());
@@ -41,7 +50,9 @@ public class EditRulePopup {
 		frame.setVisible(true);
 	}
 
-	
+	/**
+	 * @return Returns the JPanel where all other JPanels are nested.
+	 */
 	private JPanel createMainPanel() {
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -53,139 +64,166 @@ public class EditRulePopup {
 		mainPanel.add(controlPanel, BorderLayout.SOUTH);
 		return mainPanel;
 	}
-	
-	
+
+	/**
+	 * Creates and returns the JPanel responsible for holding the rule's name.
+	 * 
+	 * @return
+	 */
 	private JPanel createNamePanel() {
-		JPanel namePanel = new JPanel();
+		namePanel = new JPanel();
 		namePanel.setLayout(new GridLayout(1, 2));
 		JLabel nameLabel = new JLabel("Name: ", SwingConstants.LEFT);
-	    nameText = new JTextField();
-	    namePanel.add(nameLabel);
-	    namePanel.add(nameText);
+		nameText = new JTextField();
+		namePanel.add(nameLabel);
+		namePanel.add(nameText);
 		return namePanel;
 	}
-	
+
+	/**
+	 * 
+	 * Creates and returns the JPanel responsible for holding both the current list
+	 * of rule metrics, and the line which allows the addition of more metrics.
+	 * 
+	 * @return
+	 */
 	private JPanel createMetricsPanel() {
+		metricsListPanel = new JPanel();
+		metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
+		metricsScrollpane = new JScrollPane(metricsListPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		fillMetricsListPanel();
+
+		addNewMetricPanel = new JPanel();
+		loadAddMetricLine();
+
 		metricsPanel = new JPanel();
-		metricsPanel.setLayout(new BoxLayout (metricsPanel, BoxLayout.Y_AXIS));
-		JScrollPane metricsScrollpane = new JScrollPane(metricsPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		fillMetricsPanel(metricsPanel);
-		
-		JPanel addNewMetricPanel = new JPanel();
-	    loadAddMetricLine(addNewMetricPanel, metricsPanel);
-		
-		JPanel masterMetricsPanel = new JPanel();
-		masterMetricsPanel.setLayout(new BorderLayout());
-		masterMetricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
-		masterMetricsPanel.add(metricsScrollpane, BorderLayout.CENTER);
-		return masterMetricsPanel;
+		metricsPanel.setLayout(new BorderLayout());
+		metricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
+		metricsPanel.add(metricsScrollpane, BorderLayout.CENTER);
+		return metricsPanel;
 	}
-	
+
+	/**
+	 * Creates and returns the JPanel responsible for holding the JButtons which
+	 * allow all metrics to be cleared, or the rule to be saved.
+	 * 
+	 * @return
+	 */
 	private JPanel createControlPanel() {
-		JPanel controlPanel = new JPanel();
-		controlPanel.setLayout(new GridLayout (1, 2));
+		controlPanel = new JPanel();
+		controlPanel.setLayout(new GridLayout(1, 2));
 		JButton clearButton = new JButton("Clear Metrics");
-		clearButton.addActionListener(new ActionListener(){  
-		    public void actionPerformed(ActionEvent e){
-		    	System.out.println("Clear button pressed!");
-		    	clearMetricsPanel(metricsPanel);
-		    }
+		clearButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Clear button pressed!");
+				clearMetricsListPanel();
+			}
 		});
 		JButton saveButton = new JButton("Save Rule");
-		saveButton.addActionListener(new ActionListener(){  
-		    public void actionPerformed(ActionEvent e){
-		    	if(nameText.getText().isEmpty()) {
-		    		JOptionPane.showMessageDialog(null, "Please insert a rule name!");
-		    	} else {
-		    		System.out.println("Save button pressed!");
-		    		System.out.println("Rule name: " + nameText.getText());
-		    	}
-		    }  
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (nameText.getText().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
+				} else {
+					System.out.println("Save button pressed!");
+					System.out.println("Rule name: " + nameText.getText());
+				}
+			}
 		});
 		controlPanel.add(clearButton);
 		controlPanel.add(saveButton);
 		return controlPanel;
-		
-	}
-	
-	
-	
-	
-//TODO: This method handles the creating of the panel which displays the rules' metrics, as well as loading all of the metrics into said JPanel. 
-	private void fillMetricsPanel(JPanel metricsPanel) {
-		metricsPanel.removeAll();
 
-		for (String metric : ruleMetrics)
-		{
+	}
+
+//TODO
+	/**
+	 * This method fills the metric's list in the UI with the contents found in the
+	 * ruleMetrics ArrayList. This method will have to be changed once a separate
+	 * class for the rules is created.
+	 */
+	private void fillMetricsListPanel() {
+		metricsListPanel.removeAll();
+
+		for (String metric : ruleMetrics) {
 			JPanel panel = new JPanel();
 			panel.setLayout(new GridLayout(1, 2));
-		    JLabel metricLabel = new JLabel(metric);
-		    metricLabel.setHorizontalAlignment(JLabel.CENTER);
-		    panel.add(metricLabel);
-		    metricsPanel.add(panel);
+			JLabel metricLabel = new JLabel(metric);
+			metricLabel.setHorizontalAlignment(JLabel.CENTER);
+			panel.add(metricLabel);
+			metricsListPanel.add(panel);
 		}
 
-		metricsPanel.revalidate();
-		metricsPanel.repaint();
+		metricsListPanel.revalidate();
+		metricsListPanel.repaint();
 	}
-	
-	private void clearMetricsPanel(JPanel metricsPanel) {
+
+	/**
+	 * This method clears all current metrics from both the GUI and the ruleMetrics
+	 * ArrayList.
+	 * 
+	 */
+	private void clearMetricsListPanel() {
 		ruleMetrics.clear();
-		metricsPanel.removeAll();
-		metricsPanel.revalidate();
-		metricsPanel.repaint();
+		metricsListPanel.removeAll();
+		setConditionVisibility();
+		metricsListPanel.revalidate();
+		metricsListPanel.repaint();
 	}
 
- 
-	public JPanel loadAddMetricLine(JPanel addNewMetricPanel, JPanel metricsPanel) {
+	/**
+	 * This method both returns and creates the JPanel holding the line which allows
+	 * users to add new metrics into the metrics list. TODO: The currently
+	 * hard-coded values of the JBoxes are to be replaced with the correct, final
+	 * values once the ENUMs are created.
+	 * 
+	 * @return
+	 */
+	public JPanel loadAddMetricLine() {
 		addNewMetricPanel.removeAll();
-		addNewMetricPanel.setLayout(new GridLayout(1,6));
-		JComboBox<String> condition = new JComboBox<>();
-		System.out.println(ruleMetrics.isEmpty());
-		if(ruleMetrics.isEmpty()) {
-			condition.setVisible(false);
-			condition.setSelectedItem("");
-		}else{
-			condition.addItem("AND ");
-			condition.addItem("OR ");
-		}
-		
+		addNewMetricPanel.setLayout(new GridLayout(1, 6));
+		condition = new JComboBox<>();
+		setConditionVisibility();
 		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
 		JComboBox<String> value = new JComboBox<>();
 		value.addItem("LOC");
 		value.addItem("MET");
-		
+
 		JComboBox<String> comparison = new JComboBox<>();
 		comparison.addItem(">");
 		comparison.addItem("<");
 		comparison.addItem("=");
 		comparison.addItem("!=");
-		
-		JTextField threshold = new JTextField("10");
-		
-		JButton addMetricButton = new JButton("Add");
-		addMetricButton.addActionListener(new ActionListener(){  
-		    public void actionPerformed(ActionEvent e){
-		    	if(value.getItemCount() == 0) {
-		    		JOptionPane.showMessageDialog(null, "Please check if all metric fields were entered correctly!");
-		    	} else {
-		    		String metric;
-		    		if(ruleMetrics.isEmpty()) {
-		    			metric = value.getSelectedItem() + " " + comparison.getSelectedItem() + " " + threshold.getText();
 
-		    		}else {
-		    			metric = condition.getSelectedItem() + "" + value.getSelectedItem() + " " + comparison.getSelectedItem() + " " + threshold.getText();
-		    		}
-		    		System.out.println("Add metric button pressed!");
-		    		System.out.println(metric);
-		    		ruleMetrics.add(metric);
-		    		fillMetricsPanel(metricsPanel);
-		    		addNewMetricPanel.revalidate();
-		    		addNewMetricPanel.repaint();
-		    	}
-	    	}		  
+		JTextField threshold = new JTextField("10");
+
+		JButton addMetricButton = new JButton("Add");
+		addMetricButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (value.getItemCount() == 0) {
+					JOptionPane.showMessageDialog(null, "Please check if all metric fields were entered correctly!");
+				} else {
+					String metric;
+					if (ruleMetrics.isEmpty()) {
+						metric = value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
+								+ threshold.getText();
+
+					} else {
+						metric = condition.getSelectedItem() + "" + value.getSelectedItem() + " "
+								+ comparison.getSelectedItem() + " " + threshold.getText();
+					}
+					System.out.println("Add metric button pressed!");
+					System.out.println(metric);
+					ruleMetrics.add(metric);
+					fillMetricsListPanel();
+					setConditionVisibility();
+					metricsListPanel.revalidate();
+					metricsListPanel.repaint();
+				}
+			}
 		});
-		
+
 		addNewMetricPanel.add(condition);
 		addNewMetricPanel.add(ifCondition);
 		addNewMetricPanel.add(value);
@@ -193,8 +231,28 @@ public class EditRulePopup {
 		addNewMetricPanel.add(threshold);
 		addNewMetricPanel.add(addMetricButton);
 		addNewMetricPanel.setPreferredSize(new Dimension(650, 25));
-        addNewMetricPanel.setMaximumSize(new Dimension(650, 25));
-        return addNewMetricPanel;
+		addNewMetricPanel.setMaximumSize(new Dimension(650, 25));
+		return addNewMetricPanel;
 	}
-	
+
+	/**
+	 * This method handles setting the visibility of the Condition button in the
+	 * line responsible for allowing the user to add new metrics to the metrics'
+	 * list.
+	 */
+	public void setConditionVisibility() {
+		if (ruleMetrics.isEmpty()) {
+			condition.setVisible(false);
+			condition.setSelectedItem("");
+		} else {
+			condition.setVisible(true);
+			// TODO: This two lines prevent multiple ANDs and ORs from being introduced. A
+			// better solution may exist, but this issue should be resolved once ENUMs are
+			// added.
+			condition.removeItem("AND ");
+			condition.removeItem("OR ");
+			condition.addItem("AND ");
+			condition.addItem("OR ");
+		}
+	}
 }
