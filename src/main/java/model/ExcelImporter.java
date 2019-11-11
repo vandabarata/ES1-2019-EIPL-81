@@ -48,6 +48,26 @@ public class ExcelImporter {
 
 		return rowContent.toArray(new String[0]);
 	}
+	
+	/**
+	 * Gets the data from a row of the excel from the first sheet
+	 * 
+	 * @param rowIndex Index of the row from the Excel
+	 * @return An array with the cell values from the row chosen of the first sheet
+	 */
+	public String[] getSingleRow(int rowIndex) {
+		ArrayList<String> rowContent = new ArrayList<String>();
+
+		Sheet sheet = wb.getSheetAt(0);
+
+		Row row = sheet.getRow(rowIndex);
+
+		for (Cell cell : row) {
+			rowContent.add(new DataFormatter().formatCellValue(cell));
+		}
+
+		return rowContent.toArray(new String[0]);
+	}
 
 	/**
 	 * Gets the data from all rows of the excel
@@ -73,26 +93,6 @@ public class ExcelImporter {
 		}
 
 		return rowsList;
-	}
-
-	/**
-	 * Gets the data from a row of the excel from the first sheet
-	 * 
-	 * @param rowIndex Index of the row from the Excel
-	 * @return An array with the cell values from the row chosen of the first sheet
-	 */
-	public String[] getSingleRow(int rowIndex) {
-		ArrayList<String> rowContent = new ArrayList<String>();
-
-		Sheet sheet = wb.getSheetAt(0);
-
-		Row row = sheet.getRow(rowIndex);
-
-		for (Cell cell : row) {
-			rowContent.add(new DataFormatter().formatCellValue(cell));
-		}
-
-		return rowContent.toArray(new String[0]);
 	}
 
 	/**
