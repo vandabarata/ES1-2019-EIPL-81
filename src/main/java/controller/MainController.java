@@ -6,12 +6,14 @@ import java.util.Arrays;
 import javax.swing.JTable;
 
 import main.java.gui.MainFrame;
+import main.java.gui.QualityRulesResultFrame;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
 
 public class MainController {
 
 	private MainFrame gui;
+	private QualityRulesResultFrame qualityGui;
 	private ExcelImporter ei;
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
@@ -20,6 +22,7 @@ public class MainController {
 		this.ei = new ExcelImporter(file);
 		this.excelRows = ei.getAllRows();
 		this.gui = new MainFrame(createExcelTable());
+		this.qualityGui = new QualityRulesResultFrame();
 	}
 	
 	/**
@@ -59,8 +62,20 @@ public class MainController {
 		gui.getAdd_editButton().addActionListener(e -> {
 			// TODO action listener to add/edit btn
 		});
-		gui.getCheckQualityButton().addActionListener(e -> {
-			// TODO action listener to check quality btn
-		});
+		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndDisplay());
+	}
+	
+	private void checkCodeQualityAndDisplay() {
+		String[][] results = getCodeQualityResults();
+		// TODO get real column names
+		String[] colNames = new String[] {"head 1", "head 2", "head 3"};
+		qualityGui.fillTable(results, colNames);
+		qualityGui.show();
+	}
+	
+	private String[][] getCodeQualityResults() {
+		// TODO calculate code quality
+		String[][] results = new String[][] {{"col 1", "col 2", "col 3"}, {"col 1", "col 2", "col 3"}, {"col 1", "col 2", "col 3"}};
+		return results;
 	}
 }
