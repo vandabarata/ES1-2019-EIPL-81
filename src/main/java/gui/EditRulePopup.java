@@ -122,7 +122,6 @@ public class EditRulePopup {
 		
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Clear button pressed!");
 				clearMetricsListPanel();
 			}
 		});
@@ -132,8 +131,7 @@ public class EditRulePopup {
 				if (nameText.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 				} else {
-					System.out.println("Delete button pressed!");
-					System.out.println("Rule name: " + nameText.getText());
+					//Add functionality here.
 				}
 			}
 		});
@@ -143,8 +141,7 @@ public class EditRulePopup {
 				if (nameText.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 				} else {
-					System.out.println("Save button pressed!");
-					System.out.println("Rule name: " + nameText.getText());
+					//Add functionality here.
 				}
 			}
 		});
@@ -197,8 +194,6 @@ public class EditRulePopup {
 						metric = condition.getSelectedItem() + " IF " + value.getSelectedItem() + " "
 								+ comparison.getSelectedItem() + " " + threshold.getText();
 					}
-					System.out.println("Add metric button pressed!");
-					System.out.println(metric);
 					ruleMetrics.add(metric);
 					fillMetricsListPanel();
 					setConditionVisibility();
