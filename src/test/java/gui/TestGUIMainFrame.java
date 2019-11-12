@@ -29,8 +29,6 @@ class TestGUIMainFrame {
 	@Test
 	void testJTableCreation() {
 		assertEquals(true, guiWithTable.getFrameWidth() > guiWithEmptyTable.getFrameWidth());
-		
-		assertNotEquals(guiWithTable.getFrameWidth(), guiWithEmptyTable.getFrameWidth());
 	}
 
 }
