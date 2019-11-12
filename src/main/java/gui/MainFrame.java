@@ -53,8 +53,13 @@ public class MainFrame {
 		centralPanel = new JPanel();
 		centralPanel.setLayout(new BorderLayout());
 		
-		JScrollPane excelScrollPane = new JScrollPane(excelTable);
-
+		JScrollPane excelScrollPane;
+		
+		if(excelTable.getColumnCount() != 0)
+			excelScrollPane = new JScrollPane(excelTable);
+		else
+			excelScrollPane = new JScrollPane();
+		
 		centralPanel.add(excelScrollPane);
 	}
 	
@@ -118,8 +123,7 @@ public class MainFrame {
 		fileResultsPanel.add(new JLabel("h"));
 	}
 
-//TODO: Usar argumento Excel
-
+	//TODO: Usar argumento Excel
 	public JTable getExcelTable() {
 		return excelTable;
 	}
@@ -131,5 +135,8 @@ public class MainFrame {
 	public JButton getCheckQualityButton() {
 		return checkQualityButton;
 	}
-
+	
+	public int getFrameWidth() {
+		return mainFrame.getWidth();
+	}
 }

@@ -19,7 +19,6 @@ public class MainController {
 	public MainController(String file) {
 		this.ei = new ExcelImporter(file);
 		this.excelRows = ei.getAllRows();
-		convertExcelRows();
 		this.gui = new MainFrame(createExcelTable());
 	}
 	
