@@ -13,6 +13,14 @@ import javax.swing.filechooser.FileSystemView;
 import main.java.gui.MainFrame;
 import main.java.gui.Popup_UploadFile;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.swing.JTable;
+
+import main.java.model.ExcelImporter;
+import main.java.model.ExcelRow;
+
 /**
  * <h1>Main Controller</h1> Accepts input and converts it to commands and action
  * for the model or view. In addition to dividing the application into these
@@ -29,6 +37,9 @@ import main.java.gui.Popup_UploadFile;
 public class MainController {
 	private MainFrame gui;
 	private String path;
+	private ExcelImporter ei;
+	private ArrayList<String[]> excelRows;
+	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
 
 	/**
 	 * This method is used to initiate the button listener
@@ -55,10 +66,17 @@ public class MainController {
 
 	/**
 	 * This method is used to validate if the selected file is a valid Excel format,
-	 * it is started the importing of the file otherwise it's showed a warning
-	 * message.
 	 */
+	public boolean isValid(String path_file) {
+		if (path_file.endsWith(".xlsx") || path_file.endsWith(".xls"))
+			return true;
+		return false;
+	}
 
+	/**
+	 * This method is used to import the file and create a main frame If the file is
+	 * valid otherwise it's showed a warning message.
+	 */
 	public void validateFile(Popup_UploadFile uploadFile) {
 
 		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
@@ -67,16 +85,48 @@ public class MainController {
 			File selectedFile = jfc.getSelectedFile();
 			path = selectedFile.getAbsolutePath();
 
-			if (path.endsWith(".xlsx") || path.endsWith(".xls")) {
-				System.out.println(selectedFile.getAbsolutePath());
+			if (isValid(path)) {
 				uploadFile.close();
-				// 1º Inserir o código para ler o ficheiro para abrir
-				// 2ª Abrir o segundo Popup que irá apresentar o Excel
+				this.ei = new ExcelImporter(path);
+				this.excelRows = ei.getAllRows();
+				this.gui = new MainFrame(createExcelTable());
 			} else {
 				uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
 			}
 		}
 
+	}
+
+	/**
+	 * Formats all data to a valid format to a JTable
+	 * 
+	 * @return String matrix with the cell's content
+	 */
+	private JTable createExcelTable() {
+		String[][] dataForTable = new String[excelRows.size() - 1][excelRows.get(1).length];
+
+		for (int i = 0; i < dataForTable.length; i++) {
+			for (int j = 0; j < dataForTable[i].length; j++) {
+				dataForTable[i][j] = excelRows.get(i + 1)[j].toString();
+			}
+		}
+
+		return new JTable(dataForTable, excelRows.get(0));
+	}
+
+	/**
+	 * Converts all the valid rows into ExcelRow model
+	 * 
+	 * @author Lino Silva
+	 */
+	private void convertExcelRows() {
+		excelRows.forEach(element -> {
+			try {
+				excelRowsConverted.add(new ExcelRow(element));
+			} catch (Exception e) {
+
+			}
+		});
 	}
 
 }
