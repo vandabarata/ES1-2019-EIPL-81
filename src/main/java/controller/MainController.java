@@ -65,6 +65,10 @@ public class MainController {
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndDisplay());
 	}
 	
+	/**
+	 * Verify the code quality based on the Rules created and sends the
+	 * results to be displayed in the QualityRulesResultFrame
+	 */
 	private void checkCodeQualityAndDisplay() {
 		String[][] results = getCodeQualityResults();
 		// TODO get real column names
@@ -73,6 +77,11 @@ public class MainController {
 		qualityGui.show();
 	}
 	
+	/**
+	 * @return An Array of String arrays where which line is a row
+	 * 			with the code quality results for a method, and each column
+	 * 			is the value of that result line for that column
+	 */
 	private String[][] getCodeQualityResults() {
 		// TODO calculate code quality
 		String[][] results = new String[][] {{"col 1", "col 2", "col 3"}, {"col 1", "col 2", "col 3"}, {"col 1", "col 2", "col 3"}};

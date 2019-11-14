@@ -12,15 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-/**
- * @author franciele.faccin
- *
- */
 public class QualityRulesResultFrame {
 	private JFrame qualityFrame;
 	private JPanel centralPanel;
 	private JTable resultsTable;
-	
 
 	// Window Dimensions
 	private static final int WIDTH = 800;
@@ -34,20 +29,36 @@ public class QualityRulesResultFrame {
 	}
 	
 	
-	public void fillTable(Object[][] data, Object []colNames) {
+	/**
+	 * @param data An Array of String arrays where which line is a row
+	 * 				in the results table, and each column is the value
+	 * 				of that result line for that column
+	 * @param colNames An array of strings with the column names for each
+	 * 					column of the data param
+	 */
+	public void fillTable(String[][] data, Object []colNames) {
 		resultsTable = new JTable(data, colNames);
 		updateCentralPanel();
 	}
 	
+	/**
+	 * Display the QualityRulesResultFrame in the screen 
+	 */
 	public void show() {
 		qualityFrame.repaint();
 		qualityFrame.setVisible(true);
 	}
 	
+	/**
+	 * Closes the QualityRulesResultFrame
+	 */
 	public void hide() {
 		qualityFrame.setVisible(false);
 	}
 	
+	/**
+	 * Updates the results table to the frame
+	 */
 	private void updateCentralPanel() { 
 		centralPanel = new JPanel();
 		centralPanel.setLayout(new BorderLayout());
@@ -56,6 +67,11 @@ public class QualityRulesResultFrame {
 		qualityFrame.add(centralPanel, BorderLayout.CENTER);
 	}
 	
+	
+	/**
+	 * Builds the main frame for QualityRulesResultFrame and positions it
+	 * in the centre of the screen
+	 */
 	private void buildFrame() {
 		qualityFrame = new JFrame();
 		qualityFrame.setTitle("Quality Code Results"); 
