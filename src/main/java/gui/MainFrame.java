@@ -22,14 +22,12 @@ public class MainFrame {
 	// TODO: receber por argumento o ficheiro excel
 	public MainFrame(JTable excelTable) {
 		mainFrame = new JFrame();
+		mainFrame.setSize(700, 500);
+		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setLayout(new BorderLayout(5,5));
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		
 		this.excelTable = excelTable;
-		
 		addContents();
-		
-		mainFrame.pack();
 		mainFrame.setVisible(true);
 	}
 	
