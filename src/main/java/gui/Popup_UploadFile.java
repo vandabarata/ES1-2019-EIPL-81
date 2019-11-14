@@ -54,7 +54,7 @@ public class Popup_UploadFile {
 	private void createPanel() {
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());
-		JLabel label = new JLabel("Choose a file excel to import", SwingConstants.CENTER);
+		JLabel label = new JLabel("Choose excel file to import", SwingConstants.CENTER);
 		panel.add(label, BorderLayout.CENTER);
 
 		import_button = new JButton("Import");
@@ -67,7 +67,7 @@ public class Popup_UploadFile {
 	 * 
 	 * @return JButton
 	 */
-	public JButton getJButton() {
+	public JButton getImportJButton() {
 		return import_button;
 	}
 

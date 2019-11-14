@@ -46,7 +46,7 @@ public class MainController {
 	 */
 	public void init() {
 		Popup_UploadFile uploadFile = new Popup_UploadFile();
-		JButton import_button = uploadFile.getJButton();
+		JButton import_button = uploadFile.getImportJButton();
 		initImportButtonAction(import_button, uploadFile);
 
 	}

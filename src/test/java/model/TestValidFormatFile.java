@@ -18,7 +18,7 @@ public class TestValidFormatFile {
 	@Test
 	void TestValidFormat() {
 		MainController controller = new MainController();
-		String path_file = "C/Documents/file.xlsx";
+		String path_file = "C://Documents/file.xlsx";
 		assertEquals(true, controller.isValid(path_file));
 	}
 
@@ -29,7 +29,7 @@ public class TestValidFormatFile {
 	@Test
 	void TestNotValidFormat() {
 		MainController controller = new MainController();
-		String path_file = "C/Documents/file.pptx";
+		String path_file = "C://Documents/file.pptx";
 		assertEquals(false, controller.isValid(path_file));
 	}
 
