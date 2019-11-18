@@ -6,8 +6,6 @@ import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileSystemView;
 
 import main.java.gui.MainFrame;
@@ -15,7 +13,6 @@ import main.java.gui.QualityRulesResultFrame;
 import main.java.gui.Popup_UploadFile;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.swing.JTable;
 
@@ -76,8 +73,8 @@ public class MainController {
 	}
 
 	/**
-	 * This method is used to import the file and create a main frame If the file is
-	 * valid otherwise it's showed a warning message.
+	 * This method is used to import the file and create a main frame if the file is
+	 * valid, otherwise it will show a warning message.
 	 */
 	public void validateFile(Popup_UploadFile uploadFile) {
 
@@ -89,16 +86,24 @@ public class MainController {
 
 			if (isValid(path)) {
 				uploadFile.close();
-				this.ei = new ExcelImporter(path);
-				this.excelRows = ei.getAllRows();
-				this.gui = new MainFrame(createExcelTable());
-				this.gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndDisplay());
-				
+				initMainFrame();
 			} else {
 				uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
 			}
 		}
 
+	}
+
+	/**
+	 * Initialise the MainFrame and support Frames. Create necessary objects to
+	 * suport it.
+	 */
+	private void initMainFrame() {
+		ei = new ExcelImporter(path);
+		excelRows = ei.getAllRows();
+		gui = new MainFrame(createExcelTable());
+		qualityGui = new QualityRulesResultFrame();
+		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
 	}
 
 	/**
@@ -132,28 +137,28 @@ public class MainController {
 			}
 		});
 	}
-	
+
 	/**
-	 * Verify the code quality based on the Rules created and sends the
-	 * results to be displayed in the QualityRulesResultFrame
+	 * Verify the code quality based on the Rules created and sends the results to
+	 * be displayed in the QualityRulesResultFrame
 	 */
-	private void checkCodeQualityAndDisplay() {
+	private void checkCodeQualityAndShow() {
 		String[][] results = getCodeQualityResults();
 		// TODO get real column names
-		String[] colNames = new String[] {"head 1", "head 2", "head 3"};
-		this.qualityGui = new QualityRulesResultFrame();
+		String[] colNames = new String[] { "head 1", "head 2", "head 3" };
 		qualityGui.fillTable(results, colNames);
 		qualityGui.show();
 	}
-	
+
 	/**
-	 * @return An Array of String arrays where which line is a row
-	 * 			with the code quality results for a method, and each column
-	 * 			is the value of that result line for that column
+	 * @return An Array of String arrays where which line is a row with the code
+	 *         quality results for a method, and each column is the value of that
+	 *         result line for that column
 	 */
 	private String[][] getCodeQualityResults() {
 		// TODO calculate code quality
-		String[][] results = new String[][] {{"col 1", "col 2", "col 3"}, {"col 1", "col 2", "col 3"}, {"col 1", "col 2", "col 3"}};
+		String[][] results = new String[][] { { "col 1", "col 2", "col 3" }, { "col 1", "col 2", "col 3" },
+				{ "col 1", "col 2", "col 3" } };
 		return results;
 	}
 }
