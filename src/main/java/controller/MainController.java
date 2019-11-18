@@ -22,10 +22,10 @@ import main.java.model.ExcelRow;
 /**
  * <h1>Main Controller</h1> Accepts input and converts it to commands and action
  * for the model or view. In addition to dividing the application into these
- * components, the model�view�controller design defines the interactions between
+ * components, the model-view-controller design defines the interactions between
  * them.
  * <p>
- * <b>Note Model�View�Controller (MVC):</b> The Model is responsible for
+ * <b>Note Model-View-Controller (MVC):</b> The Model is responsible for
  * managing the data of the application. It receives user input from the
  * controller. The View means presentation of the model in a particular format.
  * The controller receives the input, optionally validates it and then passes
