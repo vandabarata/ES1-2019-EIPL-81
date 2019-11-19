@@ -26,7 +26,14 @@ public class CodeQualityRule {
 		this.isDefault = isDefault;
 		this.rule = rule;
 	}
-
+	
+	/**
+	 * @param String - new rule's name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	/**
 	 * @return String - rule's name
 	 */
@@ -34,6 +41,13 @@ public class CodeQualityRule {
 		return name;
 	}
 
+	/**
+	 * @param String - new rule's text
+	 */
+	public void setRule(String rule) {
+		this.rule = rule;
+	}
+	
 	/**
 	 * @return String with rule's text
 	 */
