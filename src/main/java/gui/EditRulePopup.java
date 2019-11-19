@@ -113,46 +113,44 @@ public class EditRulePopup {
 	private JPanel createControlPanel() {
 		controlPanel = new JPanel();
 		controlPanel.setLayout(new GridLayout(1, 3));
-		
-		
+
 		JButton clearButton = new JButton("Clear Metrics");
 		JButton deleteButton = new JButton("Delete Rule");
 		JButton saveButton = new JButton("Save Rule");
-		
-		
+
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				clearMetricsListPanel();
 			}
 		});
-		
+
 		deleteButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (nameText.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 				} else {
-					//Add functionality here.
+					// Add functionality here.
 				}
 			}
 		});
-		
+
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (nameText.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 				} else {
-					//Add functionality here.
+					// Add functionality here.
 				}
 			}
 		});
-		
+
 		controlPanel.add(clearButton);
 		controlPanel.add(deleteButton);
 		controlPanel.add(saveButton);
 		return controlPanel;
 
 	}
-	
+
 	/**
 	 * This method both returns and creates the JPanel holding the line which allows
 	 * users to add new metrics into the metrics list. TODO: The currently
@@ -170,15 +168,15 @@ public class EditRulePopup {
 		JComboBox<String> value = new JComboBox<>();
 		value.addItem("LOC");
 		value.addItem("MET");
-		
+
 		JComboBox<String> comparison = new JComboBox<>();
 		comparison.addItem(">");
 		comparison.addItem("<");
 		comparison.addItem("=");
 		comparison.addItem("!=");
-		
+
 		JTextField threshold = new JTextField("10");
-		
+
 		JButton addMetricButton = new JButton("Add");
 		addMetricButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -189,9 +187,9 @@ public class EditRulePopup {
 					if (ruleMetrics.isEmpty()) {
 						metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
 								+ threshold.getText();
-						
+
 					} else {
-						metric = condition.getSelectedItem() + value.getSelectedItem() + " "
+						metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
 								+ comparison.getSelectedItem() + " " + threshold.getText();
 					}
 					ruleMetrics.add(metric);
@@ -202,7 +200,7 @@ public class EditRulePopup {
 				}
 			}
 		});
-		
+
 		addNewMetricPanel.add(condition);
 		addNewMetricPanel.add(ifCondition);
 		addNewMetricPanel.add(value);
