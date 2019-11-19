@@ -35,6 +35,9 @@ public class EditRulePopup {
 	private JPanel metricsListPanel;
 	private JPanel addNewMetricPanel;
 	private JPanel controlPanel;
+	
+	private final int FRAME_X = 685;
+	private final int FRAME_Y = 300;
 
 	/**
 	 * Constructs and initializes the GUI pop-up.
@@ -44,10 +47,18 @@ public class EditRulePopup {
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.add(createMainPanel());
-		frame.setPreferredSize(new Dimension(685, 300));
-		frame.pack();
 		frame.setLocationRelativeTo(null);
+		frame.setSize(new Dimension(FRAME_X, FRAME_Y));
 		frame.setVisible(true);
+	}
+
+	/**
+	 * Returns the popup's main SWING frame.
+	 *  
+	 * @return
+	 */
+	public JFrame getFrame() {
+		return frame;
 	}
 
 	/**
@@ -217,6 +228,8 @@ public class EditRulePopup {
 	 * This method fills the metric's list in the UI with the contents found in the
 	 * ruleMetrics ArrayList. This method will have to be changed once a separate
 	 * class for the rules is created.
+	 * 
+	 * 
 	 */
 	private void fillMetricsListPanel() {
 		metricsListPanel.removeAll();
