@@ -191,7 +191,7 @@ public class EditRulePopup {
 								+ threshold.getText();
 						
 					} else {
-						metric = condition.getSelectedItem() + " IF " + value.getSelectedItem() + " "
+						metric = condition.getSelectedItem() + value.getSelectedItem() + " "
 								+ comparison.getSelectedItem() + " " + threshold.getText();
 					}
 					ruleMetrics.add(metric);
