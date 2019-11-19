@@ -1,8 +1,10 @@
 package main.java.model;
 
 /**
- * A class that represents a rule that can be applied to
- * the excel metrics.
+ * A class that represents a rule based on 
+ * predetermined or user-defined metrics
+ * and thresholds to detect code defects
+ * and thus determine code quality
  * 
  * @author Lino Silva
  */
@@ -13,7 +15,7 @@ public class CodeQualityRule {
 	private String rule;
 
 	/**
-	 * Creates a MetricsRule object
+	 * Creates a CodeQualityRule object
 	 * 
 	 * @param name
 	 * @param isDefault
@@ -26,14 +28,14 @@ public class CodeQualityRule {
 	}
 
 	/**
-	 * @return CodeQualityRule name
+	 * @return String - rule's name
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @return CodeQualityRule rule
+	 * @return String with rule's text
 	 */
 	public String getRule() {
 		return rule;
@@ -43,7 +45,7 @@ public class CodeQualityRule {
 	* Returns boolean that determines if a rule is default or not
 	* A default rule is a rule that can't have its metrics edited
 	* only its thresholds
-	 * @return CodeQualityRule boolean isDefault
+	 * @return Boolean - isDefault
 	 */
 	public boolean isDefault() {
 		return isDefault;
