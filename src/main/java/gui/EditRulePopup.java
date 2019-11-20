@@ -55,7 +55,7 @@ public class EditRulePopup {
 	/**
 	 * Returns the popup's main SWING frame.
 	 * 
-	 * @return
+	 * @return Returns the popup's main SWING frame.
 	 */
 	public JFrame getFrame() {
 		return frame;
@@ -79,7 +79,7 @@ public class EditRulePopup {
 	/**
 	 * Creates and returns the JPanel responsible for holding the rule's name.
 	 * 
-	 * @return
+	 * @return Returns the JPanel responsible for holding the rule's name.
 	 */
 	private JPanel createNamePanel() {
 		namePanel = new JPanel();
@@ -96,7 +96,8 @@ public class EditRulePopup {
 	 * Creates and returns the JPanel responsible for holding both the current list
 	 * of rule metrics, and the line which allows the addition of more metrics.
 	 * 
-	 * @return
+	 * @return Returns the JPanel responsible for holding both the current list
+	 * of rule metrics, and the line which allows the addition of more metrics.
 	 */
 	private JPanel createMetricsPanel() {
 		metricsListPanel = new JPanel();
@@ -119,7 +120,8 @@ public class EditRulePopup {
 	 * Creates and returns the JPanel responsible for holding the JButtons which
 	 * allow all metrics to be cleared, or the rule to be saved.
 	 * 
-	 * @return
+	 * @return Returns the JPanel responsible for holding the JButtons which
+	 * allow all metrics to be cleared, or the rule to be saved.
 	 */
 	private JPanel createControlPanel() {
 		controlPanel = new JPanel();
@@ -168,7 +170,8 @@ public class EditRulePopup {
 	 * hard-coded values of the JBoxes are to be replaced with the correct, final
 	 * values once the ENUMs are created.
 	 * 
-	 * @return
+	 * @return Returns the JPanel holding the line which allows
+	 * users to add new metrics into the metrics list.
 	 */
 	public JPanel createAddMetricPanel() {
 		addNewMetricPanel.removeAll();
