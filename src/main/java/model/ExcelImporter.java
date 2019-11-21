@@ -14,7 +14,6 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
  * A class that reads an Excel file.
  * 
  * @author Lino Silva
- * @version 1.0
  */
 public class ExcelImporter {
 

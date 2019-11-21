@@ -19,7 +19,6 @@ public class MainFrame {
 	private JButton add_editButton;
 	private JButton checkQualityButton;
 
-	// TODO: receber por argumento o ficheiro excel
 	public MainFrame(JTable excelTable) {
 		mainFrame = new JFrame();
 		mainFrame.setSize(700, 500);
