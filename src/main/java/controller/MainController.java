@@ -151,7 +151,7 @@ public class MainController {
 	}
 
 	/**
-	 * @return An Array of String arrays where which line is a row with the code
+	 * @return An Array of String arrays where each line is a row with the code
 	 *         quality results for a method, and each column is the value of that
 	 *         result line for that column
 	 */
