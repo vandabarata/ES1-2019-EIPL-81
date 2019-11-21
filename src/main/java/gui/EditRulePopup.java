@@ -53,7 +53,6 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Returns the popup's main SWING frame.
 	 * 
 	 * @return Returns the popup's main SWING frame.
 	 */
@@ -77,8 +76,6 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Creates and returns the JPanel responsible for holding the rule's name.
-	 * 
 	 * @return Returns the JPanel responsible for holding the rule's name.
 	 */
 	private JPanel createNamePanel() {
@@ -92,12 +89,8 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * 
-	 * Creates and returns the JPanel responsible for holding both the current list
-	 * of rule metrics, and the line which allows the addition of more metrics.
-	 * 
-	 * @return Returns the JPanel responsible for holding both the current list
-	 * of rule metrics, and the line which allows the addition of more metrics.
+	 * @return Returns the JPanel responsible for holding both the current list of
+	 *         rule metrics, and the line which allows the addition of more metrics.
 	 */
 	private JPanel createMetricsPanel() {
 		metricsListPanel = new JPanel();
@@ -117,11 +110,8 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Creates and returns the JPanel responsible for holding the JButtons which
-	 * allow all metrics to be cleared, or the rule to be saved.
-	 * 
-	 * @return Returns the JPanel responsible for holding the JButtons which
-	 * allow all metrics to be cleared, or the rule to be saved.
+	 * @return Returns the JPanel responsible for holding the JButtons which allow
+	 *         all metrics to be cleared, or the rule to be saved.
 	 */
 	private JPanel createControlPanel() {
 		controlPanel = new JPanel();
@@ -165,13 +155,11 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * This method both returns and creates the JPanel holding the line which allows
-	 * users to add new metrics into the metrics list. TODO: The currently
-	 * hard-coded values of the JBoxes are to be replaced with the correct, final
-	 * values once the ENUMs are created.
+	 * TODO: The currently * hard-coded values of the JBoxes are to be replaced with
+	 * the correct, final values once the ENUMs are created.
 	 * 
-	 * @return Returns the JPanel holding the line which allows
-	 * users to add new metrics into the metrics list.
+	 * @return Returns the JPanel holding the line which allows users to add new
+	 *         metrics into the metrics list.
 	 */
 	public JPanel createAddMetricPanel() {
 		addNewMetricPanel.removeAll();
@@ -194,24 +182,24 @@ public class EditRulePopup {
 		JButton addMetricButton = new JButton("Add");
 		addMetricButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (value.getItemCount() == 0) {
-					JOptionPane.showMessageDialog(null, "Please check if all metric fields were entered correctly!");
-				} else {
-					String metric;
-					if (ruleMetrics.isEmpty()) {
-						metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
-								+ threshold.getText();
-
-					} else {
-						metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
-								+ comparison.getSelectedItem() + " " + threshold.getText();
-					}
-					ruleMetrics.add(metric);
-					fillMetricsListPanel();
-					setConditionVisibility();
-					metricsListPanel.revalidate();
-					metricsListPanel.repaint();
+				String metric;
+				try {
+					Integer.parseInt(threshold.getText());
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
 				}
+				if (ruleMetrics.isEmpty()) {
+					metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
+							+ threshold.getText();
+				} else {
+					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
+							+ comparison.getSelectedItem() + " " + threshold.getText();
+				}
+				ruleMetrics.add(metric);
+				fillMetricsListPanel();
+				setConditionVisibility();
+				metricsListPanel.revalidate();
+				metricsListPanel.repaint();
 			}
 		});
 
@@ -224,6 +212,7 @@ public class EditRulePopup {
 		addNewMetricPanel.setPreferredSize(new Dimension(650, 25));
 		addNewMetricPanel.setMaximumSize(new Dimension(650, 25));
 		return addNewMetricPanel;
+
 	}
 
 	/**
