@@ -11,8 +11,9 @@ package main.java.model;
 public class CodeQualityRule {
 
 	private String name;
-	private boolean isDefault;
 	private String rule;
+	private boolean isDefault;
+	private boolean isAdvanced;
 
 	/**
 	 * Creates a CodeQualityRule object
@@ -21,10 +22,11 @@ public class CodeQualityRule {
 	 * @param isDefault
 	 * @param rule
 	 */
-	public CodeQualityRule(String name, boolean isDefault, String rule) {
+	public CodeQualityRule(String name, String rule, boolean isDefault, boolean isAdvanced) {
 		this.name = name;
-		this.isDefault = isDefault;
 		this.rule = rule;
+		this.isDefault = isDefault;
+		this.isAdvanced = isAdvanced;
 	}
 	
 	/**
@@ -56,13 +58,23 @@ public class CodeQualityRule {
 	}
 
 	/**
-	* Returns boolean that determines if a rule is default or not
-	* A default rule is a rule that can't have its metrics edited
-	* only its thresholds
+	 * Returns boolean that determines if a rule is default or not
+	 * A default rule is a rule that can't have its metrics edited
+	 * only its thresholds
 	 * @return Boolean - isDefault
 	 */
 	public boolean isDefault() {
 		return isDefault;
+	}
+	
+	/**
+	 * Returns boolean that determines if a rule is advanced or not
+	 * A advanced rule is a rule that can't be edited with the basic
+	 * rule editor
+	 * @return Boolean - isAdvanced
+	 */
+	public boolean isAdvanced() {
+		return isAdvanced;
 	}
 
 }
