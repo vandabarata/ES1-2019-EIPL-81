@@ -141,7 +141,7 @@ public class EditRulePopup {
 				if (nameText.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 				} else {
-					// Add functionality here.
+					// TODO: Add functionality here.
 				}
 			}
 		});
