@@ -253,7 +253,8 @@ public class EditRulePopup {
 	/**
 	 * This method handles setting the visibility of the Condition button in the
 	 * line responsible for allowing the user to add new metrics to the metrics'
-	 * list.
+	 * list. Basically, it stops the first metric, and the first metric only, from
+	 * having an AND or an OR attached to it.
 	 */
 	public void setConditionVisibility() {
 		if (ruleMetrics.isEmpty()) {
