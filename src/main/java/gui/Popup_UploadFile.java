@@ -20,10 +20,7 @@ import javax.swing.filechooser.FileSystemView;
  * clicked on the Import Button. It is opened the new pop up that it allows to
  * choose a file and import it If it is a valid Excel format!
  * <p>
- * <b>Note:</b> Giving proper comments in your program makes it more user
- * friendly and it is assumed as a high quality code.
- *
- * /**
+ * 
  * 
  * @author djsouza
  * @since 2019-11-08
