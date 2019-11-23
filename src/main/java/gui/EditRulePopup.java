@@ -15,6 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+
+import main.java.controller.Metric;
+
 import java.awt.event.*;
 
 /**
@@ -154,8 +157,6 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * TODO: The currently * hard-coded values of the JBoxes are to be replaced with
-	 * the correct, final values once the ENUMs are created.
 	 * 
 	 * @return Returns the JPanel holding the line which allows users to add new
 	 *         metrics into the metrics list.
@@ -167,8 +168,9 @@ public class EditRulePopup {
 		setConditionVisibility();
 		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
 		JComboBox<String> value = new JComboBox<>();
-		value.addItem("LOC");
-		value.addItem("MET");
+		for(Metric metric : Metric.values()) {
+			value.addItem(metric.name());
+		}
 
 		JComboBox<String> comparison = new JComboBox<>();
 		comparison.addItem(">");
