@@ -45,7 +45,6 @@ public class EditRulePopup {
 	public EditRulePopup() {
 		frame = new JFrame("Personalized Rules");
 		frame.setLayout(new BorderLayout());
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.add(createMainPanel());
 		frame.setLocationRelativeTo(null);
 		frame.setSize(new Dimension(FRAME_X, FRAME_Y));
