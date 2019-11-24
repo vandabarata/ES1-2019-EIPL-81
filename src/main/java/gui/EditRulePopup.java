@@ -1,7 +1,10 @@
 package main.java.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
@@ -13,8 +16,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
 
 import main.java.controller.Metric;
 
@@ -33,11 +38,16 @@ public class EditRulePopup {
 	private JScrollPane metricsScrollpane;
 	private JComboBox<String> condition;
 
+	private JPanel mainPanel;
 	private JPanel namePanel;
 	private JPanel metricsPanel;
+	private JPanel editorComplexityTogglePanel;
 	private JPanel metricsListPanel;
 	private JPanel addNewMetricPanel;
 	private JPanel controlPanel;
+	private JPanel centerPanel;
+
+	private boolean advancedMode;
 
 	private final int FRAME_X = 685;
 	private final int FRAME_Y = 300;
@@ -46,33 +56,28 @@ public class EditRulePopup {
 	 * Constructs and initializes the GUI pop-up.
 	 */
 	public EditRulePopup() {
+		advancedMode = false;
 		frame = new JFrame("Personalized Rules");
-		frame.setLayout(new BorderLayout());
 		frame.add(createMainPanel());
 		frame.setLocationRelativeTo(null);
+		frame.setMinimumSize(new Dimension(FRAME_X, FRAME_Y));
 		frame.setSize(new Dimension(FRAME_X, FRAME_Y));
 		frame.setVisible(true);
-	}
-
-	/**
-	 * 
-	 * @return Returns the popup's main SWING frame.
-	 */
-	public JFrame getFrame() {
-		return frame;
 	}
 
 	/**
 	 * @return Returns the JPanel where all other JPanels are nested.
 	 */
 	private JPanel createMainPanel() {
-		JPanel mainPanel = new JPanel();
+//TODO
+		metricsPanel = new JPanel();
+		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		createNamePanel();
-		createMetricsPanel();
+		createCenterPanel();
 		createControlPanel();
 		mainPanel.add(namePanel, BorderLayout.NORTH);
-		mainPanel.add(metricsPanel, BorderLayout.CENTER);
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
 		mainPanel.add(controlPanel, BorderLayout.SOUTH);
 		return mainPanel;
 	}
@@ -82,12 +87,24 @@ public class EditRulePopup {
 	 */
 	private JPanel createNamePanel() {
 		namePanel = new JPanel();
-		namePanel.setLayout(new GridLayout(1, 2));
 		JLabel nameLabel = new JLabel("Name: ", SwingConstants.LEFT);
+		namePanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		nameText = new JTextField();
-		namePanel.add(nameLabel);
-		namePanel.add(nameText);
+		nameText.setMinimumSize(new Dimension(500, 25));
+		nameText.setPreferredSize(new Dimension(500, 25));
+		namePanel.add(nameLabel, BorderLayout.CENTER);
+		namePanel.add(nameText, BorderLayout.EAST);
 		return namePanel;
+	}
+
+	private JPanel createCenterPanel() {
+		createMetricsPanel();
+		createEditorComplexityTogglePanel();
+		centerPanel = new JPanel();
+		centerPanel.setLayout(new BorderLayout());
+		centerPanel.add(metricsPanel, BorderLayout.CENTER);
+		centerPanel.add(editorComplexityTogglePanel, BorderLayout.EAST);
+		return centerPanel;
 	}
 
 	/**
@@ -96,19 +113,118 @@ public class EditRulePopup {
 	 */
 	private JPanel createMetricsPanel() {
 		metricsListPanel = new JPanel();
-		metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
-		metricsScrollpane = new JScrollPane(metricsListPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		fillMetricsListPanel();
-
-		addNewMetricPanel = new JPanel();
-		createAddMetricPanel();
-
-		metricsPanel = new JPanel();
-		metricsPanel.setLayout(new BorderLayout());
-		metricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
-		metricsPanel.add(metricsScrollpane, BorderLayout.CENTER);
+		if (advancedMode) {
+			metricsPanel.removeAll();
+			JTextPane metricText = new JTextPane();
+			metricsPanel.add(metricText);
+		} else {
+			metricsPanel.removeAll();
+			metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
+			metricsListPanel.setMinimumSize(new Dimension(500, 500));
+			metricsScrollpane = new JScrollPane(metricsListPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			addNewMetricPanel = new JPanel();
+			createAddMetricPanel();
+			metricsPanel.setLayout(new BorderLayout());
+			metricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
+			metricsPanel.add(metricsScrollpane, BorderLayout.CENTER);
+		}
 		return metricsPanel;
+	}
+
+	/**
+	 * 
+	 * @return Returns the JPanel holding the line which allows users to add new
+	 *         metrics into the metrics list.
+	 */
+	private JPanel createAddMetricPanel() {
+		addNewMetricPanel.removeAll();
+		addNewMetricPanel.setLayout(new GridLayout(1, 6));
+		condition = new JComboBox<>();
+		setConditionVisibility();
+		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
+		JComboBox<String> value = new JComboBox<>();
+		for (Metric metric : Metric.values()) {
+			value.addItem(metric.name());
+		}
+
+		JComboBox<String> comparison = new JComboBox<>();
+		comparison.addItem(">");
+		comparison.addItem("<");
+		comparison.addItem("=");
+		comparison.addItem("!=");
+
+		JTextField threshold = new JTextField("");
+
+		JButton addMetricButton = new JButton("Add");
+		addMetricButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String metric;
+				try {
+					Integer.parseInt(threshold.getText());
+				} catch (NumberFormatException ex) {
+					JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
+				}
+				if (ruleMetrics.isEmpty()) {
+					metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
+							+ threshold.getText();
+				} else {
+					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
+							+ comparison.getSelectedItem() + " " + threshold.getText();
+				}
+				ruleMetrics.add(metric);
+				fillMetricsListPanel();
+				setConditionVisibility();
+				metricsListPanel.revalidate();
+				metricsListPanel.repaint();
+			}
+		});
+
+		addNewMetricPanel.add(condition);
+		addNewMetricPanel.add(ifCondition);
+		addNewMetricPanel.add(value);
+		addNewMetricPanel.add(comparison);
+		addNewMetricPanel.add(threshold);
+		addNewMetricPanel.add(addMetricButton);
+		addNewMetricPanel.setPreferredSize(new Dimension(650, 25));
+		addNewMetricPanel.setMaximumSize(new Dimension(650, 25));
+		return addNewMetricPanel;
+
+	}
+
+	// TODO:
+	private JPanel createEditorComplexityTogglePanel() {
+		editorComplexityTogglePanel = new JPanel();
+		editorComplexityTogglePanel.setLayout(new BoxLayout(editorComplexityTogglePanel, BoxLayout.Y_AXIS));
+		JButton basicComplexity = new JButton("Basic");
+		JButton advancedComplexity = new JButton("Advanced");
+		basicComplexity.setAlignmentX(Component.CENTER_ALIGNMENT);
+		advancedComplexity.setAlignmentX(Component.CENTER_ALIGNMENT);
+		basicComplexity.setPreferredSize(advancedComplexity.getPreferredSize());
+		basicComplexity.setMaximumSize(advancedComplexity.getMaximumSize());
+		basicComplexity.setMinimumSize(advancedComplexity.getMinimumSize());
+
+		basicComplexity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				advancedMode = false;
+				createMetricsPanel();
+				metricsPanel.revalidate();
+				metricsPanel.repaint();
+			}
+		});
+
+		advancedComplexity.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				advancedMode = true;
+				createMetricsPanel();
+				metricsPanel.revalidate();
+				metricsPanel.repaint();
+
+			}
+		});
+		editorComplexityTogglePanel.add(basicComplexity);
+		editorComplexityTogglePanel.add(advancedComplexity);
+		return editorComplexityTogglePanel;
 	}
 
 	/**
@@ -157,66 +273,6 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * 
-	 * @return Returns the JPanel holding the line which allows users to add new
-	 *         metrics into the metrics list.
-	 */
-	public JPanel createAddMetricPanel() {
-		addNewMetricPanel.removeAll();
-		addNewMetricPanel.setLayout(new GridLayout(1, 6));
-		condition = new JComboBox<>();
-		setConditionVisibility();
-		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
-		JComboBox<String> value = new JComboBox<>();
-		for(Metric metric : Metric.values()) {
-			value.addItem(metric.name());
-		}
-
-		JComboBox<String> comparison = new JComboBox<>();
-		comparison.addItem(">");
-		comparison.addItem("<");
-		comparison.addItem("=");
-		comparison.addItem("!=");
-
-		JTextField threshold = new JTextField("10");
-
-		JButton addMetricButton = new JButton("Add");
-		addMetricButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String metric;
-				try {
-					Integer.parseInt(threshold.getText());
-				} catch (NumberFormatException ex) {
-					JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
-				}
-				if (ruleMetrics.isEmpty()) {
-					metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
-							+ threshold.getText();
-				} else {
-					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
-							+ comparison.getSelectedItem() + " " + threshold.getText();
-				}
-				ruleMetrics.add(metric);
-				fillMetricsListPanel();
-				setConditionVisibility();
-				metricsListPanel.revalidate();
-				metricsListPanel.repaint();
-			}
-		});
-
-		addNewMetricPanel.add(condition);
-		addNewMetricPanel.add(ifCondition);
-		addNewMetricPanel.add(value);
-		addNewMetricPanel.add(comparison);
-		addNewMetricPanel.add(threshold);
-		addNewMetricPanel.add(addMetricButton);
-		addNewMetricPanel.setPreferredSize(new Dimension(650, 25));
-		addNewMetricPanel.setMaximumSize(new Dimension(650, 25));
-		return addNewMetricPanel;
-
-	}
-
-	/**
 	 * This method fills the metric's list in the UI with the contents found in the
 	 * ruleMetrics ArrayList.
 	 * 
@@ -258,7 +314,7 @@ public class EditRulePopup {
 	 * list. Basically, it stops the first metric, and the first metric only, from
 	 * having an AND or an OR attached to it.
 	 */
-	public void setConditionVisibility() {
+	private void setConditionVisibility() {
 		if (ruleMetrics.isEmpty()) {
 			condition.setVisible(false);
 			condition.setSelectedItem("");
@@ -272,5 +328,12 @@ public class EditRulePopup {
 			condition.addItem("AND ");
 			condition.addItem("OR ");
 		}
+	}
+
+	/**
+	 * @return Returns the popup's main SWING frame.
+	 */
+	public JFrame getFrame() {
+		return frame;
 	}
 }
