@@ -2,6 +2,9 @@ package main.java.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -89,6 +92,12 @@ public class MainFrame {
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 		add_editButton = new JButton("Add/ Edit Rules");
+		add_editButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditRulePopup m = new EditRulePopup();
+				
+			}
+		});
 		buttonsPanel.add(add_editButton);
 
 		checkQualityButton = new JButton("Check quality");
