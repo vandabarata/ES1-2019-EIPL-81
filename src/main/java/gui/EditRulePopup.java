@@ -116,6 +116,7 @@ public class EditRulePopup {
 		if (advancedMode) {
 			metricsPanel.removeAll();
 			JTextPane metricText = new JTextPane();
+			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 			metricsPanel.add(metricText);
 		} else {
 			metricsPanel.removeAll();
@@ -162,17 +163,18 @@ public class EditRulePopup {
 				String metric;
 				try {
 					Integer.parseInt(threshold.getText());
+					if (ruleMetrics.isEmpty()) {
+						metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
+								+ threshold.getText();
+					} else {
+						metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
+								+ comparison.getSelectedItem() + " " + threshold.getText();
+					}
+					ruleMetrics.add(metric);
 				} catch (NumberFormatException ex) {
 					JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
 				}
-				if (ruleMetrics.isEmpty()) {
-					metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
-							+ threshold.getText();
-				} else {
-					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
-							+ comparison.getSelectedItem() + " " + threshold.getText();
-				}
-				ruleMetrics.add(metric);
+
 				fillMetricsListPanel();
 				setConditionVisibility();
 				metricsListPanel.revalidate();
