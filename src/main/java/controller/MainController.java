@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -48,7 +50,6 @@ public class MainController {
 		Popup_UploadFile uploadFile = new Popup_UploadFile();
 		JButton import_button = uploadFile.getImportJButton();
 		initImportButtonAction(import_button, uploadFile);
-
 	}
 
 	/**
@@ -59,7 +60,6 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				validateFile(uploadFile);
-
 			}
 		});
 	}
@@ -90,11 +90,11 @@ public class MainController {
 				this.ei = new ExcelImporter(path);
 				this.excelRows = ei.getAllRows();
 				this.gui = new MainFrame(createExcelTable());
+				add_editButton(this.gui.getAdd_editButton(), this.gui.getComboBox());
 			} else {
 				uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
 			}
 		}
-
 	}
 
 	/**
@@ -128,5 +128,19 @@ public class MainController {
 			}
 		});
 	}
-
+	
+	/**
+	 * This method is used to run the action of the Add/Edit Button 
+	 * with the selected rule of drop down
+	 */
+	public void add_editButton(JButton add_editButton, JComboBox checkbox) {
+		add_editButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String ruleName = (String)checkbox.getSelectedItem();
+				System.out.print(ruleName);
+			}
+		});
+	}
+	
 }

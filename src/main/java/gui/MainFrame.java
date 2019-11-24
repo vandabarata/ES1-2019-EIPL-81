@@ -2,7 +2,11 @@ package main.java.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -18,6 +22,7 @@ public class MainFrame {
 	private JTable excelTable;
 	private JButton add_editButton;
 	private JButton checkQualityButton;
+	private JComboBox rules_dropDown;
 
 	// TODO: receber por argumento o ficheiro excel
 	public MainFrame(JTable excelTable) {
@@ -85,10 +90,15 @@ public class MainFrame {
 	}
 	
 	/**
-	 * This method creates and adds the add/edit and checkQuality buttons to a panel
+	 * This method creates and adds the add/edit, drop drown with list of rules
+	 *  and checkQuality buttons to a panel
 	 * @param buttonsPanel is the panel user to display the buttons.
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
+		String[] rulesList = { "rule A", "rule B", "rule C", "rule D", "rule E" };
+		rules_dropDown = new JComboBox(rulesList);
+		buttonsPanel.add(rules_dropDown);
+
 		add_editButton = new JButton("Add/ Edit Rules");
 		buttonsPanel.add(add_editButton);
 
@@ -120,7 +130,7 @@ public class MainFrame {
 		fileResultsPanel.add(new JLabel("g"));
 		fileResultsPanel.add(new JLabel("h"));
 	}
-
+	
 	//TODO: Usar argumento Excel
 	public JTable getExcelTable() {
 		return excelTable;
@@ -136,5 +146,9 @@ public class MainFrame {
 	
 	public int getFrameWidth() {
 		return mainFrame.getWidth();
+	}
+	
+	public JComboBox getComboBox() {
+		return rules_dropDown;
 	}
 }
