@@ -3,8 +3,6 @@ package main.java.gui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
@@ -18,11 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-
 import main.java.controller.Metric;
-
 import java.awt.event.*;
 
 /**
@@ -57,6 +52,7 @@ public class EditRulePopup {
 	 */
 	public EditRulePopup() {
 		advancedMode = false;
+		initializePanels();
 		frame = new JFrame("Personalized Rules");
 		frame.add(createMainPanel());
 		frame.setLocationRelativeTo(null);
@@ -66,12 +62,23 @@ public class EditRulePopup {
 	}
 
 	/**
+	 * Initializes all the JPanels at once.
+	 */
+	private void initializePanels() {
+		mainPanel = new JPanel();
+		namePanel = new JPanel();
+		metricsPanel = new JPanel();
+		editorComplexityTogglePanel = new JPanel();
+		metricsListPanel = new JPanel();
+		addNewMetricPanel = new JPanel();
+		controlPanel = new JPanel();
+		centerPanel = new JPanel();
+	}
+
+	/**
 	 * @return Returns the JPanel where all other JPanels are nested.
 	 */
 	private JPanel createMainPanel() {
-//TODO
-		metricsPanel = new JPanel();
-		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 		createNamePanel();
 		createCenterPanel();
@@ -86,7 +93,6 @@ public class EditRulePopup {
 	 * @return Returns the JPanel responsible for holding the rule's name.
 	 */
 	private JPanel createNamePanel() {
-		namePanel = new JPanel();
 		JLabel nameLabel = new JLabel("Name: ", SwingConstants.LEFT);
 		namePanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		nameText = new JTextField();
@@ -97,10 +103,15 @@ public class EditRulePopup {
 		return namePanel;
 	}
 
+	/**
+	 * @return Returns the JPanel responsible for holding either both the Metrics
+	 *         panel, which allows edits to the current metrics, and the complexity
+	 *         toggle panel, which allows changing in between the basic and advanced
+	 *         modes.
+	 */
 	private JPanel createCenterPanel() {
 		createMetricsPanel();
 		createEditorComplexityTogglePanel();
-		centerPanel = new JPanel();
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.add(metricsPanel, BorderLayout.CENTER);
 		centerPanel.add(editorComplexityTogglePanel, BorderLayout.EAST);
@@ -112,24 +123,34 @@ public class EditRulePopup {
 	 *         rule metrics, and the line which allows the addition of more metrics.
 	 */
 	private JPanel createMetricsPanel() {
-		metricsListPanel = new JPanel();
 		if (advancedMode) {
 			metricsPanel.removeAll();
+			metricsPanel.setLayout(new BorderLayout());
+			JLabel metricsTextPaneLabel = new JLabel("Metrics text pane:");
 			JTextPane metricText = new JTextPane();
 			String text = new String();
-			for(String line : ruleMetrics) {
+			for (String line : ruleMetrics) {
 				text = text + line + '\n';
+			}
+
+			String availableMetricsText = new String();
+			for (Metric metric : Metric.values()) {
+				availableMetricsText = availableMetricsText + metric.name() + " ";
 			}
 			metricText.setText(text);
 			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-			metricsPanel.add(metricText);
+
+			JLabel availableMetrics = new JLabel("Available metrics: \n" + availableMetricsText);
+
+			metricsPanel.add(metricText, BorderLayout.CENTER);
+			metricsPanel.add(metricsTextPaneLabel, BorderLayout.NORTH);
+			metricsPanel.add(availableMetrics, BorderLayout.SOUTH);
 		} else {
 			metricsPanel.removeAll();
 			metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
 			metricsListPanel.setMinimumSize(new Dimension(500, 500));
 			metricsScrollpane = new JScrollPane(metricsListPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			addNewMetricPanel = new JPanel();
 			createAddMetricPanel();
 			metricsPanel.setLayout(new BorderLayout());
 			metricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
@@ -205,7 +226,6 @@ public class EditRulePopup {
 
 	// TODO:
 	private JPanel createEditorComplexityTogglePanel() {
-		editorComplexityTogglePanel = new JPanel();
 		editorComplexityTogglePanel.setLayout(new BoxLayout(editorComplexityTogglePanel, BoxLayout.Y_AXIS));
 		JButton basicComplexity = new JButton("Basic");
 		JButton advancedComplexity = new JButton("Advanced");
@@ -214,22 +234,27 @@ public class EditRulePopup {
 		basicComplexity.setPreferredSize(advancedComplexity.getPreferredSize());
 		basicComplexity.setMaximumSize(advancedComplexity.getMaximumSize());
 		basicComplexity.setMinimumSize(advancedComplexity.getMinimumSize());
+		basicComplexity.setEnabled(false);
 
 		basicComplexity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				advancedComplexity.setEnabled(true);
 				advancedMode = false;
 				createMetricsPanel();
 				metricsPanel.revalidate();
 				metricsPanel.repaint();
+				basicComplexity.setEnabled(false);
 			}
 		});
 
 		advancedComplexity.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				basicComplexity.setEnabled(true);
 				advancedMode = true;
 				createMetricsPanel();
 				metricsPanel.revalidate();
 				metricsPanel.repaint();
+				advancedComplexity.setEnabled(false);
 
 			}
 		});
@@ -243,7 +268,6 @@ public class EditRulePopup {
 	 *         all metrics to be cleared, or the rule to be saved.
 	 */
 	private JPanel createControlPanel() {
-		controlPanel = new JPanel();
 		controlPanel.setLayout(new GridLayout(1, 3));
 
 		JButton clearButton = new JButton("Clear Metrics");
