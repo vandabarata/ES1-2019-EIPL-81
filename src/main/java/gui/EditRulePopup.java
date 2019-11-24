@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import main.java.controller.Metric;
@@ -31,7 +31,9 @@ public class EditRulePopup {
 	private JFrame frame;
 	private JTextField nameText;
 	private JScrollPane metricsScrollpane;
+	private JScrollPane advancedMetricsScrollpane;
 	private JComboBox<String> condition;
+	private JTextArea metricText;
 
 	private JPanel mainPanel;
 	private JPanel namePanel;
@@ -59,20 +61,6 @@ public class EditRulePopup {
 		frame.setMinimumSize(new Dimension(FRAME_X, FRAME_Y));
 		frame.setSize(new Dimension(FRAME_X, FRAME_Y));
 		frame.setVisible(true);
-	}
-
-	/**
-	 * Initializes all the JPanels at once.
-	 */
-	private void initializePanels() {
-		mainPanel = new JPanel();
-		namePanel = new JPanel();
-		metricsPanel = new JPanel();
-		editorComplexityTogglePanel = new JPanel();
-		metricsListPanel = new JPanel();
-		addNewMetricPanel = new JPanel();
-		controlPanel = new JPanel();
-		centerPanel = new JPanel();
 	}
 
 	/**
@@ -121,13 +109,15 @@ public class EditRulePopup {
 	/**
 	 * @return Returns the JPanel responsible for holding both the current list of
 	 *         rule metrics, and the line which allows the addition of more metrics.
+	 *         In advanced mode, this panels hold a JTextArea, which can be freely
+	 *         edited by the user.
 	 */
 	private JPanel createMetricsPanel() {
 		if (advancedMode) {
 			metricsPanel.removeAll();
 			metricsPanel.setLayout(new BorderLayout());
-			JLabel metricsTextPaneLabel = new JLabel("Metrics text pane:");
-			JTextPane metricText = new JTextPane();
+			JLabel metricsTextPaneLabel = new JLabel("Add metrics as follows: ");
+
 			String text = new String();
 			for (String line : ruleMetrics) {
 				text = text + line + '\n';
@@ -137,12 +127,17 @@ public class EditRulePopup {
 			for (Metric metric : Metric.values()) {
 				availableMetricsText = availableMetricsText + metric.name() + " ";
 			}
+			if (text.isEmpty()) {
+				text = "Enter your text here as follows. Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
+			}
 			metricText.setText(text);
+			advancedMetricsScrollpane = new JScrollPane(metricText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 			JLabel availableMetrics = new JLabel("Available metrics: \n" + availableMetricsText);
 
-			metricsPanel.add(metricText, BorderLayout.CENTER);
+			metricsPanel.add(advancedMetricsScrollpane, BorderLayout.CENTER);
 			metricsPanel.add(metricsTextPaneLabel, BorderLayout.NORTH);
 			metricsPanel.add(availableMetrics, BorderLayout.SOUTH);
 		} else {
@@ -182,7 +177,7 @@ public class EditRulePopup {
 		JComboBox<String> comparison = new JComboBox<>();
 		comparison.addItem(">");
 		comparison.addItem("<");
-		comparison.addItem("=");
+		comparison.addItem("==");
 		comparison.addItem("!=");
 
 		JTextField threshold = new JTextField("");
@@ -195,10 +190,10 @@ public class EditRulePopup {
 					Integer.parseInt(threshold.getText());
 					if (ruleMetrics.isEmpty()) {
 						metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
-								+ threshold.getText();
+								+ threshold.getText() + " ";
 					} else {
 						metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
-								+ comparison.getSelectedItem() + " " + threshold.getText();
+								+ comparison.getSelectedItem() + " " + threshold.getText() + " ";
 					}
 					ruleMetrics.add(metric);
 				} catch (NumberFormatException ex) {
@@ -224,7 +219,11 @@ public class EditRulePopup {
 
 	}
 
-	// TODO:
+	/**
+	 * 
+	 * @return Returns the JPanel which holds the buttons to switch between advanced
+	 *         and basic modes.
+	 */
 	private JPanel createEditorComplexityTogglePanel() {
 		editorComplexityTogglePanel.setLayout(new BoxLayout(editorComplexityTogglePanel, BoxLayout.Y_AXIS));
 		JButton basicComplexity = new JButton("Basic");
@@ -295,7 +294,14 @@ public class EditRulePopup {
 				if (nameText.getText().isEmpty()) {
 					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 				} else {
-					// TODO: Add functionality here.
+					if (advancedMode) {
+						ruleMetrics.clear();
+						for (String aString : metricText.getText().split("\n")) {
+							aString.replaceAll("\n", " ");
+							ruleMetrics.add(aString);
+						}
+					}
+					// TODO: Add functionality here. The method getJavascriptString() should be used here as necessary.
 				}
 			}
 		});
@@ -305,6 +311,21 @@ public class EditRulePopup {
 		controlPanel.add(saveButton);
 		return controlPanel;
 
+	}
+
+	/**
+	 * Initializes all the JPanels at once.
+	 */
+	private void initializePanels() {
+		mainPanel = new JPanel();
+		namePanel = new JPanel();
+		metricsPanel = new JPanel();
+		editorComplexityTogglePanel = new JPanel();
+		metricsListPanel = new JPanel();
+		addNewMetricPanel = new JPanel();
+		controlPanel = new JPanel();
+		centerPanel = new JPanel();
+		metricText = new JTextArea();
 	}
 
 	/**
@@ -337,6 +358,7 @@ public class EditRulePopup {
 	 */
 	private void clearMetricsListPanel() {
 		ruleMetrics.clear();
+		metricText.setText("");
 		metricsListPanel.removeAll();
 		setConditionVisibility();
 		metricsListPanel.revalidate();
@@ -370,5 +392,18 @@ public class EditRulePopup {
 	 */
 	public JFrame getFrame() {
 		return frame;
+	}
+
+	/**
+	 * 
+	 * @return Returns a javascript-ready string for evaluation.
+	 */
+	public String getJavascriptString() {
+		String javascriptString = "";
+		for (String metricString : ruleMetrics) {
+			javascriptString = javascriptString + metricString;
+		}
+		javascriptString = javascriptString.replaceAll("IF", "").replaceAll("AND", "&&").replaceAll("OR", "||");
+		return javascriptString;
 	}
 }
