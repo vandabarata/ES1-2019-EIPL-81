@@ -116,6 +116,11 @@ public class EditRulePopup {
 		if (advancedMode) {
 			metricsPanel.removeAll();
 			JTextPane metricText = new JTextPane();
+			String text = new String();
+			for(String line : ruleMetrics) {
+				text = text + line + '\n';
+			}
+			metricText.setText(text);
 			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 			metricsPanel.add(metricText);
 		} else {
@@ -129,6 +134,10 @@ public class EditRulePopup {
 			metricsPanel.setLayout(new BorderLayout());
 			metricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
 			metricsPanel.add(metricsScrollpane, BorderLayout.CENTER);
+			fillMetricsListPanel();
+			setConditionVisibility();
+			metricsListPanel.revalidate();
+			metricsListPanel.repaint();
 		}
 		return metricsPanel;
 	}
