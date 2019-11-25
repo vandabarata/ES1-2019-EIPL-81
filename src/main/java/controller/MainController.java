@@ -46,7 +46,7 @@ public class MainController {
 	 * MainController constructor. Creates the default rules to be used.
 	 */
 	public MainController() {
-		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 &6 CYCLO > 10", true, false);
+		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
 		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, false);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
