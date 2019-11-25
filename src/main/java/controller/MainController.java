@@ -90,7 +90,7 @@ public class MainController {
 				this.ei = new ExcelImporter(path);
 				this.excelRows = ei.getAllRows();
 				this.gui = new MainFrame(createExcelTable());
-				add_editButton(this.gui.getAdd_editButton(), this.gui.getComboBox());
+				editButton(this.gui.get_editButton(), this.gui.getComboBox());
 			} else {
 				uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
 			}
@@ -130,15 +130,17 @@ public class MainController {
 	}
 	
 	/**
-	 * This method is used to run the action of the Add/Edit Button 
+	 * This method is used to run the action of the Edit Button 
 	 * with the selected rule of drop down
 	 */
-	public void add_editButton(JButton add_editButton, JComboBox checkbox) {
-		add_editButton.addActionListener(new ActionListener() {
+	public void editButton(JButton editButton, JComboBox checkbox) {
+		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String ruleName = (String)checkbox.getSelectedItem();
 				System.out.print(ruleName);
+				
+				//Correr o pop up do Hugo para Editar Regras e a lógica associada
 			}
 		});
 	}
