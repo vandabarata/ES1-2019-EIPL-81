@@ -25,7 +25,6 @@ public class MainFrame {
 	private JButton checkQualityButton;
 	private JComboBox rules_dropDown;
 
-	// TODO: receber por argumento o ficheiro excel
 	public MainFrame(JTable excelTable) {
 		mainFrame = new JFrame();
 		mainFrame.setSize(700, 500);
