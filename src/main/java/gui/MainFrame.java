@@ -23,7 +23,7 @@ public class MainFrame {
 	private JButton editButton;
 	private JButton addButton;
 	private JButton checkQualityButton;
-	private JComboBox rules_dropDown;
+	private JComboBox rulesDropDown;
 
 	public MainFrame(JTable excelTable) {
 		mainFrame = new JFrame();
@@ -99,8 +99,8 @@ public class MainFrame {
 		//Adicionar a Lista de das regras existentes
 		
 		String[] rulesList = { "rule A", "rule B", "rule C", "rule D", "rule E" };
-		rules_dropDown = new JComboBox(rulesList);
-		buttonsPanel.add(rules_dropDown);
+		rulesDropDown = new JComboBox(rulesList);
+		buttonsPanel.add(rulesDropDown);
 		editButton = new JButton("Edit");
 		buttonsPanel.add(editButton);
 		
@@ -151,7 +151,7 @@ public class MainFrame {
 	 * 
 	 * @return JButton
 	 */
-	public JButton get_editButton() {
+	public JButton getEditButton() {
 		return editButton;
 	}
 	
@@ -161,7 +161,7 @@ public class MainFrame {
 	 * 
 	 * @return JButton
 	 */
-	public JButton get_addButton() {
+	public JButton getAddButton() {
 		return addButton;
 	}
 
@@ -184,6 +184,6 @@ public class MainFrame {
 	 * @return JComboBox
 	 */
 	public JComboBox getComboBox() {
-		return rules_dropDown;
+		return rulesDropDown;
 	}
 }

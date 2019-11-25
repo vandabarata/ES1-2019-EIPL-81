@@ -114,7 +114,7 @@ public class MainController {
 		gui = new MainFrame(createExcelTable());
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
-		editButton(this.gui.get_editButton(), this.gui.getComboBox());
+		editButton(this.gui.getEditButton(), this.gui.getComboBox());
 	}
 
 	/**
