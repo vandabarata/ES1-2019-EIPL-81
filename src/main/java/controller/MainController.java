@@ -42,9 +42,8 @@ public class MainController {
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
 
-	
 	/**
-	 * MainController constructor. Creates the default rules to be used. 
+	 * MainController constructor. Creates the default rules to be used.
 	 */
 	public MainController() {
 		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 &6 CYCLO > 10", true, false);
@@ -109,7 +108,7 @@ public class MainController {
 
 	/**
 	 * Initialise the MainFrame and support Frames. Create necessary objects to
-	 * suport it.
+	 * support it.
 	 */
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
