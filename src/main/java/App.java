@@ -1,7 +1,6 @@
 package main.java;
 
 import main.java.controller.MainController;
-import main.java.gui.MainFrame;
 
 public class App {
 
