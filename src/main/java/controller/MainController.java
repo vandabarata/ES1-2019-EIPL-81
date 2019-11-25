@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import javax.swing.JTable;
 
+import main.java.model.CodeQualityRule;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
 
@@ -39,6 +40,17 @@ public class MainController {
 	private ExcelImporter ei;
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
+	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+
+	/**
+	 * MainController constructor. Creates the default rules to be used.
+	 */
+	public MainController() {
+		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, false);
+		rulesList.add(is_long_method);
+		rulesList.add(is_feature_envy);
+	}
 
 	/**
 	 * This method is used to initiate the button listener
@@ -96,7 +108,7 @@ public class MainController {
 
 	/**
 	 * Initialise the MainFrame and support Frames. Create necessary objects to
-	 * suport it.
+	 * support it.
 	 */
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
