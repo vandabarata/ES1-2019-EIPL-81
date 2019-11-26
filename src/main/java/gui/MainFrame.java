@@ -96,7 +96,7 @@ public class MainFrame {
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 		
-		//Adicionar a Lista de das regras existentes
+		//TODO Adicionar a Lista de das regras existentes
 		
 		String[] rulesList = { "rule A", "rule B", "rule C", "rule D", "rule E" };
 		rulesDropDown = new JComboBox(rulesList);
@@ -104,7 +104,7 @@ public class MainFrame {
 		editButton = new JButton("Edit");
 		buttonsPanel.add(editButton);
 		
-		addButton = new JButton("Add new");
+		addButton = new JButton("Add");
 		buttonsPanel.add(addButton);
 		checkQualityButton = new JButton("Check quality");
 		buttonsPanel.add(checkQualityButton);

@@ -95,6 +95,7 @@ public class MainController {
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
 			path = selectedFile.getAbsolutePath();
+			
 			if (isValid(path)) {
 				uploadFile.close();
 				initMainFrame();
@@ -160,7 +161,7 @@ public class MainController {
 				String ruleName = (String)checkbox.getSelectedItem();
 				System.out.print(ruleName);
 				
-				//Correr o pop up do Hugo para Editar Regras e a lógica associada
+				//TODO Correr o pop up do Hugo para Editar Regras e a lógica associada
 			}
 		});
 	}
