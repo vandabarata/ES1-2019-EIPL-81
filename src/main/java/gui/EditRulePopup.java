@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import main.java.model.Condition;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -47,6 +49,7 @@ public class EditRulePopup {
 	private JPanel centerPanel;
 
 	private boolean advancedMode;
+	private boolean conditionVisibilitySet;
 
 	private final int FRAME_X = 685;
 	private final int FRAME_Y = 300;
@@ -303,7 +306,8 @@ public class EditRulePopup {
 							ruleMetrics.add(aString);
 						}
 					}
-					// TODO: Add functionality here. The method getJavascriptString() should be used here as necessary.
+					// TODO: Add functionality here. The method getJavascriptString() should be used
+					// here as necessary.
 				}
 			}
 		});
@@ -374,18 +378,16 @@ public class EditRulePopup {
 	 * having an AND or an OR attached to it.
 	 */
 	private void setConditionVisibility() {
-		if (ruleMetrics.isEmpty()) {
+		if (!ruleMetrics.isEmpty()) {
+			condition.setVisible(true);
+			if (!conditionVisibilitySet)
+				for (Condition cond : Condition.values()) {
+					condition.addItem(cond.toString());
+					conditionVisibilitySet = true;
+				}
+		} else {
 			condition.setVisible(false);
 			condition.setSelectedItem("");
-		} else {
-			condition.setVisible(true);
-			// TODO: This two lines prevent multiple ANDs and ORs from being introduced. A
-			// better solution may exist, but this issue should be resolved once ENUMs are
-			// added.
-			condition.removeItem("AND ");
-			condition.removeItem("OR ");
-			condition.addItem("AND ");
-			condition.addItem("OR ");
 		}
 	}
 
