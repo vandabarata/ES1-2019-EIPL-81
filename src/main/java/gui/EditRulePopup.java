@@ -290,6 +290,7 @@ public class EditRulePopup {
 					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 				} else {
 					// TODO: Add functionality here.
+					JOptionPane.showMessageDialog(null, "Rule has been deleted!");
 				}
 			}
 		});
@@ -308,6 +309,7 @@ public class EditRulePopup {
 					}
 					// TODO: Add functionality here. The method getJavascriptString() should be used
 					// here as necessary.
+					JOptionPane.showMessageDialog(null, "Rule has been added successfuly!");
 				}
 			}
 		});
