@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
@@ -59,7 +61,6 @@ public class MainController {
 		Popup_UploadFile uploadFile = new Popup_UploadFile();
 		JButton import_button = uploadFile.getImportJButton();
 		initImportButtonAction(import_button, uploadFile);
-
 	}
 
 	/**
@@ -70,7 +71,6 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				validateFile(uploadFile);
-
 			}
 		});
 	}
@@ -95,7 +95,7 @@ public class MainController {
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
 			path = selectedFile.getAbsolutePath();
-
+			
 			if (isValid(path)) {
 				uploadFile.close();
 				initMainFrame();
@@ -103,12 +103,11 @@ public class MainController {
 				uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
 			}
 		}
-
 	}
 
 	/**
 	 * Initialise the MainFrame and support Frames. Create necessary objects to
-	 * support it.
+	 * support it. 
 	 */
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
@@ -116,6 +115,7 @@ public class MainController {
 		gui = new MainFrame(createExcelTable());
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
+		editButton(this.gui.getEditButton(), this.gui.getComboBox());
 	}
 
 	/**
@@ -149,6 +149,23 @@ public class MainController {
 			}
 		});
 	}
+	
+	/**
+	 * This method is used to run the action of the Edit Button 
+	 * with the selected rule of drop down
+	 */
+	public void editButton(JButton editButton, JComboBox checkbox) {
+		editButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String ruleName = (String)checkbox.getSelectedItem();
+				System.out.print(ruleName);
+				
+				//TODO Correr o pop up do Hugo para Editar Regras e a lógica associada
+			}
+		});
+	}
+	
 
 	/**
 	 * Verify the code quality based on the Rules created and sends the results to
