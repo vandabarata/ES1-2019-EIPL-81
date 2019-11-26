@@ -191,14 +191,14 @@ public class EditRulePopup {
 		addMetricButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String metric;
+				String baseMetric = " " + comparison.getSelectedItem() + " " + threshold.getText() + " ";
+
 				try {
 					Integer.parseInt(threshold.getText());
 					if (ruleMetrics.isEmpty()) {
-						metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
-								+ threshold.getText() + " ";
+						metric = "IF " + value.getSelectedItem() + baseMetric;
 					} else {
-						metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
-								+ comparison.getSelectedItem() + " " + threshold.getText() + " ";
+						metric = condition.getSelectedItem() + " " + value.getSelectedItem() + baseMetric;
 					}
 					ruleMetrics.add(metric);
 				} catch (NumberFormatException ex) {
