@@ -1,4 +1,4 @@
-package main.java.controller;
+package main.java.model;
 
 public enum Condition {
 	 AND, OR

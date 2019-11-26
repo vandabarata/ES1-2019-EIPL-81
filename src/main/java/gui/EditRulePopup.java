@@ -17,7 +17,9 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import main.java.controller.Metric;
+
+import main.java.model.Metric;
+
 import java.awt.event.*;
 
 /**
