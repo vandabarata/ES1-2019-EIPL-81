@@ -6,7 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
-import main.java.model.Comparator;
+import main.java.model.Operator;
 import main.java.model.Condition;
 
 import javax.swing.BoxLayout;
@@ -182,7 +182,7 @@ public class EditRulePopup {
 		}
 
 		JComboBox<String> comparison = new JComboBox<>();
-		for (Comparator comp : Comparator.values()) {
+		for (Operator comp : Operator.values()) {
 			comparison.addItem(comp.getSymbol());
 		}
 

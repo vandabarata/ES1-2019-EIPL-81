@@ -105,10 +105,9 @@ public class MainFrame {
 		buttonsPanel.add(editButton);
 		
 		addButton = new JButton("Add");
-    add_editButton.addActionListener(new ActionListener() {
+		addButton.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent e) {
 				EditRulePopup m = new EditRulePopup();
-				
 		}
 		});
 		buttonsPanel.add(addButton);

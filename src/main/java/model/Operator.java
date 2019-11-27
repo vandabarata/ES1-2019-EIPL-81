@@ -6,14 +6,13 @@ package main.java.model;
  * EQ (Equal) and DF (Different).
  * 
  * @author hugo.barroca
- *
  */
-public enum Comparator {
+public enum Operator {
 	GT(">"), LT("<"), GE(">="), LE("<="), EQ("=="), DF("!=");
 
 	private String symbol;
 
-	private Comparator(String symbol) {
+	private Operator(String symbol) {
 		this.symbol = symbol;
 	}
 
