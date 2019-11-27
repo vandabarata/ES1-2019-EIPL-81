@@ -5,6 +5,8 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileSystemView;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 
 import javax.swing.JTable;
 
+import main.java.model.CodeQualityRule;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
 
@@ -39,6 +42,17 @@ public class MainController {
 	private ExcelImporter ei;
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
+	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+
+	/**
+	 * MainController constructor. Creates the default rules to be used.
+	 */
+	public MainController() {
+		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, false);
+		rulesList.add(is_long_method);
+		rulesList.add(is_feature_envy);
+	}
 
 	/**
 	 * This method is used to initiate the button listener
@@ -47,7 +61,6 @@ public class MainController {
 		Popup_UploadFile uploadFile = new Popup_UploadFile();
 		JButton import_button = uploadFile.getImportJButton();
 		initImportButtonAction(import_button, uploadFile);
-
 	}
 
 	/**
@@ -58,7 +71,6 @@ public class MainController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				validateFile(uploadFile);
-
 			}
 		});
 	}
@@ -83,7 +95,7 @@ public class MainController {
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
 			path = selectedFile.getAbsolutePath();
-
+			
 			if (isValid(path)) {
 				uploadFile.close();
 				initMainFrame();
@@ -91,12 +103,11 @@ public class MainController {
 				uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
 			}
 		}
-
 	}
 
 	/**
 	 * Initialise the MainFrame and support Frames. Create necessary objects to
-	 * suport it.
+	 * support it. 
 	 */
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
@@ -104,6 +115,7 @@ public class MainController {
 		gui = new MainFrame(createExcelTable());
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
+		editButton(this.gui.getEditButton(), this.gui.getComboBox());
 	}
 
 	/**
@@ -137,6 +149,23 @@ public class MainController {
 			}
 		});
 	}
+	
+	/**
+	 * This method is used to run the action of the Edit Button 
+	 * with the selected rule of drop down
+	 */
+	public void editButton(JButton editButton, JComboBox checkbox) {
+		editButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String ruleName = (String)checkbox.getSelectedItem();
+				System.out.print(ruleName);
+				
+				//TODO Correr o pop up do Hugo para Editar Regras e a lógica associada
+			}
+		});
+	}
+	
 
 	/**
 	 * Verify the code quality based on the Rules created and sends the results to
