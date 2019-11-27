@@ -33,7 +33,8 @@ public class CodeQualityRule {
 	 * @param String - new rule's name
 	 */
 	public void setName(String name) {
-		this.name = name;
+		if(!isDefault)
+			this.name = name;
 	}
 	
 	/**
@@ -47,7 +48,8 @@ public class CodeQualityRule {
 	 * @param String - new rule's text
 	 */
 	public void setRule(String rule) {
-		this.rule = rule;
+		if(!isDefault)
+			this.rule = rule;
 	}
 	
 	/**
@@ -65,6 +67,16 @@ public class CodeQualityRule {
 	 */
 	public boolean isDefault() {
 		return isDefault;
+	}
+	
+	/**
+	 * Sets the state of the rule, determining if it is an advanced
+	 * rule or a basic one
+	 * @param Boolean - isAdvanced
+	 */
+	public void setIsAdvanced(boolean isAdvanced) {
+		if(!isDefault)
+			this.isAdvanced = isAdvanced;
 	}
 	
 	/**
