@@ -95,8 +95,8 @@ public class MainFrame {
 	 * @param buttonsPanel is the panel user to display the buttons.
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
-		
-		//TODO Adicionar a Lista de das regras existentes
+
+    //TODO Adicionar a Lista de das regras existentes
 		
 		String[] rulesList = { "rule A", "rule B", "rule C", "rule D", "rule E" };
 		rulesDropDown = new JComboBox(rulesList);
@@ -105,7 +105,13 @@ public class MainFrame {
 		buttonsPanel.add(editButton);
 		
 		addButton = new JButton("Add");
+		addButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+				EditRulePopup m = new EditRulePopup();
+		}
+		});
 		buttonsPanel.add(addButton);
+
 		checkQualityButton = new JButton("Check quality");
 		buttonsPanel.add(checkQualityButton);
 	}
