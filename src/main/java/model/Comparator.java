@@ -2,13 +2,14 @@ package main.java.model;
 
 /**
  * Simple enumerator for comparators. Available comparators are GT (Greater
- * Than), LT (Lesser Than), EQ (Equal) and DF (Different).
+ * Than), LT (Lesser Than), GE (Greater or Equal Than), LE (Less or Equal than)
+ * EQ (Equal) and DF (Different).
  * 
  * @author hugo.barroca
  *
  */
 public enum Comparator {
-	GT(">"), LT("<"), EQ("=="), DF("!=");
+	GT(">"), LT("<"), GE(">="), LE("<="), EQ("=="), DF("!=");
 
 	private String symbol;
 
