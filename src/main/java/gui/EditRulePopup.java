@@ -189,28 +189,24 @@ public class EditRulePopup {
 		JTextField threshold = new JTextField("");
 
 		JButton addMetricButton = new JButton("Add");
-		addMetricButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String metric;
-				String baseMetric = " " + comparison.getSelectedItem() + " " + threshold.getText() + " ";
-
-				try {
-					Integer.parseInt(threshold.getText());
-					if (ruleMetrics.isEmpty()) {
-						metric = "IF " + value.getSelectedItem() + baseMetric;
-					} else {
-						metric = condition.getSelectedItem() + " " + value.getSelectedItem() + baseMetric;
-					}
-					ruleMetrics.add(metric);
-				} catch (NumberFormatException ex) {
-					JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
+		addMetricButton.addActionListener(e -> {
+			String metric;
+			String baseMetric = " " + comparison.getSelectedItem() + " " + threshold.getText() + " ";
+			try {
+				Integer.parseInt(threshold.getText());
+				if (ruleMetrics.isEmpty()) {
+					metric = "IF " + value.getSelectedItem() + baseMetric;
+				} else {
+					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + baseMetric;
 				}
-
-				fillMetricsListPanel();
-				setConditionVisibility();
-				metricsListPanel.revalidate();
-				metricsListPanel.repaint();
+				ruleMetrics.add(metric);
+			} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
 			}
+			fillMetricsListPanel();
+			setConditionVisibility();
+			metricsListPanel.revalidate();
+			metricsListPanel.repaint();
 		});
 
 		addNewMetricPanel.add(condition);
@@ -241,30 +237,27 @@ public class EditRulePopup {
 		basicComplexity.setMinimumSize(advancedComplexity.getMinimumSize());
 		basicComplexity.setEnabled(false);
 
-		basicComplexity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				advancedComplexity.setEnabled(true);
-				advancedMode = false;
-				createMetricsPanel();
-				metricsPanel.revalidate();
-				metricsPanel.repaint();
-				basicComplexity.setEnabled(false);
-			}
+		basicComplexity.addActionListener(e -> {
+			advancedComplexity.setEnabled(true);
+			advancedMode = false;
+			createMetricsPanel();
+			metricsPanel.revalidate();
+			metricsPanel.repaint();
+			basicComplexity.setEnabled(false);
+
 		});
 
-		advancedComplexity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				basicComplexity.setEnabled(true);
-				advancedMode = true;
-				createMetricsPanel();
-				metricsPanel.revalidate();
-				metricsPanel.repaint();
-				advancedComplexity.setEnabled(false);
-
-			}
+		advancedComplexity.addActionListener(e -> {
+			basicComplexity.setEnabled(true);
+			advancedMode = true;
+			createMetricsPanel();
+			metricsPanel.revalidate();
+			metricsPanel.repaint();
+			advancedComplexity.setEnabled(false);
 		});
 		editorComplexityTogglePanel.add(basicComplexity);
 		editorComplexityTogglePanel.add(advancedComplexity);
+
 		return editorComplexityTogglePanel;
 	}
 
@@ -279,39 +272,33 @@ public class EditRulePopup {
 		JButton deleteButton = new JButton("Delete Rule");
 		JButton saveButton = new JButton("Save Rule");
 
-		clearButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clearMetricsListPanel();
+		clearButton.addActionListener(e -> {
+			clearMetricsListPanel();
+		});
+
+		deleteButton.addActionListener(e -> {
+			if (nameText.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please insert a rule name!");
+			} else {
+				// TODO: Add functionality here.
+				JOptionPane.showMessageDialog(null, "Rule has been deleted!");
 			}
 		});
 
-		deleteButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (nameText.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
-				} else {
-					// TODO: Add functionality here.
-					JOptionPane.showMessageDialog(null, "Rule has been deleted!");
-				}
-			}
-		});
-
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (nameText.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
-				} else {
-					if (advancedMode) {
-						ruleMetrics.clear();
-						for (String aString : metricText.getText().split("\n")) {
-							aString.replaceAll("\n", " ");
-							ruleMetrics.add(aString);
-						}
+		saveButton.addActionListener(e -> {
+			if (nameText.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please insert a rule name!");
+			} else {
+				if (advancedMode) {
+					ruleMetrics.clear();
+					for (String aString : metricText.getText().split("\n")) {
+						aString.replaceAll("\n", " ");
+						ruleMetrics.add(aString);
 					}
-					// TODO: Add functionality here. The method getJavascriptString() should be used
-					// here as necessary.
-					JOptionPane.showMessageDialog(null, "Rule has been added successfuly!");
 				}
+				// TODO: Add functionality here. The method getJavascriptString() should be used
+				// here as necessary.
+				JOptionPane.showMessageDialog(null, "Rule has been added successfuly!");
 			}
 		});
 
