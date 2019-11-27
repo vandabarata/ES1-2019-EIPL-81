@@ -58,7 +58,7 @@ class TestCodeQualityRuleModel {
 	 * setRule method
 	 */
 	@Test
-	void testRuleChangeDefaultRule() {
+	void testRuleEditionDefaultRule() {
 		CodeQualityRule ruleDefault = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
 		
 		assertEquals("LOC > 80 && CYCLO > 10", ruleDefault.getRule());
@@ -99,7 +99,7 @@ class TestCodeQualityRuleModel {
 	 * setRule method
 	 */
 	@Test
-	void testRuleChangeNonDefaultRule() {
+	void testRuleEditionNonDefaultRule() {
 		CodeQualityRule ruleNonDefault = new CodeQualityRule("is_banana", "ATFD > 4 && LAA < 0.42", false, false);
 		
 		assertEquals("ATFD > 4 && LAA < 0.42", ruleNonDefault.getRule());
