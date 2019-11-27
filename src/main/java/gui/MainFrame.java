@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,8 +20,10 @@ public class MainFrame {
 	private JPanel centralPanel;
 	private JPanel southPanel;
 	private JTable excelTable;
-	private JButton add_editButton;
+	private JButton editButton;
+	private JButton addButton;
 	private JButton checkQualityButton;
+	private JComboBox rulesDropDown;
 
 	public MainFrame(JTable excelTable) {
 		mainFrame = new JFrame();
@@ -87,12 +90,27 @@ public class MainFrame {
 	}
 	
 	/**
-	 * This method creates and adds the add/edit and checkQuality buttons to a panel
+	 * This method creates and adds the add/edit, drop drown with list of rules
+	 *  and checkQuality buttons to a panel
 	 * @param buttonsPanel is the panel user to display the buttons.
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
-		add_editButton = new JButton("Add/ Edit Rules");
-		buttonsPanel.add(add_editButton);
+
+    //TODO Adicionar a Lista de das regras existentes
+		
+		String[] rulesList = { "rule A", "rule B", "rule C", "rule D", "rule E" };
+		rulesDropDown = new JComboBox(rulesList);
+		buttonsPanel.add(rulesDropDown);
+		editButton = new JButton("Edit");
+		buttonsPanel.add(editButton);
+		
+		addButton = new JButton("Add");
+		addButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+				EditRulePopup m = new EditRulePopup(null);
+		}
+		});
+		buttonsPanel.add(addButton);
 
 		checkQualityButton = new JButton("Check quality");
 		buttonsPanel.add(checkQualityButton);
@@ -122,21 +140,56 @@ public class MainFrame {
 		fileResultsPanel.add(new JLabel("g"));
 		fileResultsPanel.add(new JLabel("h"));
 	}
-
+	
+	
 	//TODO: Usar argumento Excel
 	public JTable getExcelTable() {
 		return excelTable;
-	}
-
-	public JButton getAdd_editButton() {
-		return add_editButton;
 	}
 
 	public JButton getCheckQualityButton() {
 		return checkQualityButton;
 	}
 	
+	/**
+	 * This method is used to communicate the instance of Edit JButton  to MainController.
+	 * The MainController is responsible to run the action of Edit button.
+	 * 
+	 * @return JButton
+	 */
+	public JButton getEditButton() {
+		return editButton;
+	}
+	
+	/**
+	 * This method is used to communicate the instance of Add JButton  to MainController.
+	 * The MainController is responsible to run the action of Add button.
+	 * 
+	 * @return JButton
+	 */
+	public JButton getAddButton() {
+		return addButton;
+	}
+
+	/**
+	 * This method is used to communicate the instance of Check Quality JButton  to MainController.
+	 * The MainController is responsible to run the action of Check Quality button.
+	 * 
+	 * @return JButton
+	 */
+
 	public int getFrameWidth() {
 		return mainFrame.getWidth();
+	}
+	
+	
+	/**
+	 * This method is used to communicate the instance of JComboBox  to MainController.
+	 * The MainController is responsible to run the action related with selected rule of rule list showed in JComboBox.
+	 * 
+	 * @return JComboBox
+	 */
+	public JComboBox getComboBox() {
+		return rulesDropDown;
 	}
 }

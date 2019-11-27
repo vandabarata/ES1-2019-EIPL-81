@@ -18,4 +18,8 @@ class TestEditRulePopup {
 		assert (m.getFrame().getBounds().width == 685);
 	}
 
+	// TODO: Test is not yet implemented. It should validate whether or not the JComboBoxs have the correct number of selectable elements.
+	void testJComboBoxesElementNumber() {
+		fail("Not implemented.");
+	}
 }

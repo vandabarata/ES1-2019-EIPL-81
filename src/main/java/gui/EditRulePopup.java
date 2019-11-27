@@ -5,6 +5,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+
+import main.java.model.Operator;
+import main.java.model.Condition;
+
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,10 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import main.java.controller.Metric;
 import main.java.model.CodeQualityRule;
-
-import java.awt.event.*;
+import main.java.model.Metric;
 
 /**
  * GUI pop-up responsible for allowing the user to edit and add different rules
@@ -37,6 +39,8 @@ public class EditRulePopup {
 	private JScrollPane metricsScrollpane;
 	private JScrollPane advancedMetricsScrollpane;
 	private JComboBox<String> condition;
+	private JComboBox<String> value;
+	private JComboBox<String> comparison;
 	private JTextArea metricText;
 
 	private JPanel mainPanel;
@@ -49,6 +53,7 @@ public class EditRulePopup {
 	private JPanel centerPanel;
 
 	private boolean advancedMode;
+	private boolean conditionVisibilitySet;
 
 	private final int FRAME_X = 685;
 	private final int FRAME_Y = 300;
@@ -179,42 +184,37 @@ public class EditRulePopup {
 		condition = new JComboBox<>();
 		setConditionVisibility();
 		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
-		JComboBox<String> value = new JComboBox<>();
+		value = new JComboBox<>();
 		for (Metric metric : Metric.values()) {
 			value.addItem(metric.name());
 		}
 
-		JComboBox<String> comparison = new JComboBox<>();
-		comparison.addItem(">");
-		comparison.addItem("<");
-		comparison.addItem("==");
-		comparison.addItem("!=");
+		comparison = new JComboBox<>();
+		for (Operator comp : Operator.values()) {
+			comparison.addItem(comp.getSymbol());
+		}
 
 		JTextField threshold = new JTextField("");
 
 		JButton addMetricButton = new JButton("Add");
-		addMetricButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				String metric;
-				try {
-					Integer.parseInt(threshold.getText());
-					if (ruleMetrics.isEmpty()) {
-						metric = "IF " + value.getSelectedItem() + " " + comparison.getSelectedItem() + " "
-								+ threshold.getText() + " ";
-					} else {
-						metric = condition.getSelectedItem() + " " + value.getSelectedItem() + " "
-								+ comparison.getSelectedItem() + " " + threshold.getText() + " ";
-					}
-					ruleMetrics.add(metric);
-				} catch (NumberFormatException ex) {
-					JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
+		addMetricButton.addActionListener(e -> {
+			String metric;
+			String baseMetric = " " + comparison.getSelectedItem() + " " + threshold.getText() + " ";
+			try {
+				Integer.parseInt(threshold.getText());
+				if (ruleMetrics.isEmpty()) {
+					metric = "IF " + value.getSelectedItem() + baseMetric;
+				} else {
+					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + baseMetric;
 				}
-
-				fillMetricsListPanel();
-				setConditionVisibility();
-				metricsListPanel.revalidate();
-				metricsListPanel.repaint();
+				ruleMetrics.add(metric);
+			} catch (NumberFormatException ex) {
+				JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
 			}
+			fillMetricsListPanel();
+			setConditionVisibility();
+			metricsListPanel.revalidate();
+			metricsListPanel.repaint();
 		});
 
 		addNewMetricPanel.add(condition);
@@ -245,30 +245,27 @@ public class EditRulePopup {
 		basicComplexity.setMinimumSize(advancedComplexity.getMinimumSize());
 		basicComplexity.setEnabled(false);
 
-		basicComplexity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				advancedComplexity.setEnabled(true);
-				advancedMode = false;
-				createMetricsPanel();
-				metricsPanel.revalidate();
-				metricsPanel.repaint();
-				basicComplexity.setEnabled(false);
-			}
+		basicComplexity.addActionListener(e -> {
+			advancedComplexity.setEnabled(true);
+			advancedMode = false;
+			createMetricsPanel();
+			metricsPanel.revalidate();
+			metricsPanel.repaint();
+			basicComplexity.setEnabled(false);
+
 		});
 
-		advancedComplexity.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				basicComplexity.setEnabled(true);
-				advancedMode = true;
-				createMetricsPanel();
-				metricsPanel.revalidate();
-				metricsPanel.repaint();
-				advancedComplexity.setEnabled(false);
-
-			}
+		advancedComplexity.addActionListener(e -> {
+			basicComplexity.setEnabled(true);
+			advancedMode = true;
+			createMetricsPanel();
+			metricsPanel.revalidate();
+			metricsPanel.repaint();
+			advancedComplexity.setEnabled(false);
 		});
 		editorComplexityTogglePanel.add(basicComplexity);
 		editorComplexityTogglePanel.add(advancedComplexity);
+
 		return editorComplexityTogglePanel;
 	}
 
@@ -283,36 +280,33 @@ public class EditRulePopup {
 		JButton deleteButton = new JButton("Delete Rule");
 		JButton saveButton = new JButton("Save Rule");
 
-		clearButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				clearMetricsListPanel();
+		clearButton.addActionListener(e -> {
+			clearMetricsListPanel();
+		});
+
+		deleteButton.addActionListener(e -> {
+			if (nameText.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please insert a rule name!");
+			} else {
+				// TODO: Add functionality here.
+				JOptionPane.showMessageDialog(null, "Rule has been deleted!");
 			}
 		});
 
-		deleteButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (nameText.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
-				} else {
-					// TODO: Add functionality here.
-				}
-			}
-		});
-
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (nameText.getText().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Please insert a rule name!");
-				} else {
-					if (advancedMode) {
-						ruleMetrics.clear();
-						for (String aString : metricText.getText().split("\n")) {
-							aString.replaceAll("\n", " ");
-							ruleMetrics.add(aString);
-						}
+		saveButton.addActionListener(e -> {
+			if (nameText.getText().isEmpty()) {
+				JOptionPane.showMessageDialog(null, "Please insert a rule name!");
+			} else {
+				if (advancedMode) {
+					ruleMetrics.clear();
+					for (String aString : metricText.getText().split("\n")) {
+						aString.replaceAll("\n", " ");
+						ruleMetrics.add(aString);
 					}
-					// TODO: Add functionality here. The method getJavascriptString() should be used here as necessary.
 				}
+				// TODO: Add functionality here. The method getJavascriptString() should be used
+				// here as necessary.
+				JOptionPane.showMessageDialog(null, "Rule has been added successfuly!");
 			}
 		});
 
@@ -382,18 +376,16 @@ public class EditRulePopup {
 	 * having an AND or an OR attached to it.
 	 */
 	private void setConditionVisibility() {
-		if (ruleMetrics.isEmpty()) {
+		if (!ruleMetrics.isEmpty()) {
+			condition.setVisible(true);
+			if (!conditionVisibilitySet)
+				for (Condition cond : Condition.values()) {
+					condition.addItem(cond.toString());
+					conditionVisibilitySet = true;
+				}
+		} else {
 			condition.setVisible(false);
 			condition.setSelectedItem("");
-		} else {
-			condition.setVisible(true);
-			// TODO: This two lines prevent multiple ANDs and ORs from being introduced. A
-			// better solution may exist, but this issue should be resolved once ENUMs are
-			// added.
-			condition.removeItem("AND ");
-			condition.removeItem("OR ");
-			condition.addItem("AND ");
-			condition.addItem("OR ");
 		}
 	}
 
@@ -415,5 +407,28 @@ public class EditRulePopup {
 		}
 		javascriptString = javascriptString.replaceAll("IF", "").replaceAll("AND", "&&").replaceAll("OR", "||");
 		return javascriptString;
+	}
+	
+	/**
+	 * 
+	 * @return Returns the JComboBox which holds the conditions for a new metric (AND and OR).
+	 */
+	public JComboBox<String> getCondition() {
+		return condition;
+	}
+
+	/**
+	 * 
+	 * @return Returns the JComboBox which holds the values for a new metric (LOC, LAA, etc).
+	 */
+	public JComboBox<String> getValue() {
+		return value;
+	}
+	/**
+	 * 
+	 * @return Returns the JComboBox which holds the possible comparisons for a new metric (>, <, ==, !=).
+	 */
+	public JComboBox<String> getComparison() {
+		return comparison;
 	}
 }
