@@ -38,9 +38,9 @@ public class EditRulePopup {
 	private JTextField nameText;
 	private JScrollPane metricsScrollpane;
 	private JScrollPane advancedMetricsScrollpane;
-	private JComboBox<String> jBoxCondition;
-	private JComboBox<String> jBoxMetric;
-	private JComboBox<String> jBoxComparison;
+	private JComboBox<String> condition;
+	private JComboBox<String> value;
+	private JComboBox<String> comparison;
 	private JTextArea metricText;
 
 	private JPanel mainPanel;
@@ -175,17 +175,17 @@ public class EditRulePopup {
 	private JPanel createAddMetricPanel() {
 		addNewMetricPanel.removeAll();
 		addNewMetricPanel.setLayout(new GridLayout(1, 6));
-		jBoxCondition = new JComboBox<>();
+		condition = new JComboBox<>();
 		setConditionVisibility();
 		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
-		jBoxMetric = new JComboBox<>();
+		value = new JComboBox<>();
 		for (Metric metric : Metric.values()) {
-			jBoxMetric.addItem(metric.name());
+			value.addItem(metric.name());
 		}
 
-		jBoxComparison = new JComboBox<>();
+		comparison = new JComboBox<>();
 		for (Operator comp : Operator.values()) {
-			jBoxComparison.addItem(comp.getSymbol());
+			comparison.addItem(comp.getSymbol());
 		}
 
 		JTextField threshold = new JTextField("");
@@ -193,13 +193,13 @@ public class EditRulePopup {
 		JButton addMetricButton = new JButton("Add");
 		addMetricButton.addActionListener(e -> {
 			String metric;
-			String baseMetric = " " + jBoxComparison.getSelectedItem() + " " + threshold.getText() + " ";
+			String baseMetric = " " + comparison.getSelectedItem() + " " + threshold.getText() + " ";
 			try {
 				Integer.parseInt(threshold.getText());
 				if (ruleMetrics.isEmpty()) {
-					metric = "IF " + jBoxMetric.getSelectedItem() + baseMetric;
+					metric = "IF " + value.getSelectedItem() + baseMetric;
 				} else {
-					metric = jBoxCondition.getSelectedItem() + " " + jBoxMetric.getSelectedItem() + baseMetric;
+					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + baseMetric;
 				}
 				ruleMetrics.add(metric);
 			} catch (NumberFormatException ex) {
@@ -211,10 +211,10 @@ public class EditRulePopup {
 			metricsListPanel.repaint();
 		});
 
-		addNewMetricPanel.add(jBoxCondition);
+		addNewMetricPanel.add(condition);
 		addNewMetricPanel.add(ifCondition);
-		addNewMetricPanel.add(jBoxMetric);
-		addNewMetricPanel.add(jBoxComparison);
+		addNewMetricPanel.add(value);
+		addNewMetricPanel.add(comparison);
 		addNewMetricPanel.add(threshold);
 		addNewMetricPanel.add(addMetricButton);
 		addNewMetricPanel.setPreferredSize(new Dimension(650, 25));
@@ -371,15 +371,15 @@ public class EditRulePopup {
 	 */
 	private void setConditionVisibility() {
 		if (!ruleMetrics.isEmpty()) {
-			jBoxCondition.setVisible(true);
+			condition.setVisible(true);
 			if (!conditionVisibilitySet)
 				for (Condition cond : Condition.values()) {
-					jBoxCondition.addItem(cond.toString());
+					condition.addItem(cond.toString());
 					conditionVisibilitySet = true;
 				}
 		} else {
-			jBoxCondition.setVisible(false);
-			jBoxCondition.setSelectedItem("");
+			condition.setVisible(false);
+			condition.setSelectedItem("");
 		}
 	}
 
@@ -408,22 +408,21 @@ public class EditRulePopup {
 	 * @return Returns the JComboBox which holds the conditions for a new metric (AND and OR).
 	 */
 	public JComboBox<String> getCondition() {
-		return jBoxCondition;
+		return condition;
 	}
 
 	/**
 	 * 
-	 * @return Returns the JComboBox which holds the possible values for a new metric (LOC, LAA, etc).
+	 * @return Returns the JComboBox which holds the values for a new metric (LOC, LAA, etc).
 	 */
 	public JComboBox<String> getValue() {
-		return jBoxMetric;
+		return value;
 	}
-	
 	/**
 	 * 
-	 * @return Returns the JComboBox which holds the possible comparisons for a new metric (>, <, ==, !=, etc).
+	 * @return Returns the JComboBox which holds the possible comparisons for a new metric (>, <, ==, !=).
 	 */
 	public JComboBox<String> getComparison() {
-		return jBoxComparison;
+		return comparison;
 	}
 }
