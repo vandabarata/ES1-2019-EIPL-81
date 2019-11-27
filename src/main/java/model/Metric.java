@@ -1,7 +1,7 @@
 package main.java.model;
 
 /**
- * Metric enumerator, for convinience. The current existing metrics are LOC
+ * Metric enumerator, for convenience. The current existing metrics are LOC
  * (Lines of Code), CYCLO (McCabe's Cyclomatic Number), ATFD (Access To Foreign
  * Data) and LAA (Locality of Attribute Accesses).
  *
