@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+
+import main.java.model.Comparator;
 import main.java.model.Condition;
 
 import javax.swing.BoxLayout;
@@ -180,10 +182,9 @@ public class EditRulePopup {
 		}
 
 		JComboBox<String> comparison = new JComboBox<>();
-		comparison.addItem(">");
-		comparison.addItem("<");
-		comparison.addItem("==");
-		comparison.addItem("!=");
+		for (Comparator comp : Comparator.values()) {
+			comparison.addItem(comp.getSymbol());
+		}
 
 		JTextField threshold = new JTextField("");
 
