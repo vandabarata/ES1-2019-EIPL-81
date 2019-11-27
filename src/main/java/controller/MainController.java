@@ -36,6 +36,7 @@ import main.java.model.ExcelRow;
 public class MainController {
 	private MainFrame gui;
 	private QualityRulesResultFrame qualityGui;
+	private EditRuleController editRuleController;
 	private String path;
 	private ExcelImporter ei;
 	private ArrayList<String[]> excelRows;
@@ -90,19 +91,21 @@ public class MainController {
 	 */
 	public void validateFile(Popup_UploadFile uploadFile) {
 
-		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-		int returnValue = jfc.showOpenDialog(null);
-		if (returnValue == JFileChooser.APPROVE_OPTION) {
-			File selectedFile = jfc.getSelectedFile();
-			path = selectedFile.getAbsolutePath();
-
-			if (isValid(path)) {
-				uploadFile.close();
-				initMainFrame();
-			} else {
-				uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
-			}
-		}
+		initMainFrame();
+//		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+//		int returnValue = jfc.showOpenDialog(null);
+//		if (returnValue == JFileChooser.APPROVE_OPTION) {
+//			File selectedFile = jfc.getSelectedFile();
+//			path = selectedFile.getAbsolutePath();
+//
+//			if (isValid(path)) {
+//				uploadFile.close();
+//				System.out.println(path);
+//				initMainFrame();
+//			} else {
+//				uploadFile.displayErrorMessage("File selected is not a valid Excel format!");
+//			}
+//		}
 
 	}
 
@@ -111,11 +114,12 @@ public class MainController {
 	 * support it.
 	 */
 	private void initMainFrame() {
-		ei = new ExcelImporter(path);
+		ei = new ExcelImporter("/Users/franciele.faccin/workspace/ISCTE/3o/eng-software/ES1-2019-EIPL-81/Long-Method.xlsx");
 		excelRows = ei.getAllRows();
 		gui = new MainFrame(createExcelTable());
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
+		gui.getAdd_editButton().addActionListener(e -> initEditRules());
 	}
 
 	/**
@@ -172,5 +176,14 @@ public class MainController {
 		String[][] results = new String[][] { { "col 1", "col 2", "col 3" }, { "col 1", "col 2", "col 3" },
 				{ "col 1", "col 2", "col 3" } };
 		return results;
+	}
+
+	
+	/**
+	 * Starts an EditRuleController to control an EditRulePopup
+	 */
+	private void initEditRules() {
+		// TODO Get real rule to be edited
+		editRuleController = new EditRuleController(rulesList.get(0));
 	}
 }

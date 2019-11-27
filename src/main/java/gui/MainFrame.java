@@ -92,12 +92,6 @@ public class MainFrame {
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 		add_editButton = new JButton("Add/ Edit Rules");
-		add_editButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EditRulePopup m = new EditRulePopup();
-				
-			}
-		});
 		buttonsPanel.add(add_editButton);
 
 		checkQualityButton = new JButton("Check quality");

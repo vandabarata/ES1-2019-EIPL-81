@@ -18,6 +18,8 @@ import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import main.java.controller.Metric;
+import main.java.model.CodeQualityRule;
+
 import java.awt.event.*;
 
 /**
@@ -27,6 +29,8 @@ import java.awt.event.*;
  * @author Hugo Barroca
  */
 public class EditRulePopup {
+	
+	private CodeQualityRule rule;
 	private ArrayList<String> ruleMetrics = new ArrayList<String>();
 	private JFrame frame;
 	private JTextField nameText;
@@ -52,7 +56,8 @@ public class EditRulePopup {
 	/**
 	 * Constructs and initializes the GUI pop-up.
 	 */
-	public EditRulePopup() {
+	public EditRulePopup(CodeQualityRule r) {
+		rule = r != null ? r : new CodeQualityRule("", "", false, false);
 		advancedMode = false;
 		initializePanels();
 		frame = new JFrame("Personalized Rules");
@@ -78,17 +83,22 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * @return Returns the JPanel responsible for holding the rule's name.
+	 * Creates the JPanel responsible for holding the rule's name.
+	 * In case of default rule, name is a label because it cannot be edited.
 	 */
-	private JPanel createNamePanel() {
+	private void createNamePanel() {
 		JLabel nameLabel = new JLabel("Name: ", SwingConstants.LEFT);
 		namePanel.setBorder(new EmptyBorder(0, 0, 10, 0));
-		nameText = new JTextField();
-		nameText.setMinimumSize(new Dimension(500, 25));
-		nameText.setPreferredSize(new Dimension(500, 25));
 		namePanel.add(nameLabel, BorderLayout.CENTER);
-		namePanel.add(nameText, BorderLayout.EAST);
-		return namePanel;
+		if (rule.isDefault()) {
+			JLabel ruleName = new JLabel(rule.getName(), SwingConstants.LEFT);
+			namePanel.add(ruleName, BorderLayout.EAST);
+		} else {
+			nameText = new JTextField();
+			nameText.setMinimumSize(new Dimension(500, 25));
+			nameText.setPreferredSize(new Dimension(500, 25));
+			namePanel.add(nameText, BorderLayout.EAST);
+		}
 	}
 
 	/**
