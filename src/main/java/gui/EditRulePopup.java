@@ -82,12 +82,6 @@ public class EditRulePopup {
 		frame.setVisible(true);
 	}
 
-	/**
-	 * If no rule has been selected, creates a new empty rule, basic by default
-	 */
-	public EditRulePopup() {
-		this(new CodeQualityRule("", "", false, false));
-	}
 
 	/**
 	 * @return Returns the JPanel where all other JPanels are nested.

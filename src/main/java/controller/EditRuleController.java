@@ -18,6 +18,13 @@ public class EditRuleController {
 		editRulePopup = new EditRulePopup(rule);
 		initActionListeners();
 	}
+	
+	/**
+	 * If no rule has been selected, creates a new empty rule, basic by default
+	 */
+	public EditRuleController() {
+		this(new CodeQualityRule("", "", false, false));
+	}
 
 	private void initActionListeners() {
 		editRulePopup.getSaveButton().addActionListener(e -> onSaveRule());
