@@ -44,6 +44,9 @@ public class EditRulePopup {
 	private JComboBox<String> comparison;
 	private JTextArea metricText;
 
+	private JButton deleteButton;
+	private JButton saveButton;
+	
 	private JPanel mainPanel;
 	private JPanel namePanel;
 	private JPanel metricsPanel;
@@ -66,7 +69,8 @@ public class EditRulePopup {
 	 * Constructs and initializes the GUI pop-up.
 	 */
 	public EditRulePopup(CodeQualityRule r) {
-		advancedMode = r.isAdvanced();
+		rule = r;
+		advancedMode = rule.isAdvanced();
 		initializePanels();
 		frame = new JFrame("Personalized Rules");
 		frame.add(createMainPanel());
@@ -109,15 +113,14 @@ public class EditRulePopup {
 		JLabel nameLabel = new JLabel("Name: ", SwingConstants.LEFT);
 		namePanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		namePanel.add(nameLabel, BorderLayout.CENTER);
+		nameText = new JTextField();
+		nameText.setText(rule.getName());
+		nameText.setMinimumSize(new Dimension(500, 25));
+		nameText.setPreferredSize(new Dimension(500, 25));
 		if (rule.isDefault()) {
-			JLabel ruleName = new JLabel(rule.getName(), SwingConstants.LEFT);
-			namePanel.add(ruleName, BorderLayout.EAST);
-		} else {
-			nameText = new JTextField();
-			nameText.setMinimumSize(new Dimension(500, 25));
-			nameText.setPreferredSize(new Dimension(500, 25));
-			namePanel.add(nameText, BorderLayout.EAST);
+			nameText.setEditable(false);
 		}
+		namePanel.add(nameText, BorderLayout.EAST);
 	}
 
 	/**
@@ -291,8 +294,8 @@ public class EditRulePopup {
 		controlPanel.setLayout(new GridLayout(1, 3));
 
 		JButton clearButton = new JButton("Clear Metrics");
-		JButton deleteButton = new JButton("Delete Rule");
-		JButton saveButton = new JButton("Save Rule");
+		deleteButton = new JButton("Delete Rule");
+		saveButton = new JButton("Save Rule");
 
 		clearButton.addActionListener(e -> {
 			clearMetricsListPanel();
@@ -304,23 +307,6 @@ public class EditRulePopup {
 			} else {
 				// TODO: Add functionality here.
 				JOptionPane.showMessageDialog(null, "Rule has been deleted!");
-			}
-		});
-
-		saveButton.addActionListener(e -> {
-			if (nameText.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Please insert a rule name!");
-			} else {
-				if (advancedMode) {
-					ruleMetrics.clear();
-					for (String aString : metricText.getText().split("\n")) {
-						aString.replaceAll("\n", " ");
-						ruleMetrics.add(aString);
-					}
-				}
-				// TODO: Add functionality here. The method getJavascriptString() should be used
-				// here as necessary.
-				JOptionPane.showMessageDialog(null, "Rule has been added successfuly!");
 			}
 		});
 
@@ -404,23 +390,17 @@ public class EditRulePopup {
 	}
 
 	/**
+	 * @param message A message to be displayed on an alert
+	 */
+	public void showMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
+	
+	/**
 	 * @return Returns the popup's main SWING frame.
 	 */
 	public JFrame getFrame() {
 		return frame;
-	}
-
-	/**
-	 * 
-	 * @return Returns a javascript-ready string for evaluation.
-	 */
-	public String getJavascriptString() {
-		String javascriptString = "";
-		for (String metricString : ruleMetrics) {
-			javascriptString = javascriptString + metricString;
-		}
-		javascriptString = javascriptString.replaceAll("IF", "").replaceAll("AND", "&&").replaceAll("OR", "||");
-		return javascriptString;
 	}
 	
 	/**
@@ -444,5 +424,38 @@ public class EditRulePopup {
 	 */
 	public JComboBox<String> getComparison() {
 		return comparison;
+	}
+
+	
+	/**
+	 * @return Returns the JButton for saving the rule changes
+	 */
+	public JButton getSaveButton() {
+		return saveButton;
+	}
+	
+	/**
+	 * @return Returns the JButton for deleting the rule changes
+	 */
+	public JButton getDeleteButton() {
+		return deleteButton;
+	}
+	
+	public String getRuleName() {
+		return nameText.getText();
+	}
+
+	public boolean isAdvancedMode() {
+		return advancedMode;
+	}
+
+	public String getRawRuleConditions() {
+		String rawRuleConditions = "";
+		if (isAdvancedMode()) {
+			rawRuleConditions = metricText.getText().replaceAll("\n", " ");
+		} else {
+			rawRuleConditions = String.join(" ", ruleMetrics);
+		}
+		return rawRuleConditions;
 	}
 }

@@ -96,8 +96,9 @@ public class MainController {
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
 			path = selectedFile.getAbsolutePath();
-			
+
 			if (isValid(path)) {
+				System.out.println(path);
 				uploadFile.close();
 				initMainFrame();
 			} else {
@@ -117,7 +118,7 @@ public class MainController {
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
 
-//		gui.getAdd_editButton().addActionListener(e -> initEditRules());
+		gui.getAddButton().addActionListener(e -> initEditRules());
 		editButton(this.gui.getEditButton(), this.gui.getComboBox());
 	}
 
