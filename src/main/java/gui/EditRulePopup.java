@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.util.ArrayList;
 
 import main.java.model.Operator;
@@ -57,6 +58,9 @@ public class EditRulePopup {
 
 	private final int FRAME_X = 685;
 	private final int FRAME_Y = 300;
+	private final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	private final int SCREEN_WIDTH = dimension.width;
+	private final int SCREEN_HEIGHT = dimension.height;
 
 	/**
 	 * Constructs and initializes the GUI pop-up.
@@ -69,6 +73,8 @@ public class EditRulePopup {
 		frame.setLocationRelativeTo(null);
 		frame.setMinimumSize(new Dimension(FRAME_X, FRAME_Y));
 		frame.setSize(new Dimension(FRAME_X, FRAME_Y));
+		frame.setLocation(SCREEN_WIDTH / 2 - (FRAME_X / 2), SCREEN_HEIGHT / 2 - (FRAME_Y / 2));
+
 		frame.setVisible(true);
 	}
 	
