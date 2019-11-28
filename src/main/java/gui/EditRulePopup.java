@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import main.java.model.Operator;
@@ -84,7 +85,6 @@ public class EditRulePopup {
 		frame.setVisible(true);
 	}
 
-
 	/**
 	 * @return Returns the JPanel where all other JPanels are nested.
 	 */
@@ -148,8 +148,8 @@ public class EditRulePopup {
 
 			if (rule.getRule().equals("")) {
 				ruleConditionsTextPaneLabel = new JLabel("Add rule conditions as follows: ");
-	
-				text ="Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
+
+				text = "Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
 			}
 
 			else {
@@ -175,13 +175,13 @@ public class EditRulePopup {
 			metricsPanel.add(availableMetrics, BorderLayout.SOUTH);
 
 		} else {
-			
+
 			metricsPanel.removeAll();
 			metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
 			metricsListPanel.setMinimumSize(new Dimension(500, 500));
 			metricsScrollpane = new JScrollPane(metricsListPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			
+
 			createAddMetricPanel();
 			metricsPanel.setLayout(new BorderLayout());
 			metricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
@@ -205,19 +205,19 @@ public class EditRulePopup {
 		conditionListBox = new JComboBox<>();
 		setConditionVisibility();
 		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
-		
+
 		valueListBox = new JComboBox<>();
 		for (Metric metric : Metric.values()) {
 			valueListBox.addItem(metric.name());
 		}
-		
+
 		operatorListBox = new JComboBox<>();
 		for (Operator comp : Operator.values()) {
 			operatorListBox.addItem(comp.getSymbol());
 		}
-		
+
 		JTextField threshold = new JTextField("");
-		
+
 		JButton addMetricButton = new JButton("Add");
 		addMetricButton.addActionListener(e -> {
 			String metric;
@@ -233,7 +233,7 @@ public class EditRulePopup {
 			} catch (NumberFormatException ex) {
 				JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
 			}
-			
+
 			fillMetricsListPanel();
 			setConditionVisibility();
 			metricsListPanel.revalidate();
@@ -467,4 +467,6 @@ public class EditRulePopup {
 		}
 		return rawRuleConditions;
 	}
+	
+	
 }

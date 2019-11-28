@@ -60,5 +60,7 @@ public class EditRuleController {
 		String javascriptString = rawRuleConditions.replaceAll("IF", "").replaceAll("AND", "&&").replaceAll("OR", "||");
 		return javascriptString;
 	}
+	
+	
 
 }

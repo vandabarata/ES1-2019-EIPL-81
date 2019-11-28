@@ -170,28 +170,26 @@ public class MainController {
 
 				CodeQualityRule rule = (CodeQualityRule) ruleListBox.getSelectedItem();
 
-				if (rule.equals(null)) {
-					new EditRuleController();
+				if (rule == null) {
+					editRuleController = new EditRuleController();
 
 				} else {
-					new EditRuleController(rule);
+					editRuleController = new EditRuleController(rule);
 				}
 
 			}
 		});
 	}
 
-	
 	/**
-	 * Sets the add Button in the MainFrame
-	 * to open an empty Rule Edition Popup
+	 * Sets the add Button in the MainFrame to open an empty Rule Edition Popup
 	 */
 	private void addButton(JButton addButton) {
 		addButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new EditRuleController();
+				editRuleController = new EditRuleController();
 			}
 		});
 	}
