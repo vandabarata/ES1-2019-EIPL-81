@@ -19,8 +19,8 @@ class TestGUIMainFrame {
 		String[] header = {"header1", "header2"};
 		String[][] content = {{"cell0",  "cell1"},{"cell2", "cell3"}};
 
-		guiWithTable = new MainFrame(new JTable(content, header));
-		guiWithEmptyTable = new MainFrame(new JTable());
+		guiWithTable = new MainFrame(new JTable(content, header), null);
+		guiWithEmptyTable = new MainFrame(new JTable(), null);
 	}
 	
 	/**

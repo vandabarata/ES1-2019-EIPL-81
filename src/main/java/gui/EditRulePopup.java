@@ -34,11 +34,11 @@ import main.java.model.Metric;
 public class EditRulePopup {
 	
 	private CodeQualityRule rule;
-	private ArrayList<String> ruleMetrics = new ArrayList<String>();
+	private ArrayList<String> ruleConditions = new ArrayList<String>();
 	private JFrame frame;
 	private JTextField nameText;
 	private JScrollPane metricsScrollpane;
-	private JScrollPane advancedMetricsScrollpane;
+	private JScrollPane advancedRuleConditionsPane;
 	private JComboBox<String> condition;
 	private JComboBox<String> value;
 	private JComboBox<String> comparison;
@@ -110,6 +110,7 @@ public class EditRulePopup {
 		JLabel nameLabel = new JLabel("Name: ", SwingConstants.LEFT);
 		namePanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		namePanel.add(nameLabel, BorderLayout.CENTER);
+		
 		if (rule.isDefault()) {
 			JLabel ruleName = new JLabel(rule.getName(), SwingConstants.LEFT);
 			namePanel.add(ruleName, BorderLayout.EAST);
@@ -146,30 +147,39 @@ public class EditRulePopup {
 		if (advancedMode) {
 			metricsPanel.removeAll();
 			metricsPanel.setLayout(new BorderLayout());
-			JLabel metricsTextPaneLabel = new JLabel("Add metrics as follows: ");
-
-			String text = new String();
-			for (String line : ruleMetrics) {
-				text = text + line + '\n';
+			
+			String text; 
+			JLabel ruleConditionsTextPaneLabel;
+			
+			if (rule.getRule().equals("")) {
+				ruleConditionsTextPaneLabel = new JLabel("Add rule conditions as follows: ");
+	
+				text ="Enter your text here as follows. Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
 			}
+			
+			else {
+				ruleConditionsTextPaneLabel = new JLabel("Rule conditions:");
+				
+				text = rule.getRule();
+			}
+			metricText.setText(text);
+			
+			advancedRuleConditionsPane = new JScrollPane(metricText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			
+			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
+			
 			String availableMetricsText = new String();
 			for (Metric metric : Metric.values()) {
 				availableMetricsText = availableMetricsText + metric.name() + " ";
 			}
-			if (text.isEmpty()) {
-				text = "Enter your text here as follows. Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
-			}
-			metricText.setText(text);
-			advancedMetricsScrollpane = new JScrollPane(metricText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-
 			JLabel availableMetrics = new JLabel("Available metrics: \n" + availableMetricsText);
 
-			metricsPanel.add(advancedMetricsScrollpane, BorderLayout.CENTER);
-			metricsPanel.add(metricsTextPaneLabel, BorderLayout.NORTH);
+			metricsPanel.add(advancedRuleConditionsPane, BorderLayout.CENTER);
+			metricsPanel.add(ruleConditionsTextPaneLabel, BorderLayout.NORTH);
 			metricsPanel.add(availableMetrics, BorderLayout.SOUTH);
+			
 		} else {
 			metricsPanel.removeAll();
 			metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
@@ -217,12 +227,12 @@ public class EditRulePopup {
 			String baseMetric = " " + comparison.getSelectedItem() + " " + threshold.getText() + " ";
 			try {
 				Integer.parseInt(threshold.getText());
-				if (ruleMetrics.isEmpty()) {
+				if (ruleConditions.isEmpty()) {
 					metric = "IF " + value.getSelectedItem() + baseMetric;
 				} else {
 					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + baseMetric;
 				}
-				ruleMetrics.add(metric);
+				ruleConditions.add(metric);
 			} catch (NumberFormatException ex) {
 				JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
 			}
@@ -313,10 +323,10 @@ public class EditRulePopup {
 				JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 			} else {
 				if (advancedMode) {
-					ruleMetrics.clear();
+					ruleConditions.clear();
 					for (String aString : metricText.getText().split("\n")) {
 						aString.replaceAll("\n", " ");
-						ruleMetrics.add(aString);
+						ruleConditions.add(aString);
 					}
 				}
 				// TODO: Add functionality here. The method getJavascriptString() should be used
@@ -357,7 +367,7 @@ public class EditRulePopup {
 	private void fillMetricsListPanel() {
 		metricsListPanel.removeAll();
 
-		for (String metric : ruleMetrics) {
+		for (String metric : ruleConditions) {
 			JPanel panel = new JPanel();
 			panel.setLayout(new GridLayout(1, 2));
 			JLabel metricLabel = new JLabel(metric);
@@ -376,7 +386,7 @@ public class EditRulePopup {
 	 * 
 	 */
 	private void clearMetricsListPanel() {
-		ruleMetrics.clear();
+		ruleConditions.clear();
 		metricText.setText("");
 		metricsListPanel.removeAll();
 		setConditionVisibility();
@@ -391,7 +401,7 @@ public class EditRulePopup {
 	 * having an AND or an OR attached to it.
 	 */
 	private void setConditionVisibility() {
-		if (!ruleMetrics.isEmpty()) {
+		if (!ruleConditions.isEmpty()) {
 			condition.setVisible(true);
 			if (!conditionVisibilitySet)
 				for (Condition cond : Condition.values()) {
@@ -417,7 +427,7 @@ public class EditRulePopup {
 	 */
 	public String getJavascriptString() {
 		String javascriptString = "";
-		for (String metricString : ruleMetrics) {
+		for (String metricString : ruleConditions) {
 			javascriptString = javascriptString + metricString;
 		}
 		javascriptString = javascriptString.replaceAll("IF", "").replaceAll("AND", "&&").replaceAll("OR", "||");
