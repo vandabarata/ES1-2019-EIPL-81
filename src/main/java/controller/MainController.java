@@ -171,10 +171,10 @@ public class MainController {
 				CodeQualityRule rule = (CodeQualityRule) ruleListBox.getSelectedItem();
 
 				if (rule.equals(null)) {
-					new EditRulePopup();
+					new EditRuleController();
 
 				} else {
-					new EditRulePopup(rule);
+					new EditRuleController(rule);
 				}
 
 			}
@@ -191,7 +191,7 @@ public class MainController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new EditRulePopup();
+				new EditRuleController();
 			}
 		});
 	}

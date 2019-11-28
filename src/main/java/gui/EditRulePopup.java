@@ -39,9 +39,9 @@ public class EditRulePopup {
 	private JTextField nameText;
 	private JScrollPane metricsScrollpane;
 	private JScrollPane advancedRuleConditionsPane;
-	private JComboBox<String> condition;
-	private JComboBox<String> value;
-	private JComboBox<String> comparison;
+	private JComboBox<String> conditionListBox;
+	private JComboBox<String> valueListBox;
+	private JComboBox<String> operatorListBox;
 	private JTextArea metricText;
 
 	private JButton deleteButton;
@@ -57,6 +57,7 @@ public class EditRulePopup {
 	private JPanel centerPanel;
 
 	private boolean advancedMode;
+	private boolean defaultRule;
 	private boolean conditionVisibilitySet;
 
 	private final int FRAME_X = 685;
@@ -71,6 +72,7 @@ public class EditRulePopup {
 	public EditRulePopup(CodeQualityRule r) {
 		rule = r;
 		advancedMode = rule.isAdvanced();
+		defaultRule = rule.isDefault();
 		initializePanels();
 		frame = new JFrame("Personalized Rules");
 		frame.add(createMainPanel());
@@ -137,7 +139,7 @@ public class EditRulePopup {
 	 *         edited by the user.
 	 */
 	private JPanel createMetricsPanel() {
-		if (advancedMode) {
+		if (advancedMode || defaultRule) {
 			metricsPanel.removeAll();
 			metricsPanel.setLayout(new BorderLayout());
 
@@ -146,8 +148,8 @@ public class EditRulePopup {
 
 			if (rule.getRule().equals("")) {
 				ruleConditionsTextPaneLabel = new JLabel("Add rule conditions as follows: ");
-
-				text = "Enter your text here as follows. Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
+	
+				text ="Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
 			}
 
 			else {
@@ -173,11 +175,13 @@ public class EditRulePopup {
 			metricsPanel.add(availableMetrics, BorderLayout.SOUTH);
 
 		} else {
+			
 			metricsPanel.removeAll();
 			metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
 			metricsListPanel.setMinimumSize(new Dimension(500, 500));
 			metricsScrollpane = new JScrollPane(metricsListPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			
 			createAddMetricPanel();
 			metricsPanel.setLayout(new BorderLayout());
 			metricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
@@ -198,46 +202,48 @@ public class EditRulePopup {
 	private JPanel createAddMetricPanel() {
 		addNewMetricPanel.removeAll();
 		addNewMetricPanel.setLayout(new GridLayout(1, 6));
-		condition = new JComboBox<>();
+		conditionListBox = new JComboBox<>();
 		setConditionVisibility();
 		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
-		value = new JComboBox<>();
+		
+		valueListBox = new JComboBox<>();
 		for (Metric metric : Metric.values()) {
-			value.addItem(metric.name());
+			valueListBox.addItem(metric.name());
 		}
-
-		comparison = new JComboBox<>();
+		
+		operatorListBox = new JComboBox<>();
 		for (Operator comp : Operator.values()) {
-			comparison.addItem(comp.getSymbol());
+			operatorListBox.addItem(comp.getSymbol());
 		}
-
+		
 		JTextField threshold = new JTextField("");
-
+		
 		JButton addMetricButton = new JButton("Add");
 		addMetricButton.addActionListener(e -> {
 			String metric;
-			String baseMetric = " " + comparison.getSelectedItem() + " " + threshold.getText() + " ";
+			String baseMetric = " " + operatorListBox.getSelectedItem() + " " + threshold.getText() + " ";
 			try {
 				Integer.parseInt(threshold.getText());
 				if (ruleConditions.isEmpty()) {
-					metric = "IF " + value.getSelectedItem() + baseMetric;
+					metric = "IF " + valueListBox.getSelectedItem() + baseMetric;
 				} else {
-					metric = condition.getSelectedItem() + " " + value.getSelectedItem() + baseMetric;
+					metric = conditionListBox.getSelectedItem() + " " + valueListBox.getSelectedItem() + baseMetric;
 				}
 				ruleConditions.add(metric);
 			} catch (NumberFormatException ex) {
 				JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
 			}
+			
 			fillMetricsListPanel();
 			setConditionVisibility();
 			metricsListPanel.revalidate();
 			metricsListPanel.repaint();
 		});
 
-		addNewMetricPanel.add(condition);
+		addNewMetricPanel.add(conditionListBox);
 		addNewMetricPanel.add(ifCondition);
-		addNewMetricPanel.add(value);
-		addNewMetricPanel.add(comparison);
+		addNewMetricPanel.add(valueListBox);
+		addNewMetricPanel.add(operatorListBox);
 		addNewMetricPanel.add(threshold);
 		addNewMetricPanel.add(addMetricButton);
 		addNewMetricPanel.setPreferredSize(new Dimension(650, 25));
@@ -377,15 +383,15 @@ public class EditRulePopup {
 	 */
 	private void setConditionVisibility() {
 		if (!ruleConditions.isEmpty()) {
-			condition.setVisible(true);
+			conditionListBox.setVisible(true);
 			if (!conditionVisibilitySet)
 				for (Condition cond : Condition.values()) {
-					condition.addItem(cond.toString());
+					conditionListBox.addItem(cond.toString());
 					conditionVisibilitySet = true;
 				}
 		} else {
-			condition.setVisible(false);
-			condition.setSelectedItem("");
+			conditionListBox.setVisible(false);
+			conditionListBox.setSelectedItem("");
 		}
 	}
 
@@ -409,7 +415,7 @@ public class EditRulePopup {
 	 *         (AND and OR).
 	 */
 	public JComboBox<String> getCondition() {
-		return condition;
+		return conditionListBox;
 	}
 
 	/**
@@ -418,7 +424,7 @@ public class EditRulePopup {
 	 *         LAA, etc).
 	 */
 	public JComboBox<String> getValue() {
-		return value;
+		return valueListBox;
 	}
 
 	/**
@@ -427,7 +433,7 @@ public class EditRulePopup {
 	 *         metric (>, <, ==, !=).
 	 */
 	public JComboBox<String> getComparison() {
-		return comparison;
+		return operatorListBox;
 	}
 
 	/**
