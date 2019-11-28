@@ -8,8 +8,10 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileSystemView;
 
+import main.java.gui.EditRulePopup;
 import main.java.gui.MainFrame;
 import main.java.gui.QualityRulesResultFrame;
 import main.java.gui.PopupUploadFile;
@@ -96,7 +98,7 @@ public class MainController {
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
 			path = selectedFile.getAbsolutePath();
-			
+
 			if (isValid(path)) {
 				uploadFile.close();
 				initMainFrame();
@@ -108,16 +110,15 @@ public class MainController {
 
 	/**
 	 * Initialise the MainFrame and support Frames. Create necessary objects to
-	 * support it. 
+	 * support it.
 	 */
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
-		gui = new MainFrame(createExcelTable());
+		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
 
-//		gui.getAdd_editButton().addActionListener(e -> initEditRules());
 		editButton(this.gui.getEditButton(), this.gui.getComboBox());
 	}
 
@@ -145,35 +146,40 @@ public class MainController {
 	 */
 	private void convertExcelRows() {
 		excelRows.forEach(element -> {
+
 			try {
 				excelRowsConverted.add(new ExcelRow(element));
-			} catch (Exception e) {
+			}
+
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "An error occurred while converting the Excel Rows", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				throw e;
+			}
+		});
+	}
+
+	/**
+	 * This method is used to run the action of the Edit Button with the selected
+	 * rule of drop down
+	 */
+	public void editButton(JButton editButton, JComboBox ruleListBox) {
+		editButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				CodeQualityRule rule = (CodeQualityRule) ruleListBox.getSelectedItem();
+
+				if (rule.equals(null)) {
+					new EditRulePopup();
+
+				} else {
+					new EditRulePopup(rule);
+				}
 
 			}
 		});
 	}
-	
-	/**
-	 * This method is used to run the action of the Edit Button 
-	 * with the selected rule of drop down
-	 */
-	public void editButton(JButton editButton, JComboBox checkbox) {
-		editButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				
-				CodeQualityRule rule = (CodeQualityRule) checkbox.getSelectedItem();
-				
-				
-				String ruleName = rule.getName();
-								
-				
-				
-				
-			}
-		});
-	}
-	
 
 	/**
 	 * Verify the code quality based on the Rules created and sends the results to
@@ -200,11 +206,4 @@ public class MainController {
 	}
 
 	
-	/**
-	 * Starts an EditRuleController to control an EditRulePopup
-	 */
-	private void initEditRules() {
-		// TODO Get real rule to be edited
-		editRuleController = new EditRuleController(rulesList.get(0));
-	}
 }

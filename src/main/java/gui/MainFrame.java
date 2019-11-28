@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -15,6 +16,8 @@ import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import main.java.model.CodeQualityRule;
+
 public class MainFrame {
 	private JFrame mainFrame;
 	private JPanel centralPanel;
@@ -24,14 +27,16 @@ public class MainFrame {
 	private JButton addButton;
 	private JButton checkQualityButton;
 	private JComboBox rulesDropDown;
+	private ArrayList<CodeQualityRule> rulesList;
 
-	public MainFrame(JTable excelTable) {
+	public MainFrame(JTable excelTable, ArrayList<CodeQualityRule> rulesList) {
 		mainFrame = new JFrame();
 		mainFrame.setSize(700, 500);
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setLayout(new BorderLayout(5,5));
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.excelTable = excelTable;
+		this.rulesList = rulesList;
 		addContents();
 		mainFrame.setVisible(true);
 	}
@@ -96,10 +101,9 @@ public class MainFrame {
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 
-    //TODO Adicionar a Lista de das regras existentes
+		Object[] rules = rulesList.toArray();
+		rulesDropDown = new JComboBox(rules);
 		
-		String[] rulesList = { "rule A", "rule B", "rule C", "rule D", "rule E" };
-		rulesDropDown = new JComboBox(rulesList);
 		buttonsPanel.add(rulesDropDown);
 		editButton = new JButton("Edit");
 		buttonsPanel.add(editButton);

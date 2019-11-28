@@ -66,6 +66,7 @@ public class EditRulePopup {
 	 * Constructs and initializes the GUI pop-up.
 	 */
 	public EditRulePopup(CodeQualityRule r) {
+		rule = r;
 		advancedMode = r.isAdvanced();
 		initializePanels();
 		frame = new JFrame("Personalized Rules");
