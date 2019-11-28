@@ -13,7 +13,7 @@ import main.java.gui.EditRulePopup;
 class TestEditRulePopup {
 	@Test
 	void testWindowSizeAtStart() {
-		EditRulePopup m = new EditRulePopup(null);
+		EditRulePopup m = new EditRulePopup();
 		assert (m.getFrame().getBounds().height == 300);
 		assert (m.getFrame().getBounds().width == 685);
 	}

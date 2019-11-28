@@ -88,5 +88,9 @@ public class CodeQualityRule {
 	public boolean isAdvanced() {
 		return isAdvanced;
 	}
+	
+	public String toString() {
+		return this.name;
+	}
 
 }
