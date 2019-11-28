@@ -12,7 +12,7 @@ import javax.swing.filechooser.FileSystemView;
 
 import main.java.gui.MainFrame;
 import main.java.gui.QualityRulesResultFrame;
-import main.java.gui.Popup_UploadFile;
+import main.java.gui.PopupUploadFile;
 
 import java.util.ArrayList;
 
@@ -59,7 +59,7 @@ public class MainController {
 	 * This method is used to initiate the button listener
 	 */
 	public void init() {
-		Popup_UploadFile uploadFile = new Popup_UploadFile();
+		PopupUploadFile uploadFile = new PopupUploadFile();
 		JButton import_button = uploadFile.getImportJButton();
 		initImportButtonAction(import_button, uploadFile);
 	}
@@ -67,7 +67,7 @@ public class MainController {
 	/**
 	 * This method is used to run the action of the Import Button.
 	 */
-	public void initImportButtonAction(JButton import_button, Popup_UploadFile uploadFile) {
+	public void initImportButtonAction(JButton import_button, PopupUploadFile uploadFile) {
 		import_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -89,7 +89,7 @@ public class MainController {
 	 * This method is used to import the file and create a main frame if the file is
 	 * valid, otherwise it will show a warning message.
 	 */
-	public void validateFile(Popup_UploadFile uploadFile) {
+	public void validateFile(PopupUploadFile uploadFile) {
 
 		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 		int returnValue = jfc.showOpenDialog(null);

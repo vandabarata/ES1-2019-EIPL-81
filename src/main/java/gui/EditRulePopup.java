@@ -62,8 +62,7 @@ public class EditRulePopup {
 	 * Constructs and initializes the GUI pop-up.
 	 */
 	public EditRulePopup(CodeQualityRule r) {
-		rule = r != null ? r : new CodeQualityRule("", "", false, false);
-		advancedMode = false;
+		advancedMode = r.isAdvanced();
 		initializePanels();
 		frame = new JFrame("Personalized Rules");
 		frame.add(createMainPanel());
@@ -72,7 +71,17 @@ public class EditRulePopup {
 		frame.setSize(new Dimension(FRAME_X, FRAME_Y));
 		frame.setVisible(true);
 	}
-
+	
+	/**
+	 * If no rule has been selected,
+	 * creates a new empty rule,
+	 * basic by default
+	 */
+	public EditRulePopup() {
+		CodeQualityRule rule = new CodeQualityRule("", "", false, false);
+		new EditRulePopup(rule);
+	}
+	
 	/**
 	 * @return Returns the JPanel where all other JPanels are nested.
 	 */
