@@ -111,7 +111,7 @@ public class MainController {
 	 * support it. 
 	 */
 	private void initMainFrame() {
-		ei = new ExcelImporter("/Users/franciele.faccin/workspace/ISCTE/3o/eng-software/ES1-2019-EIPL-81/Long-Method.xlsx");
+		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
 		gui = new MainFrame(createExcelTable());
 		qualityGui = new QualityRulesResultFrame();
@@ -161,10 +161,15 @@ public class MainController {
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String ruleName = (String)checkbox.getSelectedItem();
-				System.out.print(ruleName);
 				
-				//TODO Correr o pop up do Hugo para Editar Regras e a l�gica associada
+				CodeQualityRule rule = (CodeQualityRule) checkbox.getSelectedItem();
+				
+				
+				String ruleName = rule.getName();
+								
+				
+				
+				
 			}
 		});
 	}

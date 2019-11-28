@@ -84,8 +84,7 @@ public class EditRulePopup {
 	 * basic by default
 	 */
 	public EditRulePopup() {
-		CodeQualityRule rule = new CodeQualityRule("", "", false, false);
-		new EditRulePopup(rule);
+		this(new CodeQualityRule("", "", false, false));
 	}
 	
 	/**
