@@ -16,11 +16,12 @@ public class CodeQualityRule {
 	private boolean isAdvanced;
 
 	/**
-	 * Creates a CodeQualityRule object
-	 * 
-	 * @param name
-	 * @param isDefault
-	 * @param rule
+	 * Creates a CodeQualityRule object based on:
+	 *
+	 * @param name - rule's name, shown in UI
+	 * @param rule - rule's content, ie, the conditions that define it
+	 * @param isDefault - if a rule is default, only its thresholds can be edited
+	 * @param isAdvanced - if a rule is advanced, it can never be opened in the basic UI
 	 */
 	public CodeQualityRule(String name, String rule, boolean isDefault, boolean isAdvanced) {
 		this.name = name;
@@ -30,7 +31,8 @@ public class CodeQualityRule {
 	}
 	
 	/**
-	 * @param String - new rule's name
+	 * @param String - rule's new name
+	 * Only changes the rule's name if it isn't a default rule
 	 */
 	public void setName(String name) {
 		if(!isDefault)
@@ -45,7 +47,9 @@ public class CodeQualityRule {
 	}
 
 	/**
-	 * @param String - new rule's text
+	 * @param String - rule's new content
+	 * Only allows to (freely) change a 
+	 * rule's content if it's not a default rule
 	 */
 	public void setRule(String rule) {
 		if(!isDefault)
@@ -53,7 +57,7 @@ public class CodeQualityRule {
 	}
 	
 	/**
-	 * @return String with rule's text
+	 * @return String with rule's content
 	 */
 	public String getRule() {
 		return rule;
@@ -89,6 +93,9 @@ public class CodeQualityRule {
 		return isAdvanced;
 	}
 	
+	/**
+	* @return rule's name
+	*/
 	public String toString() {
 		return this.name;
 	}
