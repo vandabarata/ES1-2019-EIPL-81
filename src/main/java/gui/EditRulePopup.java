@@ -30,7 +30,7 @@ import main.java.model.Metric;
  * GUI pop-up responsible for allowing the user to edit and add different rules
  * for visualizing the excel table.
  * 
- * @author Hugo Barroca
+ * @author Hugo Barroca, Vanda Barata and Franciele Faccin
  */
 public class EditRulePopup {
 
@@ -69,6 +69,8 @@ public class EditRulePopup {
 
 	/**
 	 * Constructs and initializes the GUI pop-up.
+	 * It opens the Basic or Advanced Mode 
+	 * depending on the rule it's using.
 	 */
 	public EditRulePopup(CodeQualityRule r) {
 		rule = r;
@@ -101,7 +103,7 @@ public class EditRulePopup {
 
 	/**
 	 * Creates the JPanel responsible for holding the rule's name. In case of
-	 * default rule, name is a label because it cannot be edited.
+	 * default rule, name is a non editable text field because it cannot be changed.
 	 */
 	private void createNamePanel() {
 		JLabel nameLabel = new JLabel("Name: ", SwingConstants.LEFT);
@@ -134,7 +136,7 @@ public class EditRulePopup {
 
 	/**
 	 * @return Returns the JPanel responsible for holding both the current list of
-	 *         rule metrics, and the line which allows the addition of more metrics.
+	 *         rule conditions, and the line which allows the addition of more conditions.
 	 *         In advanced mode, this panels hold a JTextArea, which can be freely
 	 *         edited by the user.
 	 */
