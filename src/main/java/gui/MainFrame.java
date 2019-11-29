@@ -188,7 +188,7 @@ public class MainFrame {
 	 * 
 	 * @return JComboBox
 	 */
-	public JComboBox getComboBox() {
+	public JComboBox getRulesComboBox() {
 		return rulesDropDown;
 	}
 }

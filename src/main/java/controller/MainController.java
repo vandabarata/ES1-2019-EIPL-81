@@ -36,6 +36,10 @@ import main.java.model.ExcelRow;
  * The controller receives the input, optionally validates it and then passes
  * the input to the model.
  */
+/**
+ * @author vanda
+ *
+ */
 public class MainController {
 	private MainFrame gui;
 	private QualityRulesResultFrame qualityGui;
@@ -118,7 +122,7 @@ public class MainController {
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
 
-		editButton(this.gui.getEditButton(), this.gui.getComboBox());
+		editButton(this.gui.getEditButton(), this.gui.getRulesComboBox());
 		addButton(this.gui.getAddButton());
 	}
 
@@ -216,6 +220,21 @@ public class MainController {
 		String[][] results = new String[][] { { "col 1", "col 2", "col 3" }, { "col 1", "col 2", "col 3" },
 				{ "col 1", "col 2", "col 3" } };
 		return results;
+	}
+	
+	
+	/**
+	 * @return Returns the entire rules list
+	 */
+	public ArrayList<CodeQualityRule> getRulesList() {
+		return rulesList;
+	}
+	
+	/**
+	 * @return Returns the main frame
+	 */
+	public MainFrame getMainFrame() {
+		return gui;
 	}
 
 }
