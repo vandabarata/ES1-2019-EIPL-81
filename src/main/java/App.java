@@ -13,7 +13,7 @@ public class App {
 		// sets application look and feel
 		try {
 			BasicLookAndFeel darcula = new DarculaLaf();
-	        	UIManager.setLookAndFeel(darcula);
+			UIManager.setLookAndFeel(darcula);
 		} catch (Exception ignored) {}
 		
 		c.init();
