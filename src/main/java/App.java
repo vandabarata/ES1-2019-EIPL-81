@@ -10,11 +10,13 @@ public class App {
 
 	public static void main(String[] args) {
 		MainController c = new MainController();
+		
+		// sets application look and feel
 		try {
 			BasicLookAndFeel darcula = new DarculaLaf();
-	        UIManager.setLookAndFeel(darcula);
-		} catch (Exception e) {
-		}
+	        	UIManager.setLookAndFeel(darcula);
+		} catch (Exception e) {}
+		
 		c.init();
 	}
 }
