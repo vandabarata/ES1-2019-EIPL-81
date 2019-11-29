@@ -1,15 +1,15 @@
 package test.java.model;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
 import main.java.controller.MainController;
+import org.junit.jupiter.api.Test;
+
+import static junit.framework.Assert.*;
 
 /**
  * @author Diego Souza
  *
  */
-public class TestValidFormatFile {
+class TestValidFormatFile {
 
 	/**
 	 * This test compares when the file has valid Excel format if the isValid()
