@@ -5,11 +5,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
-
-import main.java.model.Operator;
-import main.java.model.Condition;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -19,12 +15,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+
 import main.java.model.CodeQualityRule;
+import main.java.model.Condition;
 import main.java.model.Metric;
+import main.java.model.Operator;
 
 /**
  * GUI pop-up responsible for allowing the user to edit and add different rules
@@ -110,6 +109,7 @@ public class EditRulePopup {
 		nameText.setText(rule.getName());
 		nameText.setMinimumSize(new Dimension(500, 25));
 		nameText.setPreferredSize(new Dimension(500, 25));
+		
 		if (rule.isDefault()) {
 			nameText.setEditable(false);
 		}
@@ -134,11 +134,12 @@ public class EditRulePopup {
 	/**
 	 * @return Returns the JPanel responsible for holding both the current list of
 	 *         rule conditions, and the line which allows the addition of more conditions.
-	 *         In advanced mode, this panels hold a JTextArea, which can be freely
+	 *         In advanced mode, this panel holds a JTextArea, which can be freely
 	 *         edited by the user.
 	 */
 	private JPanel createMetricsPanel() {
 		if (advancedMode || defaultRule) {
+			
 			metricsPanel.removeAll();
 			metricsPanel.setLayout(new BorderLayout());
 
@@ -200,7 +201,7 @@ public class EditRulePopup {
 	/**
 	 * 
 	 * @return Returns the JPanel holding the line which allows users to add new
-	 *         metrics into the metrics list.
+	 *         metrics into the metrics list. For basic mode.
 	 */
 	private JPanel createAddMetricPanel() {
 		addNewMetricPanel.removeAll();
@@ -282,7 +283,12 @@ public class EditRulePopup {
 		});
 
 		advancedComplexity.addActionListener(e -> {
-			basicComplexity.setEnabled(true);
+			if (rule.isAdvanced() || rule.isDefault()) {
+				basicComplexity.setEnabled(false);
+			}
+			else {
+				basicComplexity.setEnabled(true);
+			}
 			advancedMode = true;
 			createMetricsPanel();
 			metricsPanel.revalidate();
@@ -381,7 +387,7 @@ public class EditRulePopup {
 	/**
 	 * This method handles setting the visibility of the Condition button in the
 	 * line responsible for allowing the user to add new metrics to the metrics'
-	 * list. Basically, it stops the first metric, and the first metric only, from
+	 * list. Basically, it stops the first condition, and the first condition only, from
 	 * having an AND or an OR attached to it.
 	 */
 	private void setConditionVisibility() {
@@ -463,6 +469,7 @@ public class EditRulePopup {
 
 	public String getRawRuleConditions() {
 		String rawRuleConditions = "";
+		
 		if (isAdvancedMode()) {
 			rawRuleConditions = metricText.getText().replaceAll("\n", " ");
 		} else {

@@ -24,6 +24,7 @@ class TestEditRulePopup {
 	 * Asserts that the number of rules displayed on the combobox in the main frame
 	 * is the same as the number of existing rules in the controller
 	 */
+	@Test
 	void testJComboBoxesElementNumber() {
 		MainController main = new MainController();
 		int numberOfRules = main.getRulesList().size();

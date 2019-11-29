@@ -1,9 +1,11 @@
 package test.java.model;
 
 import main.java.controller.MainController;
+
+import static org.junit.Assert.*;
+
 import org.junit.jupiter.api.Test;
 
-import static junit.framework.Assert.*;
 
 /**
  * @author Diego Souza

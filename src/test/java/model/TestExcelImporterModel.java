@@ -6,11 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import main.java.model.ExcelImporter;
-import main.java.model.ExcelRow;
 
 /**
  * @author Lino Silva
