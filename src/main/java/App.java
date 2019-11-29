@@ -4,9 +4,6 @@ import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
 import com.bulenkov.darcula.DarculaLaf;
-import com.jtattoo.plaf.hifi.HiFiLookAndFeel;
-import com.jtattoo.plaf.smart.SmartLookAndFeel;
-
 import main.java.controller.MainController;
 
 public class App {
