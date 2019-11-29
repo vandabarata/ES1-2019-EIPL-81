@@ -11,11 +11,11 @@ public class EditRuleController {
 	private CodeQualityRule rule;
 
 	/**
-	 * @param r A CodeQualityRule to be edited in the Gui
+	 * @param rule A CodeQualityRule to be edited in the Gui
 	 */
-	public EditRuleController(CodeQualityRule r) {
-		rule = r;
-		editRulePopup = new EditRulePopup(rule);
+	public EditRuleController(CodeQualityRule rule) {
+		this.rule = rule;
+		editRulePopup = new EditRulePopup(this.rule);
 		initActionListeners();
 	}
 	
@@ -49,7 +49,7 @@ public class EditRuleController {
 
 		String newRule = getJavascriptString(rawRuleConditions);
 		
-		editRulePopup.showMessage("Rule has been added successfuly!");
+		editRulePopup.showMessage("Rule has been added successfully!");
 	}
 
 	/**

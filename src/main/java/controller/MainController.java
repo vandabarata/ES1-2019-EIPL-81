@@ -72,7 +72,7 @@ public class MainController {
 	/**
 	 * This method is used to run the action of the Import Button.
 	 */
-	public void initImportButtonAction(JButton import_button, PopupUploadFile uploadFile) {
+	private void initImportButtonAction(JButton import_button, PopupUploadFile uploadFile) {
 		import_button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -85,16 +85,14 @@ public class MainController {
 	 * This method is used to validate if the selected file is a valid Excel format,
 	 */
 	public boolean isValid(String path_file) {
-		if (path_file.endsWith(".xlsx") || path_file.endsWith(".xls"))
-			return true;
-		return false;
+		return path_file.endsWith(".xlsx") || path_file.endsWith(".xls");
 	}
 
 	/**
 	 * This method is used to import the file and create a main frame if the file is
 	 * valid, otherwise it will show a warning message.
 	 */
-	public void validateFile(PopupUploadFile uploadFile) {
+	private void validateFile(PopupUploadFile uploadFile) {
 
 		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 		int returnValue = jfc.showOpenDialog(null);
@@ -167,7 +165,7 @@ public class MainController {
 	 * This method is used to run the action of the Edit Button with the selected
 	 * rule of drop down
 	 */
-	public void editButton(JButton editButton, JComboBox ruleListBox) {
+	private void editButton(JButton editButton, JComboBox ruleListBox) {
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

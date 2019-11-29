@@ -38,8 +38,6 @@ public class EditRulePopup {
 	private ArrayList<String> ruleConditions = new ArrayList<String>();
 	private JFrame frame;
 	private JTextField nameText;
-	private JScrollPane metricsScrollpane;
-	private JScrollPane advancedRuleConditionsPane;
 	private JComboBox<String> conditionListBox;
 	private JComboBox<String> valueListBox;
 	private JComboBox<String> operatorListBox;
@@ -61,12 +59,6 @@ public class EditRulePopup {
 	private boolean defaultRule;
 	private boolean conditionVisibilitySet;
 
-	private final int FRAME_X = 685;
-	private final int FRAME_Y = 300;
-	private final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
-	private final int SCREEN_WIDTH = dimension.width;
-	private final int SCREEN_HEIGHT = dimension.height;
-
 	/**
 	 * Constructs and initializes the GUI pop-up.
 	 * It opens the Basic or Advanced Mode 
@@ -80,8 +72,13 @@ public class EditRulePopup {
 		frame = new JFrame("Personalized Rules");
 		frame.add(createMainPanel());
 		frame.setLocationRelativeTo(null);
+		final int FRAME_X = 685;
+		final int FRAME_Y = 300;
 		frame.setMinimumSize(new Dimension(FRAME_X, FRAME_Y));
 		frame.setSize(new Dimension(FRAME_X, FRAME_Y));
+		final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+		final int SCREEN_WIDTH = dimension.width;
+		final int SCREEN_HEIGHT = dimension.height;
 		frame.setLocation(SCREEN_WIDTH / 2 - (FRAME_X / 2), SCREEN_HEIGHT / 2 - (FRAME_Y / 2));
 
 		frame.setVisible(true);
@@ -161,8 +158,10 @@ public class EditRulePopup {
 			}
 			metricText.setText(text);
 
-			advancedRuleConditionsPane = new JScrollPane(metricText, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			final JScrollPane advancedRuleConditionsPane = new JScrollPane(metricText,
+																		   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+																		   JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS
+			);
 
 			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -181,8 +180,10 @@ public class EditRulePopup {
 			metricsPanel.removeAll();
 			metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
 			metricsListPanel.setMinimumSize(new Dimension(500, 500));
-			metricsScrollpane = new JScrollPane(metricsListPanel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			final JScrollPane metricsScrollpane = new JScrollPane(metricsListPanel,
+																  JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+																  JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+			);
 
 			createAddMetricPanel();
 			metricsPanel.setLayout(new BorderLayout());
