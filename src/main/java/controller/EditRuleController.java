@@ -3,6 +3,7 @@ package main.java.controller;
 import java.util.ArrayList;
 
 import main.java.gui.EditRulePopup;
+import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
 
 public class EditRuleController {
@@ -44,10 +45,13 @@ public class EditRuleController {
 		}
 		else {
 			ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
+			
 			if (rulesList.contains(rule)) {
 				rulesList.remove(rule);
 				mainC.updateRulesList(rulesList);
+				mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
 				editRulePopup.showMessage("Rule has been deleted!");
+				editRulePopup.getFrame().dispose();
 			}
 			else {
 				editRulePopup.showMessage("There is no rule to delete");
@@ -85,10 +89,8 @@ public class EditRuleController {
 		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
 		
 		
-		// TODO: the isAdvanced set to false is only a placeholder for the time being
-		// Needs to be validated against the actual GUI mode being used
 		if (!rulesList.contains(rule)) {
-			rule = new CodeQualityRule(newName, newRule, false, false);
+			rule = new CodeQualityRule(newName, newRule, false, editRulePopup.isAdvancedMode());
 		}
 		else {
 			rulesList.remove(rule);

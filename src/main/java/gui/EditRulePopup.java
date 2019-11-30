@@ -149,7 +149,7 @@ public class EditRulePopup {
 	 *         be freely edited by the user.
 	 */
 	private JPanel createMetricsPanel() {
-		if (advancedMode || defaultRule) {
+		if (advancedMode || defaultRule || rule.getName() != "") {
 
 			metricsPanel.removeAll();
 			metricsPanel.setLayout(new BorderLayout());
@@ -282,17 +282,22 @@ public class EditRulePopup {
 		basicComplexity.setEnabled(false);
 
 		basicComplexity.addActionListener(e -> {
-			advancedComplexity.setEnabled(true);
-			advancedMode = false;
-			createMetricsPanel();
-			metricsPanel.revalidate();
-			metricsPanel.repaint();
-			basicComplexity.setEnabled(false);
+			if (rule.isAdvanced() || rule.isDefault() || rule.getName() != "") {
+				
+			}
+			else {
+				advancedComplexity.setEnabled(true);
+				advancedMode = false;
+				createMetricsPanel();
+				metricsPanel.revalidate();
+				metricsPanel.repaint();
+				basicComplexity.setEnabled(false);
+			}
 
 		});
 
 		advancedComplexity.addActionListener(e -> {
-			if (rule.isAdvanced() || rule.isDefault()) {
+			if (rule.isAdvanced() || rule.isDefault() || rule.getName() == "") {
 				basicComplexity.setEnabled(false);
 			} else {
 				basicComplexity.setEnabled(true);
@@ -475,6 +480,13 @@ public class EditRulePopup {
 			rawRuleConditions = String.join(" ", ruleConditions);
 		}
 		return rawRuleConditions;
+	}
+	
+	/**
+	 * @return boolean if GUI is in advanced mode or not
+	 */
+	public boolean isGUIAdvancedMode() {
+		return advancedMode;
 	}
 	
 }

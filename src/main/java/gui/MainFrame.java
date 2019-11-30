@@ -100,7 +100,7 @@ public class MainFrame {
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 
 		Object[] rules = rulesList.toArray();
-		rulesDropDown = new JComboBox(rules);
+		rulesDropDown = new JComboBox<Object>(rules);
 		
 		buttonsPanel.add(rulesDropDown);
 		editButton = new JButton("Edit");
@@ -181,7 +181,7 @@ public class MainFrame {
 	
 	
 	/**
-	 * This method is used to communicate the instance of JComboBox  to MainController.
+	 * This method is used to communicate the instance of JComboBox to MainController.
 	 * The MainController is responsible to run the action related with selected rule of rule list showed in JComboBox.
 	 * 
 	 * @return JComboBox
