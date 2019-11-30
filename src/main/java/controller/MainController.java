@@ -175,19 +175,15 @@ public class MainController {
 	 */
 	private void editButton(JButton editButton, JComboBox<CodeQualityRule> ruleListBox) {
 
-		editButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
+		editButton.addActionListener(e -> {
 
-				CodeQualityRule rule = (CodeQualityRule) ruleListBox.getSelectedItem();
+			CodeQualityRule rule = (CodeQualityRule) ruleListBox.getSelectedItem();
 
-				if (rule == null) {
-					new EditRuleController();
+			if (rule == null) {
+				new EditRuleController();
 
-				} else {
-					new EditRuleController(rule);
-				}
-
+			} else {
+				new EditRuleController(rule);
 			}
 		});
 	}
@@ -224,22 +220,27 @@ public class MainController {
 	}
 
 	/**
-	 * @return Returns the entire rules list
+	 * Returns the entire rules list
+	 * 
+	 * @return ArrayList<CodeQualityRule>
 	 */
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
 	}
 
 	/**
-	 * @param newRules Receives an updated list of rules and replaces the old rules
-	 *                 list with it
+	 * Receives an updated list of rules and replaces the old rules list with it
+	 * 
+	 * @param newRules
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
 	}
 
 	/**
-	 * @return Returns the main frame
+	 * Returns the main frame
+	 * 
+	 * @return MainFrame
 	 */
 	public MainFrame getMainFrame() {
 		return gui;
