@@ -192,13 +192,7 @@ public class MainController {
 	 * Sets the add Button in the MainFrame to open an empty Rule Edition Popup
 	 */
 	private void addButton(JButton addButton) {
-		addButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new EditRuleController();
-			}
-		});
+		addButton.addActionListener(e -> new EditRuleController());
 	}
 
 	/**

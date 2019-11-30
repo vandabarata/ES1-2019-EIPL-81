@@ -84,14 +84,6 @@ public class EditRulePopup {
 
 		frame.setVisible(true);
 		
-		frame.addWindowListener(new java.awt.event.WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				MainFrame mainFrame = MainController.getMainControllerInstance().getMainFrame();
-				mainFrame.updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
-				e.getWindow().dispose();
-			}
-		});
 	}
 
 	/**
@@ -157,7 +149,7 @@ public class EditRulePopup {
 			String text;
 			JLabel ruleConditionsTextPaneLabel;
 
-			if (rule.getRule().equals("")) {
+			if (rule.getRule().isEmpty()) {
 				ruleConditionsTextPaneLabel = new JLabel("Add rule conditions as follows: ");
 
 				text = "Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
@@ -282,10 +274,7 @@ public class EditRulePopup {
 		basicComplexity.setEnabled(false);
 
 		basicComplexity.addActionListener(e -> {
-			if (rule.isAdvanced() || rule.isDefault() || rule.getName() != "") {
-				
-			}
-			else {
+			if (!(rule.isAdvanced() || rule.isDefault() || rule.getName() != "")) {
 				advancedComplexity.setEnabled(true);
 				advancedMode = false;
 				createMetricsPanel();

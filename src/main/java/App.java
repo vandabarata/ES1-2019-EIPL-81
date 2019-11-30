@@ -1,7 +1,8 @@
 package main.java;
 
 import com.bulenkov.darcula.DarculaLaf;
-import javax.swing.*;
+
+import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import main.java.controller.MainController;
 
