@@ -202,7 +202,7 @@ public class MainController {
 	private void checkCodeQualityAndShow() {
 		String[][] results = getCodeQualityResults();
 		// TODO get real column names
-		String[] colNames = new String[] { "head 1", "head 2", "head 3" };
+		String[] colNames = new String[] { "Method ID", "PMD", "iPlasma", "long_method", "feature_envy" };
 		qualityGui.fillTable(results, colNames);
 		qualityGui.show();
 	}
@@ -214,8 +214,8 @@ public class MainController {
 	 */
 	private String[][] getCodeQualityResults() {
 		// TODO calculate code quality
-		String[][] results = new String[][] { { "col 1", "col 2", "col 3" }, { "col 1", "col 2", "col 3" },
-				{ "col 1", "col 2", "col 3" } };
+		String[][] results = new String[][] { { "1", "TRUE", "TRUE", "TRUE", "FALSE" }, { "2", "TRUE", "FALSE", "TRUE", "FALSE" },
+				{ "3", "TRUE", "TRUE", "FALSE", "FALSE"} };
 		return results;
 	}
 
