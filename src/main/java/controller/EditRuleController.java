@@ -3,7 +3,6 @@ package main.java.controller;
 import java.util.ArrayList;
 
 import main.java.gui.EditRulePopup;
-import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
 
 public class EditRuleController {
