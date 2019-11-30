@@ -26,7 +26,7 @@ class TestEditRulePopup {
 	 */
 	@Test
 	void testJComboBoxesElementNumber() {
-		MainController main = new MainController();
+		MainController main = MainController.getMainControllerInstance();
 		int numberOfRules = main.getRulesList().size();
 		assertEquals(main.getMainFrame().getRulesComboBox().getItemCount(), numberOfRules);
 	}

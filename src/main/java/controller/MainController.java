@@ -169,7 +169,7 @@ public class MainController {
 	 * This method is used to open the EditRuleController
 	 * which controls the Rule Edition GUI
 	 */
-	private void editButton(JButton editButton, JComboBox ruleListBox) {
+	private void editButton(JButton editButton, JComboBox<CodeQualityRule> ruleListBox) {
 		
 		editButton.addActionListener(new ActionListener() {
 			@Override
@@ -231,6 +231,15 @@ public class MainController {
 	 */
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
+	}
+	
+	/**
+	 * @param newRules
+	 * Receives an updated list of rules
+	 * and replaces the old rules list with it
+	 */
+	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
+		rulesList = newRules;
 	}
 	
 	/**

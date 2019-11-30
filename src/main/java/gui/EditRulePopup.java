@@ -5,6 +5,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.WindowListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -20,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.MainController;
 import main.java.model.CodeQualityRule;
 import main.java.model.Condition;
 import main.java.model.Metric;
@@ -59,9 +62,8 @@ public class EditRulePopup {
 	private boolean conditionVisibilitySet;
 
 	/**
-	 * Constructs and initializes the GUI pop-up.
-	 * It opens the Basic or Advanced Mode 
-	 * depending on the rule it's using.
+	 * Constructs and initializes the GUI pop-up. It opens the Basic or Advanced
+	 * Mode depending on the rule it's using.
 	 */
 	public EditRulePopup(CodeQualityRule r) {
 		rule = r;
@@ -81,6 +83,15 @@ public class EditRulePopup {
 		frame.setLocation(SCREEN_WIDTH / 2 - (FRAME_X / 2), SCREEN_HEIGHT / 2 - (FRAME_Y / 2));
 
 		frame.setVisible(true);
+		
+		frame.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				MainFrame mainFrame = MainController.getMainControllerInstance().getMainFrame();
+				mainFrame.updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
+				e.getWindow().dispose();
+			}
+		});
 	}
 
 	/**
@@ -109,7 +120,7 @@ public class EditRulePopup {
 		nameText.setText(rule.getName());
 		nameText.setMinimumSize(new Dimension(500, 25));
 		nameText.setPreferredSize(new Dimension(500, 25));
-		
+
 		if (rule.isDefault()) {
 			nameText.setEditable(false);
 		}
@@ -133,13 +144,13 @@ public class EditRulePopup {
 
 	/**
 	 * @return Returns the JPanel responsible for holding both the current list of
-	 *         rule conditions, and the line which allows the addition of more conditions.
-	 *         In advanced mode, this panel holds a JTextArea, which can be freely
-	 *         edited by the user.
+	 *         rule conditions, and the line which allows the addition of more
+	 *         conditions. In advanced mode, this panel holds a JTextArea, which can
+	 *         be freely edited by the user.
 	 */
 	private JPanel createMetricsPanel() {
 		if (advancedMode || defaultRule) {
-			
+
 			metricsPanel.removeAll();
 			metricsPanel.setLayout(new BorderLayout());
 
@@ -157,13 +168,11 @@ public class EditRulePopup {
 
 				text = rule.getRule();
 			}
-			
+
 			ruleTextArea.setText(text);
 
 			final JScrollPane advancedRuleConditionsPane = new JScrollPane(ruleTextArea,
-																		   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-																		   JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS
-			);
+					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
 			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
@@ -171,6 +180,7 @@ public class EditRulePopup {
 			for (Metric metric : Metric.values()) {
 				availableMetricsText = availableMetricsText + metric.name() + " ";
 			}
+			
 			JLabel availableMetrics = new JLabel("Available metrics: \n" + availableMetricsText);
 
 			metricsPanel.add(advancedRuleConditionsPane, BorderLayout.CENTER);
@@ -183,9 +193,7 @@ public class EditRulePopup {
 			metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
 			metricsListPanel.setMinimumSize(new Dimension(500, 500));
 			final JScrollPane metricsScrollpane = new JScrollPane(metricsListPanel,
-																  JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-																  JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-			);
+					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
 			createAddMetricPanel();
 			metricsPanel.setLayout(new BorderLayout());
@@ -286,8 +294,7 @@ public class EditRulePopup {
 		advancedComplexity.addActionListener(e -> {
 			if (rule.isAdvanced() || rule.isDefault()) {
 				basicComplexity.setEnabled(false);
-			}
-			else {
+			} else {
 				basicComplexity.setEnabled(true);
 			}
 			advancedMode = true;
@@ -315,24 +322,6 @@ public class EditRulePopup {
 
 		clearButton.addActionListener(e -> {
 			clearMetricsListPanel();
-		});
-
-		deleteButton.addActionListener(e -> {
-			
-			if (rule.isAdvanced()) {
-				JOptionPane.showMessageDialog(null, "You can't delete a default rule!");
-			}
-			else {
-				
-			}
-			
-			
-			if (nameText.getText().isEmpty() || ruleTextArea.getText().isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Please insert a rule name!");
-			} else {
-				// TODO: Add functionality here.
-				JOptionPane.showMessageDialog(null, "Rule has been deleted!");
-			}
 		});
 
 		controlPanel.add(clearButton);
@@ -397,8 +386,8 @@ public class EditRulePopup {
 	/**
 	 * This method handles setting the visibility of the Condition button in the
 	 * line responsible for allowing the user to add new metrics to the metrics'
-	 * list. Basically, it stops the first condition, and the first condition only, from
-	 * having an AND or an OR attached to it.
+	 * list. Basically, it stops the first condition, and the first condition only,
+	 * from having an AND or an OR attached to it.
 	 */
 	private void setConditionVisibility() {
 		if (!ruleConditions.isEmpty()) {
@@ -449,7 +438,7 @@ public class EditRulePopup {
 	/**
 	 * 
 	 * @return Returns the JComboBox which holds the possible comparisons for a new
-	 *         metric (>, <, ==, !=).
+	 *         operator (>, >=, <, <=, ==, !=).
 	 */
 	public JComboBox<String> getComparison() {
 		return operatorListBox;
@@ -479,7 +468,7 @@ public class EditRulePopup {
 
 	public String getRawRuleConditions() {
 		String rawRuleConditions = "";
-		
+
 		if (isAdvancedMode()) {
 			rawRuleConditions = ruleTextArea.getText().replaceAll("\n", " ");
 		} else {
@@ -487,6 +476,5 @@ public class EditRulePopup {
 		}
 		return rawRuleConditions;
 	}
-	
 	
 }

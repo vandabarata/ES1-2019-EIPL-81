@@ -2,8 +2,6 @@ package main.java.gui;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -13,7 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
@@ -27,7 +24,7 @@ public class MainFrame {
 	private JButton editButton;
 	private JButton addButton;
 	private JButton checkQualityButton;
-	private JComboBox rulesDropDown;
+	private JComboBox<Object> rulesDropDown;
 	private ArrayList<CodeQualityRule> rulesList;
 
 	public MainFrame(JTable excelTable, ArrayList<CodeQualityRule> rulesList) {
@@ -191,5 +188,19 @@ public class MainFrame {
 	 */
 	public JComboBox getRulesComboBox() {
 		return rulesDropDown;
+	}
+	
+	/**
+	 * @param updatedRulesList
+	 * Receives an update Rules List and updates the ComboBox
+	 */
+	public void updateRulesComboBox(ArrayList<CodeQualityRule> updatedRulesList) {
+		rulesDropDown.removeAllItems();
+		
+		Object[] updatedRules = updatedRulesList.toArray();
+		
+		for (Object rule : updatedRules) {
+			rulesDropDown.addItem(rule);
+		}
 	}
 }
