@@ -87,7 +87,9 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * @return Returns the JPanel where all other JPanels are nested.
+	 * Returns the JPanel where all other JPanels are nested
+	 * 
+	 * @return JPanel
 	 */
 	private JPanel createMainPanel() {
 		mainPanel.setLayout(new BorderLayout());
@@ -120,10 +122,11 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * @return Returns the JPanel responsible for holding either both the Metrics
-	 *         panel, which allows edits to the current metrics, and the complexity
-	 *         toggle panel, which allows changing in between the basic and advanced
-	 *         modes.
+	 * Returns the JPanel responsible for holding either both the Metrics panel,
+	 * which allows edits to the current metrics, and the complexity toggle panel,
+	 * which allows changing in between the basic and advanced modes.
+	 * 
+	 * @return JPanel
 	 */
 	private JPanel createCenterPanel() {
 		createMetricsPanel();
@@ -135,10 +138,12 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * @return Returns the JPanel responsible for holding both the current list of
-	 *         rule conditions, and the line which allows the addition of more
-	 *         conditions. In advanced mode, this panel holds a JTextArea, which can
-	 *         be freely edited by the user.
+	 * Returns the JPanel responsible for holding both the current list of rule
+	 * conditions, and the line which allows the addition of more conditions. In
+	 * advanced mode, this panel holds a JTextArea, which can be freely edited by
+	 * the user.
+	 * 
+	 * @return JPanel
 	 */
 	private JPanel createMetricsPanel() {
 		if (advancedMode || defaultRule || rule.getName() != "") {
@@ -201,8 +206,10 @@ public class EditRulePopup {
 
 	/**
 	 * 
-	 * @return Returns the JPanel holding the line which allows users to add new
-	 *         metrics into the metrics list. For basic mode.
+	 * Returns the JPanel holding the line which allows users to add new metrics
+	 * into the metrics list. For basic mode.
+	 * 
+	 * @return JPanel
 	 */
 	private JPanel createAddMetricPanel() {
 		addNewMetricPanel.removeAll();
@@ -347,9 +354,6 @@ public class EditRulePopup {
 	/**
 	 * This method fills the metric's list in the UI with the contents found in the
 	 * ruleMetrics ArrayList.
-	 * 
-	 * TODO: This method will have to be changed once a separate class for the rules
-	 * is created.
 	 */
 	private void fillMetricsListPanel() {
 		metricsListPanel.removeAll();
@@ -370,7 +374,6 @@ public class EditRulePopup {
 	/**
 	 * This method clears all current metrics from both the GUI and the ruleMetrics
 	 * ArrayList.
-	 * 
 	 */
 	private void clearMetricsListPanel() {
 		ruleConditions.clear();
@@ -402,7 +405,9 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * @param message A message to be displayed on an alert
+	 * Method that generates an alert with the received message
+	 * 
+	 * @param message
 	 */
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(null, message);
@@ -419,8 +424,10 @@ public class EditRulePopup {
 
 	/**
 	 * 
-	 * @return Returns the JComboBox which holds the conditions for a new metric
-	 *         (AND and OR).
+	 * Returns the JComboBox which holds the conditions for a new metric (AND and
+	 * OR).
+	 * 
+	 * @return JComboBox<String>
 	 */
 	public JComboBox<String> getCondition() {
 		return conditionListBox;
@@ -428,8 +435,9 @@ public class EditRulePopup {
 
 	/**
 	 * 
-	 * @return Returns the JComboBox which holds the values for a new metric (LOC,
-	 *         LAA, etc).
+	 * eturns the JComboBox which holds the values for a new metric (LOC, LAA, etc).
+	 * 
+	 * @return JComboBox<String>
 	 */
 	public JComboBox<String> getValue() {
 		return valueListBox;
@@ -437,35 +445,56 @@ public class EditRulePopup {
 
 	/**
 	 * 
-	 * @return Returns the JComboBox which holds the possible comparisons for a new
-	 *         operator (>, >=, <, <=, ==, !=).
+	 * Returns the JComboBox which holds the possible comparisons for a new operator
+	 * (>, >=, <, <=, ==, !=).
+	 * 
+	 * @return JComboBox<String>
 	 */
 	public JComboBox<String> getComparison() {
 		return operatorListBox;
 	}
 
 	/**
-	 * @return Returns the JButton for saving the rule changes
+	 * Returns the JButton for saving the rule changes
+	 * 
+	 * @return JButton
 	 */
 	public JButton getSaveButton() {
 		return saveButton;
 	}
 
 	/**
-	 * @return Returns the JButton for deleting the rule changes
+	 * Returns the JButton for deleting the rule changes
+	 * 
+	 * @return JButton
 	 */
 	public JButton getDeleteButton() {
 		return deleteButton;
 	}
 
+	/**
+	 * Returns the Rule's name
+	 * 
+	 * @return String
+	 */
 	public String getRuleName() {
 		return nameText.getText();
 	}
 
+	/**
+	 * Returns if GUI is in advanced mode or not
+	 * 
+	 * @return boolean
+	 */
 	public boolean isAdvancedMode() {
 		return advancedMode;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
 	public String getRawRuleConditions() {
 		String rawRuleConditions = "";
 
@@ -475,13 +504,6 @@ public class EditRulePopup {
 			rawRuleConditions = String.join(" ", ruleConditions);
 		}
 		return rawRuleConditions;
-	}
-
-	/**
-	 * @return boolean if GUI is in advanced mode or not
-	 */
-	public boolean isGUIAdvancedMode() {
-		return advancedMode;
 	}
 
 }
