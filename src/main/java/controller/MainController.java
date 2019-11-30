@@ -36,28 +36,32 @@ import main.java.model.ExcelRow;
  * The controller receives the input, optionally validates it and then passes
  * the input to the model.
  */
-/**
- * @author vanda
- *
- */
 public class MainController {
 	private MainFrame gui;
 	private QualityRulesResultFrame qualityGui;
-	private EditRuleController editRuleController;
 	private String path;
 	private ExcelImporter ei;
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+	private static MainController instance;
 
 	/**
-	 * MainController constructor. Creates the default rules to be used.
+	 * Singleton MainController - only 1 instance allowed.
+	 * Creates the default rules to be used and manages the Main Frame.
 	 */
-	public MainController() {
+	private MainController() {
 		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
 		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, false);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
+	}
+	
+	public static MainController getMainControllerInstance() {
+		if (instance == null) {
+			instance = new MainController();
+		}
+		return instance;
 	}
 
 	/**
@@ -162,10 +166,11 @@ public class MainController {
 	}
 
 	/**
-	 * This method is used to run the action of the Edit Button with the selected
-	 * rule of drop down
+	 * This method is used to open the EditRuleController
+	 * which controls the Rule Edition GUI
 	 */
 	private void editButton(JButton editButton, JComboBox ruleListBox) {
+		
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -173,10 +178,10 @@ public class MainController {
 				CodeQualityRule rule = (CodeQualityRule) ruleListBox.getSelectedItem();
 
 				if (rule == null) {
-					editRuleController = new EditRuleController();
+					new EditRuleController();
 
 				} else {
-					editRuleController = new EditRuleController(rule);
+					new EditRuleController(rule);
 				}
 
 			}
@@ -191,7 +196,7 @@ public class MainController {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				editRuleController = new EditRuleController();
+				new EditRuleController();
 			}
 		});
 	}

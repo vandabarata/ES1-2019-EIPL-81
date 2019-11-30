@@ -2,6 +2,8 @@ package main.java.controller;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import main.java.gui.EditRulePopup;
 import main.java.model.CodeQualityRule;
 
@@ -28,6 +30,16 @@ public class EditRuleController {
 
 	private void initActionListeners() {
 		editRulePopup.getSaveButton().addActionListener(e -> onSaveRule());
+		editRulePopup.getDeleteButton().addActionListener(e -> onDeleteRule());
+	}
+
+	private void onDeleteRule() {
+		if (rule.isAdvanced()) {
+			JOptionPane.showMessageDialog(null, "You can't delete a default rule!");
+		}
+		else {
+			
+		}
 	}
 
 	private void onSaveRule() {

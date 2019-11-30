@@ -40,7 +40,7 @@ public class EditRulePopup {
 	private JComboBox<String> conditionListBox;
 	private JComboBox<String> valueListBox;
 	private JComboBox<String> operatorListBox;
-	private JTextArea metricText;
+	private JTextArea ruleTextArea;
 
 	private JButton deleteButton;
 	private JButton saveButton;
@@ -157,9 +157,10 @@ public class EditRulePopup {
 
 				text = rule.getRule();
 			}
-			metricText.setText(text);
+			
+			ruleTextArea.setText(text);
 
-			final JScrollPane advancedRuleConditionsPane = new JScrollPane(metricText,
+			final JScrollPane advancedRuleConditionsPane = new JScrollPane(ruleTextArea,
 																		   JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 																		   JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS
 			);
@@ -317,7 +318,16 @@ public class EditRulePopup {
 		});
 
 		deleteButton.addActionListener(e -> {
-			if (nameText.getText().isEmpty()) {
+			
+			if (rule.isAdvanced()) {
+				JOptionPane.showMessageDialog(null, "You can't delete a default rule!");
+			}
+			else {
+				
+			}
+			
+			
+			if (nameText.getText().isEmpty() || ruleTextArea.getText().isEmpty()) {
 				JOptionPane.showMessageDialog(null, "Please insert a rule name!");
 			} else {
 				// TODO: Add functionality here.
@@ -344,7 +354,7 @@ public class EditRulePopup {
 		addNewMetricPanel = new JPanel();
 		controlPanel = new JPanel();
 		centerPanel = new JPanel();
-		metricText = new JTextArea();
+		ruleTextArea = new JTextArea();
 	}
 
 	/**
@@ -377,7 +387,7 @@ public class EditRulePopup {
 	 */
 	private void clearMetricsListPanel() {
 		ruleConditions.clear();
-		metricText.setText("");
+		ruleTextArea.setText("");
 		metricsListPanel.removeAll();
 		setConditionVisibility();
 		metricsListPanel.revalidate();
@@ -471,7 +481,7 @@ public class EditRulePopup {
 		String rawRuleConditions = "";
 		
 		if (isAdvancedMode()) {
-			rawRuleConditions = metricText.getText().replaceAll("\n", " ");
+			rawRuleConditions = ruleTextArea.getText().replaceAll("\n", " ");
 		} else {
 			rawRuleConditions = String.join(" ", ruleConditions);
 		}
