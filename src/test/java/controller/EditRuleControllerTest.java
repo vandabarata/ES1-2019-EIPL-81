@@ -25,7 +25,7 @@ class EditRuleControllerTest {
 
 	@Test
 	void testEditRuleControllerNoRule() {
-		fail("Not yet implemented");
+		controller = new EditRuleController();
 	}
 
 }
