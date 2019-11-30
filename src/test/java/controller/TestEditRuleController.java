@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import main.java.controller.EditRuleController;
 import main.java.model.CodeQualityRule;
 
-class EditRuleControllerTest {
+class TestEditRuleController {
 	
 	CodeQualityRule testRule;
 	EditRuleController controller;
@@ -26,6 +26,14 @@ class EditRuleControllerTest {
 	@Test
 	void testEditRuleControllerNoRule() {
 		controller = new EditRuleController();
+	}
+	
+	@Test
+	void testGetJavascriptString() {
+		String ruleConditions = "IF LOC > 10 AND LAA == 20 OR LAA != 5";
+		controller = new EditRuleController();
+		String testJS = controller.getJavascriptString(ruleConditions);
+		assertEquals("LOC > 10 && LAA == 20 || LAA != 5", testJS);
 	}
 
 }
