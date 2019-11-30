@@ -3,23 +3,20 @@ package main.java.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileSystemView;
 
-import main.java.gui.EditRulePopup;
+import org.apache.poi.ss.examples.ExcelComparator;
+
 import main.java.gui.MainFrame;
-import main.java.gui.QualityRulesResultFrame;
 import main.java.gui.PopupUploadFile;
-
-import java.util.ArrayList;
-
-import javax.swing.JTable;
-
+import main.java.gui.QualityRulesResultFrame;
 import main.java.model.CodeQualityRule;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
@@ -47,8 +44,8 @@ public class MainController {
 	private static MainController instance;
 
 	/**
-	 * Singleton MainController - only 1 instance allowed.
-	 * Creates the default rules to be used and manages the Main Frame.
+	 * Singleton MainController - only 1 instance allowed. Creates the default rules
+	 * to be used and manages the Main Frame.
 	 */
 	private MainController() {
 		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
@@ -56,7 +53,12 @@ public class MainController {
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
 	}
-	
+
+	/**
+	 * Public method that returns the main controller singleton instance
+	 * 
+	 * @return MainController
+	 */
 	public static MainController getMainControllerInstance() {
 		if (instance == null) {
 			instance = new MainController();
@@ -120,6 +122,7 @@ public class MainController {
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
+		convertExcelRows();
 		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
@@ -129,9 +132,10 @@ public class MainController {
 	}
 
 	/**
-	 * Formats all data to a valid format to a JTable
+	 * Formats all data to a valid format to a JTable and returns a JTable with the
+	 * cell's content
 	 * 
-	 * @return String matrix with the cell's content
+	 * @return JTable
 	 */
 	private JTable createExcelTable() {
 		String[][] dataForTable = new String[excelRows.size() - 1][excelRows.get(1).length];
@@ -166,11 +170,11 @@ public class MainController {
 	}
 
 	/**
-	 * This method is used to open the EditRuleController
-	 * which controls the Rule Edition GUI
+	 * This method is used to open the EditRuleController which controls the Rule
+	 * Edition GUI
 	 */
 	private void editButton(JButton editButton, JComboBox<CodeQualityRule> ruleListBox) {
-		
+
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -218,24 +222,22 @@ public class MainController {
 				{ "col 1", "col 2", "col 3" } };
 		return results;
 	}
-	
-	
+
 	/**
 	 * @return Returns the entire rules list
 	 */
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
 	}
-	
+
 	/**
-	 * @param newRules
-	 * Receives an updated list of rules
-	 * and replaces the old rules list with it
+	 * @param newRules Receives an updated list of rules and replaces the old rules
+	 *                 list with it
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
 	}
-	
+
 	/**
 	 * @return Returns the main frame
 	 */

@@ -83,7 +83,7 @@ public class EditRulePopup {
 		frame.setLocation(SCREEN_WIDTH / 2 - (FRAME_X / 2), SCREEN_HEIGHT / 2 - (FRAME_Y / 2));
 
 		frame.setVisible(true);
-		
+
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class EditRulePopup {
 			for (Metric metric : Metric.values()) {
 				availableMetricsText = availableMetricsText + metric.name() + " ";
 			}
-			
+
 			JLabel availableMetrics = new JLabel("Available metrics: \n" + availableMetricsText);
 
 			metricsPanel.add(advancedRuleConditionsPane, BorderLayout.CENTER);
@@ -259,8 +259,10 @@ public class EditRulePopup {
 
 	/**
 	 * 
-	 * @return Returns the JPanel which holds the buttons to switch between advanced
-	 *         and basic modes.
+	 * Returns the JPanel which holds the buttons to switch between advanced and
+	 * basic modes.
+	 * 
+	 * @return JPanel
 	 */
 	private JPanel createEditorComplexityTogglePanel() {
 		editorComplexityTogglePanel.setLayout(new BoxLayout(editorComplexityTogglePanel, BoxLayout.Y_AXIS));
@@ -304,8 +306,10 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * @return Returns the JPanel responsible for holding the JButtons which allow
-	 *         all metrics to be cleared, or the rule to be saved.
+	 * Returns the JPanel responsible for holding the JButtons which allow all
+	 * metrics to be cleared, or the rule to be saved.
+	 * 
+	 * @return JPanel
 	 */
 	private JPanel createControlPanel() {
 		controlPanel.setLayout(new GridLayout(1, 3));
@@ -405,7 +409,9 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * @return Returns the popup's main SWING frame.
+	 * Returns the popup's main SWING frame.
+	 * 
+	 * @return JFrame
 	 */
 	public JFrame getFrame() {
 		return frame;
@@ -470,12 +476,12 @@ public class EditRulePopup {
 		}
 		return rawRuleConditions;
 	}
-	
+
 	/**
 	 * @return boolean if GUI is in advanced mode or not
 	 */
 	public boolean isGUIAdvancedMode() {
 		return advancedMode;
 	}
-	
+
 }
