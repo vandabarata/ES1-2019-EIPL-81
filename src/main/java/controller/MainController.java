@@ -1,7 +1,5 @@
 package main.java.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -12,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileSystemView;
 
-import org.apache.poi.ss.examples.ExcelComparator;
 
 import main.java.gui.MainFrame;
 import main.java.gui.PopupUploadFile;
@@ -78,20 +75,15 @@ public class MainController {
 	/**
 	 * This method is used to run the action of the Import Button.
 	 */
-	private void initImportButtonAction(JButton import_button, PopupUploadFile uploadFile) {
-		import_button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				validateFile(uploadFile);
-			}
-		});
+	private void initImportButtonAction(JButton importButton, PopupUploadFile uploadFile) {
+		importButton.addActionListener(e -> validateFile(uploadFile));
 	}
 
 	/**
 	 * This method is used to validate if the selected file is a valid Excel format,
 	 */
-	public boolean isValid(String path_file) {
-		return path_file.endsWith(".xlsx") || path_file.endsWith(".xls");
+	public boolean isValid(String pathFile) {
+		return pathFile.endsWith(".xlsx") || pathFile.endsWith(".xls");
 	}
 
 	/**
@@ -122,7 +114,8 @@ public class MainController {
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
-		convertExcelRows();
+		// This isn't working for some reason so I'm commenting it out for now
+		// convertExcelRows(); 
 		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
