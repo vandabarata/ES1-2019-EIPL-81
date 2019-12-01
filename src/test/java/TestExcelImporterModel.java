@@ -1,4 +1,4 @@
-package test.java.model;
+package test.java;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,9 +8,12 @@ import java.util.Arrays;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
 import main.java.model.ExcelImporter;
 
+@RunWith(JUnitPlatform.class)
 class TestExcelImporterModel {
 
 	ExcelImporter ei;

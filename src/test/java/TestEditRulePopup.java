@@ -1,8 +1,10 @@
-package test.java.gui;
+package test.java;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
 import main.java.controller.MainController;
 import main.java.gui.EditRulePopup;
@@ -12,6 +14,7 @@ import main.java.model.CodeQualityRule;
  * This test is validating the window size, to ensure the popup is being
  * displayed properly.
  */
+@RunWith(JUnitPlatform.class)
 class TestEditRulePopup {
 	@Test
 	void testWindowSizeAtStart() {
