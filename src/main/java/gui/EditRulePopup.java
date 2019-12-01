@@ -379,14 +379,16 @@ public class EditRulePopup {
 		ruleConditions.clear();
 		ruleTextArea.setText("");
 		metricsListPanel.removeAll();
-		setConditionVisibility();
+		if (!advancedMode) {
+			setConditionVisibility();
+		}
 		metricsListPanel.revalidate();
 		metricsListPanel.repaint();
 	}
 
 	/**
 	 * This method handles setting the visibility of the Condition button in the
-	 * line responsible for allowing the user to add new metrics to the metrics'
+	 * line responsible for allowing the user to add new metrics to the metric's
 	 * list. Basically, it stops the first condition, and the first condition only,
 	 * from having an AND or an OR attached to it.
 	 */

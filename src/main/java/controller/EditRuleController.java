@@ -40,8 +40,8 @@ public class EditRuleController {
 	}
 
 	/**
-	 * Sets what the Edit Rule Popup delete button's action is In this case, only
-	 * deletes rule if it isn't default
+	 * Sets what the Edit Rule Popup delete button's action is. In this case, only
+	 * deletes rule if it isn't a default rule and if it is present in the rules list.
 	 */
 	private void onDeleteRule() {
 		if (rule.isDefault()) {
@@ -52,13 +52,11 @@ public class EditRuleController {
 			if (rulesList.contains(rule)) {
 				rulesList.remove(rule);
 				mainC.updateRulesList(rulesList);
-				mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
-				editRulePopup.showMessage("Rule has been deleted!");
+				editRulePopup.showMessage("Rule has been deleted successfully!");
 				editRulePopup.getFrame().dispose();
 			} else {
-				editRulePopup.showMessage("There is no rule to delete");
+				editRulePopup.showMessage("This rule is not in the rules list,\nso it cannot be deleted.");
 			}
-
 		}
 	}
 
