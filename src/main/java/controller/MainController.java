@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileSystemView;
 
-
 import main.java.gui.MainFrame;
 import main.java.gui.PopupUploadFile;
 import main.java.gui.QualityRulesResultFrame;
@@ -45,8 +44,8 @@ public class MainController {
 	 * to be used and manages the Main Frame.
 	 */
 	private MainController() {
-		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, true);
-		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, true);
+		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true, true);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true, true);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
 	}
@@ -228,6 +227,7 @@ public class MainController {
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
+		getMainFrame().updateRulesComboBox(newRules);
 	}
 
 	/**

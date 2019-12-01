@@ -56,8 +56,7 @@ public class CodeQualityRule {
 	 * rule's content if it's not a default rule
 	 */
 	public void setRule(String rule) {
-		if(!isDefault)
-			this.rule = rule;
+		this.rule = rule;
 	}
 	
 	/**

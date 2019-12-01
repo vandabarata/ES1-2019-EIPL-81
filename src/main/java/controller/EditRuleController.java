@@ -2,6 +2,7 @@ package main.java.controller;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Pattern;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -93,6 +94,11 @@ public class EditRuleController {
 			editRulePopup.showMessage("The rule provided has an invalid format. Cannot save it.");
 			return;
 		}
+		
+		if (!validadeDefaultRuleThresholds(rule.getName(), newRule)) {
+			editRulePopup.showMessage("This is a Default Rule. As such, only the thresholds \n can be edited. And values must be positive.");
+			return;
+		}
 
 
 		// updates the list with the new (validated) rule
@@ -108,8 +114,6 @@ public class EditRuleController {
 			rulesList.add(rule);
 		}
 		mainC.updateRulesList(rulesList);
-		mainC.getMainFrame()
-			.updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
 		editRulePopup.showMessage("Rule has been added successfully!");
 		editRulePopup.getFrame().dispose();
 	}
@@ -142,6 +146,27 @@ public class EditRuleController {
 		}
 		jsString += " return eval('" + rule + "');})()";
 		engine.eval(jsString);
+	}
+	
+	/**
+	 * This method validates if the default rules have their format respected and that only
+	 * the threshold values have been edited. It uses a regex tailored for each custom rule
+	 * to validate the edited rule. In case the rule name provided isn't of a default rule,
+	 * returns true, because non default rules can be fully edited.
+	 *
+	 * @param ruleName The name of the rule to be validated
+	 * @param rule The rule string to be validated
+	 * @return boolean If the rule has a valid format
+	 */
+	private boolean validadeDefaultRuleThresholds(String ruleName, String rule) {
+		switch (ruleName) {
+		case "custom_is_long_method":
+			return Pattern.matches("^LOC\\s*>\\s*\\d+\\s*\\&\\&\\s*CYCLO\\s*>\\s*\\d+$", rule);
+		case "custom_is_feature_envy":
+			return  Pattern.matches("^ATFD\\s*>\\s*\\d+\\s*\\&\\&\\s*LAA\\s*<\\s*((0(.[\\d]+)?)|1)$", rule);
+		default:
+			return true;
+		}
 	}
 
 }
