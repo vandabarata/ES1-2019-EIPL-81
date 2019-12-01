@@ -14,9 +14,12 @@ import main.java.model.Metric;
 
 public class EditRuleController {
 
+	/** GUI for editing and creating rules */
 	private EditRulePopup editRulePopup;
+	/** The rule being edited or created */
 	private CodeQualityRule rule;
-	MainController mainC = MainController.getMainControllerInstance();
+	/** MainController singleton */
+	private MainController mainC = MainController.getMainControllerInstance();
 
 	/**
 	 * @param rule The Controller receives a CodeQualityRule to be edited in the GUI
@@ -34,6 +37,9 @@ public class EditRuleController {
 		this(new CodeQualityRule("", "", false, false));
 	}
 
+	/**
+	 * Add action listeners to Save and Delete buttons from Edit Rule Popup
+	 */
 	private void initActionListeners() {
 		editRulePopup.getSaveButton().addActionListener(e -> onSaveRule());
 		editRulePopup.getDeleteButton().addActionListener(e -> onDeleteRule());
