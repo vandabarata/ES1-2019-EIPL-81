@@ -24,9 +24,9 @@ Repository made for the project of Software Engineering I at our CS course in IS
 ![ESI Group ID](https://img.shields.io/badge/Group-EI--PL%2081-82a1bf?style=for-the-badge)
 
 ![GitHub contributors](https://img.shields.io/github/contributors/vsfba1-iscteiul/ES1-2019-EIPL-81?style=for-the-badge&logo=github)
-* Vanda Barata, 81996
-* Franciele Faccin, 79879
-* Lino Silva, 82454
-* Diego Souza, 82113
-* João Miguel Louro, 82544
-* Hugo Barroca, 82695
+* Vanda Barata, 81996, vsfba1@iscte-iul.pt
+* Franciele Faccin, 79879, ftfni@iscte-iul.pt
+* Lino Silva, 82454, lrnsa@iscte-iul.pt
+* Diego Souza, 82113, djsar@iscte-iul.pt
+* João Miguel Louro, 82544, jmalo1@iscte-iul.pt
+* Hugo Barroca, 82695, hmpdb@iscte-iul.pt
