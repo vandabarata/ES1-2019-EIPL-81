@@ -24,6 +24,7 @@ tmp/
 .idea/
 *.iml
 *.iws
+.idea-modules
 
 # Mac
 .DS_Store

@@ -25,7 +25,7 @@ import javax.swing.filechooser.FileSystemView;
  * @author djsouza
  * @since 2019-11-08
  */
-public class Popup_UploadFile {
+public class PopupUploadFile {
 	private JFrame frame;
 	private JPanel panel;
 	private JButton import_button;
@@ -33,7 +33,7 @@ public class Popup_UploadFile {
 	/**
 	 * This method is used to generate the frame of first pop up File Upload.
 	 */
-	public Popup_UploadFile() {
+	public PopupUploadFile() {
 		frame = new JFrame("Upload File");
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

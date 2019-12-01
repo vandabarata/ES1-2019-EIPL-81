@@ -1,13 +1,11 @@
 package test.java.gui;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import javax.swing.JTable;
-
+import javax.swing.*;
+import main.java.gui.MainFrame;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import main.java.gui.MainFrame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestGUIMainFrame {
 	
@@ -19,8 +17,8 @@ class TestGUIMainFrame {
 		String[] header = {"header1", "header2"};
 		String[][] content = {{"cell0",  "cell1"},{"cell2", "cell3"}};
 
-		guiWithTable = new MainFrame(new JTable(content, header));
-		guiWithEmptyTable = new MainFrame(new JTable());
+		guiWithTable = new MainFrame(new JTable(content, header), null);
+		guiWithEmptyTable = new MainFrame(new JTable(), null);
 	}
 	
 	/**
@@ -28,7 +26,7 @@ class TestGUIMainFrame {
 	 */
 	@Test
 	void testJTableCreation() {
-		assertEquals(true, guiWithTable.getFrameWidth() > guiWithEmptyTable.getFrameWidth());
+		assertTrue(guiWithTable.getFrameWidth() > guiWithEmptyTable.getFrameWidth());
 	}
 
 }

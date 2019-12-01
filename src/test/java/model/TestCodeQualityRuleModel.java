@@ -1,7 +1,6 @@
 package test.java.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,8 +21,8 @@ class TestCodeQualityRuleModel {
 		
 		assertEquals("is_long_method", ruleDefault.getName());
 		assertEquals("LOC > 80 && CYCLO > 10", ruleDefault.getRule());
-		assertEquals(true, ruleDefault.isDefault());
-		assertEquals(false, ruleDefault.isAdvanced());
+		assertTrue(ruleDefault.isDefault());
+		assertFalse(ruleDefault.isAdvanced());
 	}
 	
 	/**
@@ -35,8 +34,8 @@ class TestCodeQualityRuleModel {
 		
 		assertEquals("is_banana", ruleNonDefault.getName());
 		assertEquals("ATFD > 4 && LAA < 0.42", ruleNonDefault.getRule());
-		assertEquals(false, ruleNonDefault.isDefault());
-		assertEquals(false, ruleNonDefault.isAdvanced());
+		assertFalse(ruleNonDefault.isDefault());
+		assertFalse(ruleNonDefault.isAdvanced());
 	}
 	
 	/**
@@ -74,8 +73,8 @@ class TestCodeQualityRuleModel {
 	@Test
 	void testTypeChangeDefaultRule() {
 		CodeQualityRule ruleDefault = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
-		
-		assertEquals(false, ruleDefault.isAdvanced());
+
+		assertFalse(ruleDefault.isAdvanced());
 		ruleDefault.setIsAdvanced(true);
 		assertNotEquals(true, ruleDefault.isAdvanced());
 	}
@@ -115,10 +114,10 @@ class TestCodeQualityRuleModel {
 	@Test
 	void testTypeChangeNonDefaultRule() {
 		CodeQualityRule ruleNonDefault = new CodeQualityRule("is_banana", "ATFD > 4 && LAA < 0.42", false, false);
-		
-		assertEquals(false, ruleNonDefault.isAdvanced());
+
+		assertFalse(ruleNonDefault.isAdvanced());
 		ruleNonDefault.setIsAdvanced(true);
-		assertEquals(true, ruleNonDefault.isAdvanced());
+		assertTrue(ruleNonDefault.isAdvanced());
 	}
 
 }
