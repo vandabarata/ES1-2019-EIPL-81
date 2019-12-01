@@ -45,8 +45,8 @@ public class MainController {
 	 * to be used and manages the Main Frame.
 	 */
 	private MainController() {
-		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
-		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, false);
+		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, true);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, true);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
 	}

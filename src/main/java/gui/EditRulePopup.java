@@ -157,13 +157,13 @@ public class EditRulePopup {
 			if (rule.getRule().isEmpty()) {
 				ruleConditionsTextPaneLabel = new JLabel("Add rule conditions as follows: ");
 
-				text = "Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
+				text = "Delete anything that doesn't follow the following format, including this helping text: \nLOC > 10\nAND LAA == 15";
 			}
 
 			else {
 				ruleConditionsTextPaneLabel = new JLabel("Rule conditions:");
-
-				text = rule.getRule();
+				String parsedRule = rule.getRule().replaceAll("\\&\\&", "AND").replaceAll("\\|\\|", "OR");
+				text = parsedRule;
 			}
 
 			ruleTextArea.setText(text);
@@ -337,7 +337,7 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Initializes all the JPanels at once.
+	 * Initialises all the JPanels at once.
 	 */
 	private void initializePanels() {
 		mainPanel = new JPanel();
@@ -491,9 +491,10 @@ public class EditRulePopup {
 	}
 
 	/**
+	 * Get the correct rule conditions, based on edition mode enabled,
+	 * with no parsing of the string.
 	 * 
-	 * 
-	 * @return
+	 * @return String The rule conditions string with no parsing
 	 */
 	public String getRawRuleConditions() {
 		String rawRuleConditions = "";

@@ -1,5 +1,7 @@
 package main.java.model;
 
+import java.util.Date;
+
 /**
  * A class that represents a rule based on 
  * predetermined or user-defined metrics
@@ -14,6 +16,7 @@ public class CodeQualityRule {
 	private String rule;
 	private boolean isDefault;
 	private boolean isAdvanced;
+	private long id;
 
 	/**
 	 * Creates a CodeQualityRule object based on:
@@ -28,6 +31,7 @@ public class CodeQualityRule {
 		this.rule = rule;
 		this.isDefault = isDefault;
 		this.isAdvanced = isAdvanced;
+		id = new Date().getTime();
 	}
 	
 	/**
@@ -98,6 +102,11 @@ public class CodeQualityRule {
 	*/
 	public String toString() {
 		return this.name;
+	}
+
+	public boolean equals(CodeQualityRule other) {
+		
+		return this.id == other.id;
 	}
 
 }

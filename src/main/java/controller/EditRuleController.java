@@ -1,9 +1,15 @@
 package main.java.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import main.java.gui.EditRulePopup;
 import main.java.model.CodeQualityRule;
+import main.java.model.Metric;
 
 public class EditRuleController {
 
@@ -78,40 +84,64 @@ public class EditRuleController {
 			return;
 		}
 
-		String newRule = getJavascriptString(rawRuleConditions);
+		String newRule = getJavascriptIfStatementString(rawRuleConditions);
 
-		// gets the rules list from the main controller
-		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
-
-		if (!rulesList.contains(rule)) {
-			rule = new CodeQualityRule(newName, newRule, false, editRulePopup.isAdvancedMode());
-		} else {
-			rulesList.remove(rule);
-
-			if (rule.isDefault()) {
-				rule = new CodeQualityRule(rule.getName(), newRule, true, rule.isAdvanced());
-			} else {
-				rule = new CodeQualityRule(newName, newRule, false, false);
-			}
-
+		try {
+			// Runs pre validation to try to catch some errors
+			preValidateJavascriptCode(newRule);
+		} catch (ScriptException e) {
+			editRulePopup.showMessage("The rule provided has an invalid format. Cannot save it.");
+			return;
 		}
+
 
 		// updates the list with the new (validated) rule
 		// updates the list for the main controller
-		rulesList.add(rule);
+		if (!rule.isDefault()) {
+			rule.setName(newName);
+		}
+		rule.setRule(newRule);
+		rule.setIsAdvanced(true);
+		// Gets the rules list from the main controller
+		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
+		if (!rulesList.contains(rule)) {
+			rulesList.add(rule);
+		}
 		mainC.updateRulesList(rulesList);
-		mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
+		mainC.getMainFrame()
+			.updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
 		editRulePopup.showMessage("Rule has been added successfully!");
 		editRulePopup.getFrame().dispose();
 	}
 
 	/**
+	 * Parses the rule string from the Edit Rule Popup to use keywords valid for Javascript code.
 	 * 
 	 * @return Returns a javascript-ready string for evaluation.
 	 */
-	public String getJavascriptString(String rawRuleConditions) {
-		String javascriptString = rawRuleConditions.replaceAll("IF", "").replaceAll("AND", "&&").replaceAll("OR", "||");
-		return javascriptString;
+	public String getJavascriptIfStatementString(String rawRuleConditions) {
+		return rawRuleConditions.replaceAll("IF", "").replaceAll("AND", "&&").replaceAll("OR", "||").trim();
+	}
+
+	/**
+	 * This method will pre validate the Javascript format rule to find any initial issues with the
+	 * statement format. Will add mock data for metrics and evaluate the string. Throws an exception
+	 * if the string if founds to be invalid. Runs normally when no initial issues are found. This is
+	 * just a prevalidation, and doesn't eliminate the necessity of using a try/catch when running the rule
+	 * against the real data.
+	 * 
+	 * @param rule An if statement rule in Javascript format to be validated
+	 * @throws ScriptException When evaluation of the rule finds an issue, it throws an exception
+	 */
+	private void preValidateJavascriptCode(String rule) throws ScriptException {
+		ScriptEngineManager engineManager = new ScriptEngineManager();
+		ScriptEngine engine = engineManager.getEngineByName("ECMAScript");
+		String jsString = "\"use strict\"; (function() {";
+		for (Metric metric : Metric.values()) {
+			jsString += "var " + metric + " = 0; ";
+		}
+		jsString += " return eval('" + rule + "');})()";
+		engine.eval(jsString);
 	}
 
 }
