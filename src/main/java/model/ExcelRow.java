@@ -3,8 +3,6 @@ package main.java.model;
 /**
  * Represents an Excel Row model
  * 
- * @author Lino Silva
- *
  */
 public class ExcelRow {
 

@@ -1,10 +1,8 @@
 package main.java.model;
 
 /**
- * Simple enum holding to conditions: AND and OR.
+ * Simple enum holding two conditions: AND and OR.
  * 
- * @author hugo.barroca
- *
  */
 public enum Condition {
 	AND, OR

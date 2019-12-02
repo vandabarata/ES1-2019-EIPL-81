@@ -1,23 +1,18 @@
 package main.java.controller;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.filechooser.FileSystemView;
 
 import main.java.gui.MainFrame;
+import main.java.gui.PopupUploadFile;
 import main.java.gui.QualityRulesResultFrame;
-import main.java.gui.Popup_UploadFile;
-
-import java.util.ArrayList;
-
-import javax.swing.JTable;
-
 import main.java.model.CodeQualityRule;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
@@ -34,7 +29,6 @@ import main.java.model.ExcelRow;
  * The controller receives the input, optionally validates it and then passes
  * the input to the model.
  */
-
 public class MainController {
 	private MainFrame gui;
 	private QualityRulesResultFrame qualityGui;
@@ -43,22 +37,36 @@ public class MainController {
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+	private static MainController instance;
 	
 	/**
-	 * MainController constructor. Creates the default rules to be used.
+	 * Singleton MainController - only 1 instance allowed. Creates the default rules
+	 * to be used and manages the Main Frame.
 	 */
-	public MainController() {
-		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
-		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, false);
+	private MainController() {
+		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true, true);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true, true);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
+	}
+
+	/**
+	 * Public method that returns the main controller singleton instance
+	 * 
+	 * @return MainController
+	 */
+	public static MainController getMainControllerInstance() {
+		if (instance == null) {
+			instance = new MainController();
+		}
+		return instance;
 	}
 
 	/**
 	 * This method is used to initiate the button listener
 	 */
 	public void init() {
-		Popup_UploadFile uploadFile = new Popup_UploadFile();
+		PopupUploadFile uploadFile = new PopupUploadFile();
 		JButton import_button = uploadFile.getImportJButton();
 		initImportButtonAction(import_button, uploadFile);
 	}
@@ -66,36 +74,29 @@ public class MainController {
 	/**
 	 * This method is used to run the action of the Import Button.
 	 */
-	public void initImportButtonAction(JButton import_button, Popup_UploadFile uploadFile) {
-		import_button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				validateFile(uploadFile);
-			}
-		});
+	private void initImportButtonAction(JButton importButton, PopupUploadFile uploadFile) {
+		importButton.addActionListener(e -> validateFile(uploadFile));
 	}
 
 	/**
 	 * This method is used to validate if the selected file is a valid Excel format,
 	 */
-	public boolean isValid(String path_file) {
-		if (path_file.endsWith(".xlsx") || path_file.endsWith(".xls"))
-			return true;
-		return false;
+	public boolean isValid(String pathFile) {
+		return pathFile.endsWith(".xlsx") || pathFile.endsWith(".xls");
 	}
 
 	/**
 	 * This method is used to import the file and create a main frame if the file is
 	 * valid, otherwise it will show a warning message.
 	 */
-	public void validateFile(Popup_UploadFile uploadFile) {
+	private void validateFile(PopupUploadFile uploadFile) {
 
 		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
 		int returnValue = jfc.showOpenDialog(null);
 		if (returnValue == JFileChooser.APPROVE_OPTION) {
 			File selectedFile = jfc.getSelectedFile();
 			path = selectedFile.getAbsolutePath();
-			
+
 			if (isValid(path)) {
 				uploadFile.close();
 				initMainFrame();
@@ -107,22 +108,25 @@ public class MainController {
 
 	/**
 	 * Initialise the MainFrame and support Frames. Create necessary objects to
-	 * support it. 
+	 * support it.
 	 */
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
-		convertExcelRows();
-		gui = new MainFrame(createExcelTable());
+		convertExcelRows(); 
+		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
-		editButton(this.gui.getEditButton(), this.gui.getComboBox());
+
+		editButton(this.gui.getEditButton(), this.gui.getRulesComboBox());
+		addButton(this.gui.getAddButton());
 	}
 
 	/**
-	 * Formats all data to a valid format to a JTable
+	 * Formats all data to a valid format to a JTable and returns a JTable with the
+	 * cell's content
 	 * 
-	 * @return String matrix with the cell's content
+	 * @return JTable
 	 */
 	private JTable createExcelTable() {
 		String[][] dataForTable = new String[excelRows.size() - 1][excelRows.get(1).length];
@@ -139,34 +143,48 @@ public class MainController {
 	/**
 	 * Converts all the valid rows into ExcelRow model
 	 * 
-	 * @author Lino Silva
+	 * Starts at index 1 because we only want to convert the table content
+	 * and not the header
 	 */
 	private void convertExcelRows() {
-		excelRows.forEach(element -> {
+		for(int i = 1; i < excelRows.size(); i++) {
 			try {
-				excelRowsConverted.add(new ExcelRow(element));
-			} catch (Exception e) {
+				excelRowsConverted.add(new ExcelRow(excelRows.get(i)));
+			}
 
+			catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "An error occurred while converting the Excel Rows", "Warning",
+						JOptionPane.WARNING_MESSAGE);
+				throw e;
 			}
-		});
+		}
 	}
-	
+
 	/**
-	 * This method is used to run the action of the Edit Button 
-	 * with the selected rule of drop down
+	 * This method is used to open the EditRuleController which controls the Rule
+	 * Edition GUI
 	 */
-	public void editButton(JButton editButton, JComboBox checkbox) {
-		editButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String ruleName = (String)checkbox.getSelectedItem();
-				System.out.print(ruleName);
-				
-				//TODO Correr o pop up do Hugo para Editar Regras e a lógica associada
+	private void editButton(JButton editButton, JComboBox<CodeQualityRule> ruleListBox) {
+
+		editButton.addActionListener(e -> {
+
+			CodeQualityRule rule = (CodeQualityRule) ruleListBox.getSelectedItem();
+
+			if (rule == null) {
+				new EditRuleController();
+
+			} else {
+				new EditRuleController(rule);
 			}
 		});
 	}
-	
+
+	/**
+	 * Sets the add Button in the MainFrame to open an empty Rule Edition Popup
+	 */
+	private void addButton(JButton addButton) {
+		addButton.addActionListener(e -> new EditRuleController());
+	}
 
 	/**
 	 * Verify the code quality based on the Rules created and sends the results to
@@ -175,7 +193,7 @@ public class MainController {
 	private void checkCodeQualityAndShow() {
 		String[][] results = getCodeQualityResults();
 		// TODO get real column names
-		String[] colNames = new String[] { "head 1", "head 2", "head 3" };
+		String[] colNames = new String[] { "Method ID", "PMD", "iPlasma", "long_method", "feature_envy" };
 		qualityGui.fillTable(results, colNames);
 		qualityGui.show();
 	}
@@ -187,8 +205,37 @@ public class MainController {
 	 */
 	private String[][] getCodeQualityResults() {
 		// TODO calculate code quality
-		String[][] results = new String[][] { { "col 1", "col 2", "col 3" }, { "col 1", "col 2", "col 3" },
-				{ "col 1", "col 2", "col 3" } };
+		String[][] results = new String[][] { { "1", "TRUE", "TRUE", "TRUE", "FALSE" }, { "2", "TRUE", "FALSE", "TRUE", "FALSE" },
+				{ "3", "TRUE", "TRUE", "FALSE", "FALSE"} };
 		return results;
 	}
+
+	/**
+	 * Returns the entire rules list
+	 * 
+	 * @return ArrayList<CodeQualityRule>
+	 */
+	public ArrayList<CodeQualityRule> getRulesList() {
+		return rulesList;
+	}
+
+	/**
+	 * Receives an updated list of rules and replaces the old rules list with it
+	 * 
+	 * @param newRules
+	 */
+	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
+		rulesList = newRules;
+		getMainFrame().updateRulesComboBox(newRules);
+	}
+
+	/**
+	 * Returns the main frame
+	 * 
+	 * @return MainFrame
+	 */
+	public MainFrame getMainFrame() {
+		return gui;
+	}
+
 }
