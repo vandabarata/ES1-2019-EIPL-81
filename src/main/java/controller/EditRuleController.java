@@ -99,7 +99,7 @@ public class EditRuleController {
 			return;
 		}
 
-		if (rule.isDefault() && !isValidDefaultRuleThresholdsUpdate(rule)) {
+		if (rule.isDefault() && !isValidDefaultRuleThresholdsUpdate(rule.getName(), newRule)) {
 			editRulePopup.showMessage(
 					"This is a Default Rule. As such, only the thresholds \n can be edited. And values must be positive.");
 			return;
@@ -161,19 +161,27 @@ public class EditRuleController {
 	 * each custom rule to validate the edited rule. In case the rule name provided
 	 * isn't of a known default rule, returns false.
 	 *
-	 * @param rule CodeQualityRule to be validated
+	 * @param ruleName The name of the rule to be validated
+	 * @param rule The rule string to be validated
 	 * @return boolean If the rule has a valid format
 	 */
-	private boolean isValidDefaultRuleThresholdsUpdate(CodeQualityRule rule) {
-		String ruleCondition = rule.getRule();
-		switch (rule.getName()) {
+	private boolean isValidDefaultRuleThresholdsUpdate(String ruleName, String rule) {
+		switch (ruleName) {
 		case "custom_is_long_method":
-			return Pattern.matches("^LOC\\s*>\\s*\\d+\\s*\\&\\&\\s*CYCLO\\s*>\\s*\\d+$", ruleCondition);
+			return Pattern.matches("^LOC\\s*>\\s*\\d+\\s*&&\\s*CYCLO\\s*>\\s*\\d+$", rule);
 		case "custom_is_feature_envy":
-			return Pattern.matches("^ATFD\\s*>\\s*\\d+\\s*\\&\\&\\s*LAA\\s*<\\s*((0(.[\\d]+)?)|1)$", ruleCondition);
+			return Pattern.matches("^ATFD\\s*>\\s*\\d+\\s*&&\\s*LAA\\s*<\\s*((0(.[\\d]+)?)|1)$", rule);
 		default:
 			return false;
 		}
+	}
+	
+	/**
+	 * Getter for editRulePopup instance
+	 * @return EditRulePopup controlled by this controller instance
+	 */
+	public EditRulePopup getEditRulePopup() {
+		return editRulePopup;
 	}
 
 }
