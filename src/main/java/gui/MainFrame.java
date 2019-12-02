@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -226,5 +227,14 @@ public class MainFrame {
 		for (Object rule : updatedRules) {
 			rulesDropDown.addItem(rule);
 		}
+	}
+	
+	/**
+	 * Method that generates an alert with the received message
+	 * 
+	 * @param message
+	 */
+	public void showMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
 	}
 }

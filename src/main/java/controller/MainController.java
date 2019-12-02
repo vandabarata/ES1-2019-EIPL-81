@@ -191,23 +191,32 @@ public class MainController {
 	 * be displayed in the QualityRulesResultFrame
 	 */
 	private void checkCodeQualityAndShow() {
-		String[][] results = getCodeQualityResults();
-		// TODO get real column names
-		String[] colNames = new String[] { "head 1", "head 2", "head 3" };
-		qualityGui.fillTable(results, colNames);
-		qualityGui.show();
+		try {
+			String[][] results = getCodeQualityResults();
+			// TODO get real column names
+			String[] colNames = new String[] { "head 1", "head 2", "head 3" };
+			qualityGui.fillTable(results, colNames);
+			qualityGui.show();
+		} catch(Exception e) {
+			gui.showMessage(e.getMessage());
+		}
 	}
 
 	/**
 	 * @return An Array of String arrays where each line is a row with the code
 	 *         quality results for a method, and each column is the value of that
 	 *         result line for that column
+	 * @throws Exception 
 	 */
-	private String[][] getCodeQualityResults() {
-		// TODO calculate code quality
-		String[][] results = new String[][] { { "col 1", "col 2", "col 3" }, { "col 1", "col 2", "col 3" },
+	private String[][] getCodeQualityResults() throws Exception  {
+		try {
+			// TODO calculate code quality
+			String[][] results = new String[][] { { "col 1", "col 2", "col 3" }, { "col 1", "col 2", "col 3" },
 				{ "col 1", "col 2", "col 3" } };
-		return results;
+			return results;
+		} catch (Exception e) {
+			throw new Exception("Failed to check code quality\nPlease review the " + "Whiskas Saquetas" + " rule");
+		}
 	}
 
 	/**
