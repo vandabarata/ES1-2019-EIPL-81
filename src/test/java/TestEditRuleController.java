@@ -33,10 +33,10 @@ class TestEditRuleController {
 	
 	@Test
 	void testGetJavascriptString() {
-		String ruleConditions = "IF LOC > 10 AND LAA == 20 OR LAA != 5";
+		String ruleConditions = "LOC > 10 AND LAA == 20 OR LAA != 5";
 		controller = new EditRuleController();
-		String testJS = controller.getJavascriptString(ruleConditions);
-		assertEquals(" LOC > 10 && LAA == 20 || LAA != 5", testJS);
+		String testJS = controller.getJavascriptIfStatementString(ruleConditions);
+		assertEquals("LOC > 10 && LAA == 20 || LAA != 5", testJS);
 	}
 
 }

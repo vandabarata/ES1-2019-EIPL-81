@@ -7,12 +7,12 @@ package main.java.model;
  * 
  * @author hugo.barroca
  */
-public enum Operator {
+public enum ComparisonOperator {
 	GT(">"), LT("<"), GE(">="), LE("<="), EQ("=="), DF("!=");
 
 	private String symbol;
 
-	private Operator(String symbol) {
+	private ComparisonOperator(String symbol) {
 		this.symbol = symbol;
 	}
 

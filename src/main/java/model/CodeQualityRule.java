@@ -1,10 +1,11 @@
 package main.java.model;
 
+import java.util.Date;
+
 /**
  * A class that represents a rule based on predetermined or user-defined metrics
  * and thresholds to detect code defects and thus determine code quality
  * 
- * @author Lino Silva
  */
 public class CodeQualityRule {
 
@@ -12,6 +13,7 @@ public class CodeQualityRule {
 	private String rule;
 	private boolean isDefault;
 	private boolean isAdvanced;
+	private long id;
 
 	/**
 	 * Creates a CodeQualityRule object based on:
@@ -26,6 +28,7 @@ public class CodeQualityRule {
 		this.name = name;
 		this.rule = rule;
 		this.isDefault = isDefault;
+		id = new Date().getTime();
 		if (isDefault) {
 			this.isAdvanced = true;
 		}
@@ -55,8 +58,7 @@ public class CodeQualityRule {
 	 *               content if it's not a default rule
 	 */
 	public void setRule(String rule) {
-		if (!isDefault)
-			this.rule = rule;
+		this.rule = rule;
 	}
 
 	/**
@@ -105,6 +107,11 @@ public class CodeQualityRule {
 	 */
 	public String toString() {
 		return this.name;
+	}
+
+	public boolean equals(CodeQualityRule other) {
+		
+		return this.id == other.id;
 	}
 
 }

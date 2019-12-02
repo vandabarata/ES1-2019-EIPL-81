@@ -10,7 +10,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.filechooser.FileSystemView;
 
-
 import main.java.gui.MainFrame;
 import main.java.gui.PopupUploadFile;
 import main.java.gui.QualityRulesResultFrame;
@@ -45,8 +44,8 @@ public class MainController {
 	 * to be used and manages the Main Frame.
 	 */
 	private MainController() {
-		CodeQualityRule is_long_method = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
-		CodeQualityRule is_feature_envy = new CodeQualityRule("is_feature_envy", "ATFD > 4 && LAA < 0.42", true, false);
+		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true, true);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true, true);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
 	}
@@ -194,7 +193,7 @@ public class MainController {
 	private void checkCodeQualityAndShow() {
 		String[][] results = getCodeQualityResults();
 		// TODO get real column names
-		String[] colNames = new String[] { "head 1", "head 2", "head 3" };
+		String[] colNames = new String[] { "Method ID", "PMD", "iPlasma", "long_method", "feature_envy" };
 		qualityGui.fillTable(results, colNames);
 		qualityGui.show();
 	}
@@ -206,8 +205,8 @@ public class MainController {
 	 */
 	private String[][] getCodeQualityResults() {
 		// TODO calculate code quality
-		String[][] results = new String[][] { { "col 1", "col 2", "col 3" }, { "col 1", "col 2", "col 3" },
-				{ "col 1", "col 2", "col 3" } };
+		String[][] results = new String[][] { { "1", "TRUE", "TRUE", "TRUE", "FALSE" }, { "2", "TRUE", "FALSE", "TRUE", "FALSE" },
+				{ "3", "TRUE", "TRUE", "FALSE", "FALSE"} };
 		return results;
 	}
 
@@ -227,6 +226,7 @@ public class MainController {
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
+		getMainFrame().updateRulesComboBox(newRules);
 	}
 
 	/**

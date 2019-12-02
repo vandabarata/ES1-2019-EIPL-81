@@ -5,8 +5,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
-import java.awt.event.WindowListener;
-import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -22,44 +20,68 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import main.java.controller.MainController;
 import main.java.model.CodeQualityRule;
-import main.java.model.Condition;
+import main.java.model.LogicalOperator;
 import main.java.model.Metric;
-import main.java.model.Operator;
+import main.java.model.ComparisonOperator;
 
 /**
  * GUI pop-up responsible for allowing the user to edit and add different rules
- * for visualizing the excel table.
- * 
- * @author Hugo Barroca, Vanda Barata and Franciele Faccin
+ * for visualising the excel table.
  */
 public class EditRulePopup {
 
+	/** The rule being edited or created */ 
 	private CodeQualityRule rule;
+	/** An array of string with the rules conditions where every position
+	 *  is a new line in the condition */
 	private ArrayList<String> ruleConditions = new ArrayList<String>();
+	/** The main frame of the GUI */
 	private JFrame frame;
+	/** The rule name text field in the GUI */
 	private JTextField nameText;
-	private JComboBox<String> conditionListBox;
-	private JComboBox<String> valueListBox;
-	private JComboBox<String> operatorListBox;
+	/** The Combo Box displaying the options of logical operators
+	 *  available for rule creation (AND, OR), for Basic Mode */
+	private JComboBox<String> logicalOperatorListBox;
+	/** The Combo Box displaying the available metrics for
+	 * rule creation (LOC, CYCLO, ATFD, LAA), for Basic Mode */
+	private JComboBox<String> metricsListBox;
+	/** The Combo Box displaying the available comparison operators
+	 *  for rule creation (>, <, >=, \<=, ==, !=), in Basic Mode */
+	private JComboBox<String> comparisonOperatorListBox;
+	/** The Text Area the displays the rule conditions and that can be
+	 *  edited by the user */
 	private JTextArea ruleTextArea;
 
+	/** The Delete rule button */
 	private JButton deleteButton;
+	/** The Save rule button */
 	private JButton saveButton;
 
+	/** The main JPanel of the GUI */
 	private JPanel mainPanel;
+	/** The JPanel to display the rule's name */
 	private JPanel namePanel;
-	private JPanel metricsPanel;
+	/** The JPanel to display the rule's conditions */
+	private JPanel ruleConditionsPanel;
+	/** The JPanel to display the buttons to switch between
+	 *  Basic and Advanced modes */
 	private JPanel editorComplexityTogglePanel;
-	private JPanel metricsListPanel;
-	private JPanel addNewMetricPanel;
+	/** The JPanel to display the current rule conditions added in Basic Mode */
+	private JPanel ruleConditionsListPanel;
+	/** The JPanel to display the interface to add a new rule condition in Basic Mode */
+	private JPanel addNewRuleConditionPanel;
+	/** The JPanel to display the action buttons (Clear/Delete/Save) */
 	private JPanel controlPanel;
+	/** The JPanel for the content in the center of the GUI */
 	private JPanel centerPanel;
 
+	/** If the GUI is on Advanced Mode */
 	private boolean advancedMode;
+	/** If the rule being edited is a Default Rule */
 	private boolean defaultRule;
-	private boolean conditionVisibilitySet;
+	/** If should display the logical operators ComcoBox in Basic Mode */
+	private boolean logicalOperatorsVisibility;
 
 	/**
 	 * Constructs and initializes the GUI pop-up. It opens the Basic or Advanced
@@ -122,17 +144,17 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Returns the JPanel responsible for holding either both the Metrics panel,
-	 * which allows edits to the current metrics, and the complexity toggle panel,
-	 * which allows changing in between the basic and advanced modes.
+	 * Returns the JPanel responsible for holding both the ruleConditionsPanel,
+	 * which allows edits to the current rule, and the complexity toggle panel,
+	 * which allows changing in between the Basic and Advanced modes.
 	 * 
 	 * @return JPanel
 	 */
 	private JPanel createCenterPanel() {
-		createMetricsPanel();
+		createRuleConditionsPanel();
 		createEditorComplexityTogglePanel();
 		centerPanel.setLayout(new BorderLayout());
-		centerPanel.add(metricsPanel, BorderLayout.CENTER);
+		centerPanel.add(ruleConditionsPanel, BorderLayout.CENTER);
 		centerPanel.add(editorComplexityTogglePanel, BorderLayout.EAST);
 		return centerPanel;
 	}
@@ -145,11 +167,11 @@ public class EditRulePopup {
 	 * 
 	 * @return JPanel
 	 */
-	private JPanel createMetricsPanel() {
+	private JPanel createRuleConditionsPanel() {
 		if (advancedMode || defaultRule || rule.getName() != "") {
 
-			metricsPanel.removeAll();
-			metricsPanel.setLayout(new BorderLayout());
+			ruleConditionsPanel.removeAll();
+			ruleConditionsPanel.setLayout(new BorderLayout());
 
 			String text;
 			JLabel ruleConditionsTextPaneLabel;
@@ -157,13 +179,13 @@ public class EditRulePopup {
 			if (rule.getRule().isEmpty()) {
 				ruleConditionsTextPaneLabel = new JLabel("Add rule conditions as follows: ");
 
-				text = "Delete anything that doesn't follow the following format, including this helping text: \nIF LOC > 10\nAND LAA == 15";
+				text = "Delete anything that doesn't follow the following format, including this helping text: \nLOC > 10\nAND LAA == 15";
 			}
 
 			else {
 				ruleConditionsTextPaneLabel = new JLabel("Rule conditions:");
-
-				text = rule.getRule();
+				String parsedRule = rule.getRule().replaceAll("\\&\\&", "AND").replaceAll("\\|\\|", "OR");
+				text = parsedRule;
 			}
 
 			ruleTextArea.setText(text);
@@ -171,7 +193,7 @@ public class EditRulePopup {
 			final JScrollPane advancedRuleConditionsPane = new JScrollPane(ruleTextArea,
 					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-			metricsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+			ruleConditionsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
 			String availableMetricsText = new String();
 			for (Metric metric : Metric.values()) {
@@ -180,87 +202,87 @@ public class EditRulePopup {
 
 			JLabel availableMetrics = new JLabel("Available metrics: \n" + availableMetricsText);
 
-			metricsPanel.add(advancedRuleConditionsPane, BorderLayout.CENTER);
-			metricsPanel.add(ruleConditionsTextPaneLabel, BorderLayout.NORTH);
-			metricsPanel.add(availableMetrics, BorderLayout.SOUTH);
+			ruleConditionsPanel.add(advancedRuleConditionsPane, BorderLayout.CENTER);
+			ruleConditionsPanel.add(ruleConditionsTextPaneLabel, BorderLayout.NORTH);
+			ruleConditionsPanel.add(availableMetrics, BorderLayout.SOUTH);
 
 		} else {
 
-			metricsPanel.removeAll();
-			metricsListPanel.setLayout(new BoxLayout(metricsListPanel, BoxLayout.Y_AXIS));
-			metricsListPanel.setMinimumSize(new Dimension(500, 500));
-			final JScrollPane metricsScrollpane = new JScrollPane(metricsListPanel,
+			ruleConditionsPanel.removeAll();
+			ruleConditionsListPanel.setLayout(new BoxLayout(ruleConditionsListPanel, BoxLayout.Y_AXIS));
+			ruleConditionsListPanel.setMinimumSize(new Dimension(500, 500));
+			final JScrollPane ruleConditionsScrollpane = new JScrollPane(ruleConditionsListPanel,
 					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-			createAddMetricPanel();
-			metricsPanel.setLayout(new BorderLayout());
-			metricsPanel.add(addNewMetricPanel, BorderLayout.NORTH);
-			metricsPanel.add(metricsScrollpane, BorderLayout.CENTER);
-			fillMetricsListPanel();
-			setConditionVisibility();
-			metricsListPanel.revalidate();
-			metricsListPanel.repaint();
+			createAddRuleConditionPanel();
+			ruleConditionsPanel.setLayout(new BorderLayout());
+			ruleConditionsPanel.add(addNewRuleConditionPanel, BorderLayout.NORTH);
+			ruleConditionsPanel.add(ruleConditionsScrollpane, BorderLayout.CENTER);
+			fillRuleConditionsListPanel();
+			setLogicalOperatorBoxVisibility();
+			ruleConditionsListPanel.revalidate();
+			ruleConditionsListPanel.repaint();
 		}
-		return metricsPanel;
+		return ruleConditionsPanel;
 	}
 
 	/**
 	 * 
-	 * Returns the JPanel holding the line which allows users to add new metrics
-	 * into the metrics list. For basic mode.
+	 * Returns the JPanel holding the line which allows users to add new rule conditions
+	 * into the rule's conditions list. For Basic Mode.
 	 * 
 	 * @return JPanel
 	 */
-	private JPanel createAddMetricPanel() {
-		addNewMetricPanel.removeAll();
-		addNewMetricPanel.setLayout(new GridLayout(1, 6));
-		conditionListBox = new JComboBox<>();
-		setConditionVisibility();
+	private JPanel createAddRuleConditionPanel() {
+		addNewRuleConditionPanel.removeAll();
+		addNewRuleConditionPanel.setLayout(new GridLayout(1, 6));
+		logicalOperatorListBox = new JComboBox<>();
+		setLogicalOperatorBoxVisibility();
 		JLabel ifCondition = new JLabel("IF", SwingConstants.CENTER);
 
-		valueListBox = new JComboBox<>();
+		metricsListBox = new JComboBox<>();
 		for (Metric metric : Metric.values()) {
-			valueListBox.addItem(metric.name());
+			metricsListBox.addItem(metric.name());
 		}
 
-		operatorListBox = new JComboBox<>();
-		for (Operator comp : Operator.values()) {
-			operatorListBox.addItem(comp.getSymbol());
+		comparisonOperatorListBox = new JComboBox<>();
+		for (ComparisonOperator comp : ComparisonOperator.values()) {
+			comparisonOperatorListBox.addItem(comp.getSymbol());
 		}
 
 		JTextField threshold = new JTextField("");
 
-		JButton addMetricButton = new JButton("Add");
-		addMetricButton.addActionListener(e -> {
-			String metric;
-			String baseMetric = " " + operatorListBox.getSelectedItem() + " " + threshold.getText() + " ";
+		JButton addRuleConditionButton = new JButton("Add");
+		addRuleConditionButton.addActionListener(e -> {
+			String ruleCondition;
+			String baseRuleCondition = " " + comparisonOperatorListBox.getSelectedItem() + " " + threshold.getText() + " ";
 			try {
 				Integer.parseInt(threshold.getText());
 				if (ruleConditions.isEmpty()) {
-					metric = "IF " + valueListBox.getSelectedItem() + baseMetric;
+					ruleCondition = "IF " + metricsListBox.getSelectedItem() + baseRuleCondition;
 				} else {
-					metric = conditionListBox.getSelectedItem() + " " + valueListBox.getSelectedItem() + baseMetric;
+					ruleCondition = logicalOperatorListBox.getSelectedItem() + " " + metricsListBox.getSelectedItem() + baseRuleCondition;
 				}
-				ruleConditions.add(metric);
+				ruleConditions.add(ruleCondition);
 			} catch (NumberFormatException ex) {
 				JOptionPane.showMessageDialog(null, "Please check if your threshold input is correct!");
 			}
 
-			fillMetricsListPanel();
-			setConditionVisibility();
-			metricsListPanel.revalidate();
-			metricsListPanel.repaint();
+			fillRuleConditionsListPanel();
+			setLogicalOperatorBoxVisibility();
+			ruleConditionsListPanel.revalidate();
+			ruleConditionsListPanel.repaint();
 		});
 
-		addNewMetricPanel.add(conditionListBox);
-		addNewMetricPanel.add(ifCondition);
-		addNewMetricPanel.add(valueListBox);
-		addNewMetricPanel.add(operatorListBox);
-		addNewMetricPanel.add(threshold);
-		addNewMetricPanel.add(addMetricButton);
-		addNewMetricPanel.setPreferredSize(new Dimension(650, 25));
-		addNewMetricPanel.setMaximumSize(new Dimension(650, 25));
-		return addNewMetricPanel;
+		addNewRuleConditionPanel.add(logicalOperatorListBox);
+		addNewRuleConditionPanel.add(ifCondition);
+		addNewRuleConditionPanel.add(metricsListBox);
+		addNewRuleConditionPanel.add(comparisonOperatorListBox);
+		addNewRuleConditionPanel.add(threshold);
+		addNewRuleConditionPanel.add(addRuleConditionButton);
+		addNewRuleConditionPanel.setPreferredSize(new Dimension(650, 25));
+		addNewRuleConditionPanel.setMaximumSize(new Dimension(650, 25));
+		return addNewRuleConditionPanel;
 
 	}
 
@@ -286,9 +308,9 @@ public class EditRulePopup {
 			if (!(rule.isAdvanced() || rule.isDefault() || rule.getName() != "")) {
 				advancedComplexity.setEnabled(true);
 				advancedMode = false;
-				createMetricsPanel();
-				metricsPanel.revalidate();
-				metricsPanel.repaint();
+				createRuleConditionsPanel();
+				ruleConditionsPanel.revalidate();
+				ruleConditionsPanel.repaint();
 				basicComplexity.setEnabled(false);
 			}
 
@@ -301,9 +323,9 @@ public class EditRulePopup {
 				basicComplexity.setEnabled(true);
 			}
 			advancedMode = true;
-			createMetricsPanel();
-			metricsPanel.revalidate();
-			metricsPanel.repaint();
+			createRuleConditionsPanel();
+			ruleConditionsPanel.revalidate();
+			ruleConditionsPanel.repaint();
 			advancedComplexity.setEnabled(false);
 		});
 		editorComplexityTogglePanel.add(basicComplexity);
@@ -314,19 +336,19 @@ public class EditRulePopup {
 
 	/**
 	 * Returns the JPanel responsible for holding the JButtons which allow all
-	 * metrics to be cleared, or the rule to be saved.
+	 * rule conditions to be cleared, or the rule to be saved.
 	 * 
 	 * @return JPanel
 	 */
 	private JPanel createControlPanel() {
 		controlPanel.setLayout(new GridLayout(1, 3));
 
-		JButton clearButton = new JButton("Clear Metrics");
+		JButton clearButton = new JButton("Clear Rule Conditions");
 		deleteButton = new JButton("Delete Rule");
 		saveButton = new JButton("Save Rule");
 
 		clearButton.addActionListener(e -> {
-			clearMetricsListPanel();
+			clearRuleConditionsListPanel();
 		});
 
 		controlPanel.add(clearButton);
@@ -337,70 +359,72 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Initializes all the JPanels at once.
+	 * Initialises all the JPanels at once.
 	 */
 	private void initializePanels() {
 		mainPanel = new JPanel();
 		namePanel = new JPanel();
-		metricsPanel = new JPanel();
+		ruleConditionsPanel = new JPanel();
 		editorComplexityTogglePanel = new JPanel();
-		metricsListPanel = new JPanel();
-		addNewMetricPanel = new JPanel();
+		ruleConditionsListPanel = new JPanel();
+		addNewRuleConditionPanel = new JPanel();
 		controlPanel = new JPanel();
 		centerPanel = new JPanel();
 		ruleTextArea = new JTextArea();
 	}
 
 	/**
-	 * This method fills the metric's list in the UI with the contents found in the
-	 * ruleMetrics ArrayList.
+	 * This method fills the rule's conditions list in the UI with the contents found in the
+	 * ruleConditions ArrayList.
 	 */
-	private void fillMetricsListPanel() {
-		metricsListPanel.removeAll();
+	private void fillRuleConditionsListPanel() {
+		ruleConditionsListPanel.removeAll();
 
-		for (String metric : ruleConditions) {
+		for (String condition : ruleConditions) {
 			JPanel panel = new JPanel();
 			panel.setLayout(new GridLayout(1, 2));
-			JLabel metricLabel = new JLabel(metric);
-			metricLabel.setHorizontalAlignment(JLabel.CENTER);
-			panel.add(metricLabel);
-			metricsListPanel.add(panel);
+			JLabel conditionLabel = new JLabel(condition);
+			conditionLabel.setHorizontalAlignment(JLabel.CENTER);
+			panel.add(conditionLabel);
+			ruleConditionsListPanel.add(panel);
 		}
 
-		metricsListPanel.revalidate();
-		metricsListPanel.repaint();
+		ruleConditionsListPanel.revalidate();
+		ruleConditionsListPanel.repaint();
 	}
 
 	/**
-	 * This method clears all current metrics from both the GUI and the ruleMetrics
+	 * This method clears all current rule conditions from both the GUI and the ruleConditions
 	 * ArrayList.
 	 */
-	private void clearMetricsListPanel() {
+	private void clearRuleConditionsListPanel() {
 		ruleConditions.clear();
 		ruleTextArea.setText("");
-		metricsListPanel.removeAll();
-		setConditionVisibility();
-		metricsListPanel.revalidate();
-		metricsListPanel.repaint();
+		ruleConditionsListPanel.removeAll();
+		if (!advancedMode) {
+			setLogicalOperatorBoxVisibility();
+		}
+		ruleConditionsListPanel.revalidate();
+		ruleConditionsListPanel.repaint();
 	}
 
 	/**
-	 * This method handles setting the visibility of the Condition button in the
-	 * line responsible for allowing the user to add new metrics to the metrics'
-	 * list. Basically, it stops the first condition, and the first condition only,
+	 * This method handles setting the visibility of the Logical Operator ComboBox in the
+	 * line responsible for allowing the user to add new rule conditions to the list.
+	 * Basically, it stops the first rule condition, and the first rule condition only,
 	 * from having an AND or an OR attached to it.
 	 */
-	private void setConditionVisibility() {
+	private void setLogicalOperatorBoxVisibility() {
 		if (!ruleConditions.isEmpty()) {
-			conditionListBox.setVisible(true);
-			if (!conditionVisibilitySet)
-				for (Condition cond : Condition.values()) {
-					conditionListBox.addItem(cond.toString());
-					conditionVisibilitySet = true;
+			logicalOperatorListBox.setVisible(true);
+			if (!logicalOperatorsVisibility)
+				for (LogicalOperator operator : LogicalOperator.values()) {
+					logicalOperatorListBox.addItem(operator.toString());
+					logicalOperatorsVisibility = true;
 				}
 		} else {
-			conditionListBox.setVisible(false);
-			conditionListBox.setSelectedItem("");
+			logicalOperatorListBox.setVisible(false);
+			logicalOperatorListBox.setSelectedItem("");
 		}
 	}
 
@@ -424,23 +448,23 @@ public class EditRulePopup {
 
 	/**
 	 * 
-	 * Returns the JComboBox which holds the conditions for a new metric (AND and
-	 * OR).
+	 * Returns the JComboBox which holds the logical operators for a new rule condition
+	 * (AND and OR).
 	 * 
 	 * @return JComboBox<String>
 	 */
 	public JComboBox<String> getCondition() {
-		return conditionListBox;
+		return logicalOperatorListBox;
 	}
 
 	/**
 	 * 
-	 * eturns the JComboBox which holds the values for a new metric (LOC, LAA, etc).
+	 * Returns the JComboBox which holds the values for metrics (LOC, LAA, etc).
 	 * 
 	 * @return JComboBox<String>
 	 */
 	public JComboBox<String> getValue() {
-		return valueListBox;
+		return metricsListBox;
 	}
 
 	/**
@@ -451,7 +475,7 @@ public class EditRulePopup {
 	 * @return JComboBox<String>
 	 */
 	public JComboBox<String> getComparison() {
-		return operatorListBox;
+		return comparisonOperatorListBox;
 	}
 
 	/**
@@ -491,9 +515,10 @@ public class EditRulePopup {
 	}
 
 	/**
+	 * Get the correct rule conditions, based on edition mode enabled,
+	 * with no parsing of the string.
 	 * 
-	 * 
-	 * @return
+	 * @return String The rule conditions string with no parsing
 	 */
 	public String getRawRuleConditions() {
 		String rawRuleConditions = "";
