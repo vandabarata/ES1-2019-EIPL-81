@@ -114,8 +114,7 @@ public class MainController {
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
-		// This isn't working for some reason so I'm commenting it out for now
-		// convertExcelRows(); 
+		convertExcelRows(); 
 		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
@@ -148,10 +147,9 @@ public class MainController {
 	 * @author Lino Silva
 	 */
 	private void convertExcelRows() {
-		excelRows.forEach(element -> {
-
+		for(int i = 1; i < excelRows.size(); i++) {
 			try {
-				excelRowsConverted.add(new ExcelRow(element));
+				excelRowsConverted.add(new ExcelRow(excelRows.get(i)));
 			}
 
 			catch (Exception e) {
@@ -159,7 +157,7 @@ public class MainController {
 						JOptionPane.WARNING_MESSAGE);
 				throw e;
 			}
-		});
+		}
 	}
 
 	/**
