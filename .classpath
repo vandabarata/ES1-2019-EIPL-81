@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="lib/poi-scratchpad-4.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/darcula.jar"/>
+	<classpathentry kind="lib" path="lib/mockito-core-3.1.13.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
