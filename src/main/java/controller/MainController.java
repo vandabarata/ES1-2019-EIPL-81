@@ -43,7 +43,7 @@ public class MainController {
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
-
+	
 	/**
 	 * MainController constructor. Creates the default rules to be used.
 	 */
@@ -112,6 +112,7 @@ public class MainController {
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
+		convertExcelRows();
 		gui = new MainFrame(createExcelTable());
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());

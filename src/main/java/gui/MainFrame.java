@@ -15,6 +15,8 @@ import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
+import main.java.controller.MainController;
+
 public class MainFrame {
 	private JFrame mainFrame;
 	private JPanel centralPanel;
@@ -24,7 +26,9 @@ public class MainFrame {
 	private JButton addButton;
 	private JButton checkQualityButton;
 	private JComboBox rulesDropDown;
-
+	private MainController controller;
+	
+	//Diego
 	public MainFrame(JTable excelTable) {
 		mainFrame = new JFrame();
 		mainFrame.setSize(700, 500);
@@ -34,6 +38,7 @@ public class MainFrame {
 		this.excelTable = excelTable;
 		addContents();
 		mainFrame.setVisible(true);
+
 	}
 	
 	/**
