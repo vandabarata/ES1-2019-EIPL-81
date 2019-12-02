@@ -144,7 +144,8 @@ public class MainController {
 	/**
 	 * Converts all the valid rows into ExcelRow model
 	 * 
-	 * @author Lino Silva
+	 * Starts at index 1 because we only want to convert the table content
+	 * and not the header
 	 */
 	private void convertExcelRows() {
 		for(int i = 1; i < excelRows.size(); i++) {
