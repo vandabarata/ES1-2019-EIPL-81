@@ -1,7 +1,6 @@
 package main.java.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import javax.script.ScriptEngine;
@@ -47,7 +46,8 @@ public class EditRuleController {
 
 	/**
 	 * Sets what the Edit Rule Popup delete button's action is. In this case, only
-	 * deletes rule if it isn't a default rule and if it is present in the rules list.
+	 * deletes rule if it isn't a default rule and if it is present in the rules
+	 * list.
 	 */
 	private void onDeleteRule() {
 		if (rule.isDefault()) {
@@ -98,12 +98,12 @@ public class EditRuleController {
 			editRulePopup.showMessage("The rule provided has an invalid format. Cannot save it.");
 			return;
 		}
-		
-		if (!validadeDefaultRuleThresholds(rule.getName(), newRule)) {
-			editRulePopup.showMessage("This is a Default Rule. As such, only the thresholds \n can be edited. And values must be positive.");
+
+		if (rule.isDefault() && !isValidDefaultRuleThresholdsUpdate(rule)) {
+			editRulePopup.showMessage(
+					"This is a Default Rule. As such, only the thresholds \n can be edited. And values must be positive.");
 			return;
 		}
-
 
 		// updates the list with the new (validated) rule
 		// updates the list for the main controller
@@ -123,7 +123,8 @@ public class EditRuleController {
 	}
 
 	/**
-	 * Parses the rule string from the Edit Rule Popup to use keywords valid for Javascript code.
+	 * Parses the rule string from the Edit Rule Popup to use keywords valid for
+	 * Javascript code.
 	 * 
 	 * @return Returns a javascript-ready string for evaluation.
 	 */
@@ -132,14 +133,16 @@ public class EditRuleController {
 	}
 
 	/**
-	 * This method will pre validate the Javascript format rule to find any initial issues with the
-	 * statement format. Will add mock data for metrics and evaluate the string. Throws an exception
-	 * if the string if founds to be invalid. Runs normally when no initial issues are found. This is
-	 * just a prevalidation, and doesn't eliminate the necessity of using a try/catch when running the rule
+	 * This method will pre validate the Javascript format rule to find any initial
+	 * issues with the statement format. Will add mock data for metrics and evaluate
+	 * the string. Throws an exception if the string if founds to be invalid. Runs
+	 * normally when no initial issues are found. This is just a prevalidation, and
+	 * doesn't eliminate the necessity of using a try/catch when running the rule
 	 * against the real data.
 	 * 
 	 * @param rule An if statement rule in Javascript format to be validated
-	 * @throws ScriptException When evaluation of the rule finds an issue, it throws an exception
+	 * @throws ScriptException When evaluation of the rule finds an issue, it throws
+	 *                         an exception
 	 */
 	private void preValidateJavascriptCode(String rule) throws ScriptException {
 		ScriptEngineManager engineManager = new ScriptEngineManager();
@@ -151,25 +154,25 @@ public class EditRuleController {
 		jsString += " return eval('" + rule + "');})()";
 		engine.eval(jsString);
 	}
-	
+
 	/**
-	 * This method validates if the default rules have their format respected and that only
-	 * the threshold values have been edited. It uses a regex tailored for each custom rule
-	 * to validate the edited rule. In case the rule name provided isn't of a default rule,
-	 * returns true, because non default rules can be fully edited.
+	 * This method validates if the default rules have their format respected and
+	 * that only the threshold values have been edited. It uses a regex tailored for
+	 * each custom rule to validate the edited rule. In case the rule name provided
+	 * isn't of a known default rule, returns false.
 	 *
-	 * @param ruleName The name of the rule to be validated
-	 * @param rule The rule string to be validated
+	 * @param rule CodeQualityRule to be validated
 	 * @return boolean If the rule has a valid format
 	 */
-	private boolean validadeDefaultRuleThresholds(String ruleName, String rule) {
-		switch (ruleName) {
+	private boolean isValidDefaultRuleThresholdsUpdate(CodeQualityRule rule) {
+		String ruleCondition = rule.getRule();
+		switch (rule.getName()) {
 		case "custom_is_long_method":
-			return Pattern.matches("^LOC\\s*>\\s*\\d+\\s*\\&\\&\\s*CYCLO\\s*>\\s*\\d+$", rule);
+			return Pattern.matches("^LOC\\s*>\\s*\\d+\\s*\\&\\&\\s*CYCLO\\s*>\\s*\\d+$", ruleCondition);
 		case "custom_is_feature_envy":
-			return  Pattern.matches("^ATFD\\s*>\\s*\\d+\\s*\\&\\&\\s*LAA\\s*<\\s*((0(.[\\d]+)?)|1)$", rule);
+			return Pattern.matches("^ATFD\\s*>\\s*\\d+\\s*\\&\\&\\s*LAA\\s*<\\s*((0(.[\\d]+)?)|1)$", ruleCondition);
 		default:
-			return true;
+			return false;
 		}
 	}
 
