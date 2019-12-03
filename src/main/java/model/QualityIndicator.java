@@ -54,14 +54,6 @@ public class QualityIndicator {
 			if(!row.isiPlasma() && row.isIs_long_method())
 				iPlasmaADII++;
 		}
-		System.out.println("PMD_DCI: " + PMDDCI);
-		System.out.println("PMD_DII: " + PMDDII);
-		System.out.println("PMD_ADCI: " + PMDADCI);
-		System.out.println("PMD_ADII: " + PMDADII);
-		System.out.println("iPlasma_DCI: " + iPlasmaDCI);
-		System.out.println("iPlasma_DII: " + iPlasmaDII);
-		System.out.println("iPlasma_ADCI: " + iPlasmaADCI);
-		System.out.println("iPlasma_ADII: " + iPlasmaADII);	
 	}
 	
 	/**
