@@ -63,15 +63,24 @@ public class QualityIndicator {
 		return PMDDCI;
 	}
 	
+	
 	/**
 	 * @return number of "Defeitos Incorretamente Identificados" (DII) by the PMD tool
+	 */
+	public int getPMDDII() {
+		return iPlasmaDII;
+	}
+	
+	
+	/**
+	 * @return number of "Ausência de Defeitos Corretamente Identificados" (ADCI) by the PMD tool
 	 */
 	public int getPMDADCI() {
 		return PMDADCI;
 	}
 	
 	/**
-	 * @return number of "AusÃªncia de Defeitos Incorretamente Identificados" (ADII) by the PMD tool
+	 * @return number of "Ausencia de Defeitos Incorretamente Identificados" (ADII) by the PMD tool
 	 */
 	public int getPMDADII() {
 		return PMDADII;
