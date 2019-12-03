@@ -118,6 +118,7 @@ public class EditRuleController {
 			rulesList.add(rule);
 		}
 		mainC.updateRulesList(rulesList);
+		mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
 		editRulePopup.showMessage("Rule has been added successfully!");
 		editRulePopup.getFrame().dispose();
 	}
