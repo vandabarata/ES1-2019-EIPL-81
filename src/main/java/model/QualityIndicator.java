@@ -68,12 +68,12 @@ public class QualityIndicator {
 	 * @return number of "Defeitos Incorretamente Identificados" (DII) by the PMD tool
 	 */
 	public int getPMDDII() {
-		return iPlasmaDII;
+		return PMDDII;
 	}
 	
 	
 	/**
-	 * @return number of "Ausência de Defeitos Corretamente Identificados" (ADCI) by the PMD tool
+	 * @return number of "Ausencia de Defeitos Corretamente Identificados" (ADCI) by the PMD tool
 	 */
 	public int getPMDADCI() {
 		return PMDADCI;
@@ -81,6 +81,7 @@ public class QualityIndicator {
 	
 	/**
 	 * @return number of "Ausencia de Defeitos Incorretamente Identificados" (ADII) by the PMD tool
+
 	 */
 	public int getPMDADII() {
 		return PMDADII;
@@ -101,14 +102,14 @@ public class QualityIndicator {
 	}
 	
 	/**
-	 * @return number of "Ausência de Defeitos Corretamente Identificados" (ADCI) by the iPlasma tool
+	 * @return number of "Ausencia de Defeitos Corretamente Identificados" (ADCI) by the iPlasma tool
 	 */
 	public int getIPlasmaADCI() {
 		return iPlasmaADCI;
 	}
 	
 	/**
-	 * @return  number of "Ausência de Defeitos Incorretamente Identificados" (ADII) by the iPlasma tool
+	 * @return  number of "Ausencia de Defeitos Incorretamente Identificados" (ADII) by the iPlasma tool
 	 */
 	public int getIPlasmaADII() {
 		return iPlasmaADII;
