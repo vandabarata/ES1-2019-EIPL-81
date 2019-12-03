@@ -2,7 +2,6 @@ package test.java;
 
 import javax.swing.*;
 
-import main.java.controller.MainController;
 import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
 

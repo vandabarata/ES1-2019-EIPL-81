@@ -10,6 +10,7 @@ import javax.script.ScriptException;
 import main.java.gui.EditRulePopup;
 import main.java.model.CodeQualityRule;
 import main.java.model.Metric;
+import test.java.MainController;
 
 public class EditRuleController {
 
