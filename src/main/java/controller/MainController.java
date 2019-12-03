@@ -44,8 +44,10 @@ public class MainController {
 	 * to be used and manages the Main Frame.
 	 */
 	private MainController() {
-		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true, true);
-		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true, true);
+		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true,
+				true);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true,
+				true);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
 	}
@@ -113,7 +115,7 @@ public class MainController {
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
-		convertExcelRows(); 
+		convertExcelRows();
 		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
@@ -143,11 +145,11 @@ public class MainController {
 	/**
 	 * Converts all the valid rows into ExcelRow model
 	 * 
-	 * Starts at index 1 because we only want to convert the table content
-	 * and not the header
+	 * Starts at index 1 because we only want to convert the table content and not
+	 * the header
 	 */
 	private void convertExcelRows() {
-		for(int i = 1; i < excelRows.size(); i++) {
+		for (int i = 1; i < excelRows.size(); i++) {
 			try {
 				excelRowsConverted.add(new ExcelRow(excelRows.get(i)));
 			}
@@ -193,7 +195,18 @@ public class MainController {
 	private void checkCodeQualityAndShow() {
 		String[][] results = getCodeQualityResults();
 		// TODO get real column names
-		String[] colNames = new String[] { "Method ID", "PMD", "iPlasma", "long_method", "feature_envy" };
+		String[] colNames = new String[5 + rulesList.size()]; 
+		colNames[0] = "Method ID"; 
+		colNames[1] = "PMD";
+		colNames[2] = "iPlasma";
+		colNames[3] = "long_method";
+		colNames[4] = "feature_envy";
+		int iterator = 5;
+		for (CodeQualityRule rule : rulesList) {
+			colNames[iterator] = rule.getName();
+			iterator++;
+		}
+
 		qualityGui.fillTable(results, colNames);
 		qualityGui.show();
 	}
@@ -205,9 +218,25 @@ public class MainController {
 	 */
 	private String[][] getCodeQualityResults() {
 		// TODO calculate code quality
-		String[][] results = new String[][] { { "1", "TRUE", "TRUE", "TRUE", "FALSE" }, { "2", "TRUE", "FALSE", "TRUE", "FALSE" },
-				{ "3", "TRUE", "TRUE", "FALSE", "FALSE"} };
-		return results;
+		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];
+		int iterator = 0;
+		for (ExcelRow row : excelRowsConverted) {
+			String[] qualityRow = new String[4 + excelRowsConverted.size()];
+			qualityRow[0] = Integer.toString(row.getId());
+			qualityRow[1] = Boolean.toString(row.isiPlasma());
+			qualityRow[2] = Boolean.toString(row.isPMD());
+			qualityRow[3] = Boolean.toString(row.isIs_feature_envy());
+			qualityRow[4] = Boolean.toString(row.isIs_long_method());
+			int ruleIterator = 5;
+			for (CodeQualityRule rule : rulesList) {
+				qualityRow[ruleIterator] = rule.getRule();
+				ruleIterator++;
+			}
+			results[iterator] = qualityRow;
+			iterator++;
+		}
+	return results;
+
 	}
 
 	/**
