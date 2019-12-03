@@ -13,8 +13,9 @@ import main.java.model.ExcelRow;
 @RunWith(JUnitPlatform.class)
 class TestExcelRow {
 
-	ExcelRow row;
+	
 	ExcelImporter ei;
+	ExcelRow row;
 	
 	@BeforeEach
 	void setUp() throws Exception {
