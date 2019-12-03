@@ -96,7 +96,7 @@ public class QualityRulesResultFrame {
 		southPanel.setLayout(new BorderLayout(5, 5));
 
 		JPanel fileResultsPanel = new JPanel();
-		fileResultsPanel.setLayout(new GridLayout(3, 5, 5, 5));
+		fileResultsPanel.setLayout(new GridLayout(5, 5, 5, 5));
 
 		addContentToFileResultsforPanel(fileResultsPanel);
 		southPanel.add(fileResultsPanel, BorderLayout.CENTER);
@@ -123,6 +123,17 @@ public class QualityRulesResultFrame {
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADII())));
 		fileResultsPanel.add(new JLabel("PMD"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADII())));
+		//TODO change this with the correct values for custom methods
+		fileResultsPanel.add(new JLabel("custom_is_long_method"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADII())));
+		fileResultsPanel.add(new JLabel("custom_is_feature_envy"));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDII())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADCI())));
