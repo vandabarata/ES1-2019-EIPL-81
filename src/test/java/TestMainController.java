@@ -1,4 +1,4 @@
-package test.java.controller;
+package test.java;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;

@@ -41,33 +41,46 @@ public class EditRuleController {
 	 */
 	private void initActionListeners() {
 		editRulePopup.getSaveButton().addActionListener(e -> onSaveRule());
-		editRulePopup.getDeleteButton().addActionListener(e -> onDeleteRule());
+		editRulePopup.getDeleteButton().addActionListener(e -> onDeleteHandler());
 	}
 
 	/**
-	 * Sets what the Edit Rule Popup delete button's action is. In this case, only
-	 * deletes rule if it isn't a default rule and if it is present in the rules
-	 * list.
+	 * Sets a handler for the Edit Rule Popup delete button's action. Triggers a
+	 * deleteRule method.
 	 */
-	private void onDeleteRule() {
-		if (rule.isDefault()) {
-			editRulePopup.showMessage("You can't delete a default rule!");
-		} else {
-			ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
-
-			if (rulesList.contains(rule)) {
-				rulesList.remove(rule);
-				mainC.updateRulesList(rulesList);
-				editRulePopup.showMessage("Rule has been deleted successfully!");
-				editRulePopup.getFrame().dispose();
-			} else {
-				editRulePopup.showMessage("This rule is not in the rules list,\nso it cannot be deleted.");
-			}
+	public void onDeleteHandler() {
+		try {
+			deleteRule();
+			editRulePopup.showMessage("Rule has been deleted successfully!");
+			editRulePopup.getFrame().dispose();
+		} catch (Exception e) {
+			editRulePopup.showMessage(e.getMessage());
 		}
 	}
 
 	/**
-	 * Determines what the Edit Rule Popup save button's action is Before saving, it
+	 * Tries to delete a rule from the rulesList. Only deletes a rule if it isn't a
+	 * default rule and if it is present in the rules list. Throws an exception
+	 * otherwise.
+	 * 
+	 * @throws Exception Exception with the error message of the issue found.
+	 */
+	public void deleteRule() throws Exception {
+		if (rule.isDefault()) {
+			throw new Exception("You can't delete a default rule.");
+		}
+		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
+
+		if (rulesList.contains(rule)) {
+			rulesList.remove(rule);
+			mainC.updateRulesList(rulesList);
+		} else {
+			throw new Exception("This rule is not in the rules list,\nso it cannot be deleted.");
+		}
+	}
+
+	/**
+	 * Determines what the Edit Rule Popup save button's action is before saving, it
 	 * checks for the rule's content and name It won't save a new rule without a
 	 * name or set conditions It also validates the conditions' validity before
 	 * saving
@@ -162,7 +175,7 @@ public class EditRuleController {
 	 * isn't of a known default rule, returns false.
 	 *
 	 * @param ruleName The name of the rule to be validated
-	 * @param rule The rule string to be validated
+	 * @param rule     The rule string to be validated
 	 * @return boolean If the rule has a valid format
 	 */
 	private boolean isValidDefaultRuleThresholdsUpdate(String ruleName, String rule) {
@@ -175,9 +188,10 @@ public class EditRuleController {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Getter for editRulePopup instance
+	 * 
 	 * @return EditRulePopup controlled by this controller instance
 	 */
 	public EditRulePopup getEditRulePopup() {
