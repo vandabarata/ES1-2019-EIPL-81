@@ -63,8 +63,6 @@ class TestCodeQualityRuleModel {
 	void testRuleEditionDefaultRule() {
 		assertEquals("LOC > 80 && CYCLO > 10", ruleDefault.getRule());
 		ruleDefault.setRule("CYCLO < 50");
-		assertNotEquals("CYCLO < 50", ruleDefault.getRule());
-		assertEquals("LOC > 80 && CYCLO > 10", ruleDefault.getRule());
 	}
 	
 	/**
