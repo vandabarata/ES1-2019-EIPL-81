@@ -14,14 +14,14 @@ public class QualityIndicator {
 	/**
 	 * Creates a IndicatorQuality object based on:
 	 *
-	 * @param PMDDCI - DCI Indicator - number of faults correctly identified by the PDM tool
-	 * @param PMDDII - DII Indicator - number of faults incorrectly indetified by the PDM tool
-	 * @param PMDADCI ADCI Indicator - number of absence of faults correctly indetified by the PDM tool
-	 * @param PMDADII - ADII Indicator - number of absence of faults incorrectly indetified by the PDM tool
+	 * @param PMDDCI - DCI Indicator - number of faults correctly identified by the PMD tool
+	 * @param PMDDII - DII Indicator - number of faults incorrectly identified by the PMD tool
+	 * @param PMDADCI ADCI Indicator - number of absence of faults correctly identified by the PMD tool
+	 * @param PMDADII - ADII Indicator - number of absence of faults incorrectly identified by the PMD tool
 	 * @param iPlasmaDCI - DCI Indicator - number of faults correctly identified by the iPlasma tool
-	 * @param iPlasmaDII - DII Indicator - number of faults incorrectly indetified by the iPlasma tool
-	 * @param iPlasmaADCI ADCI Indicator - number of absence of faults correctly indetified by the iPlasma tool
-	 * @param iPlasmaADII - ADII Indicator - number of absence of faults incorrectly indetified by the iPlasma tool
+	 * @param iPlasmaDII - DII Indicator - number of faults incorrectly identified by the iPlasma tool
+	 * @param iPlasmaADCI ADCI Indicator - number of absence of faults correctly identified by the iPlasma tool
+	 * @param iPlasmaADII - ADII Indicator - number of absence of faults incorrectly identified by the iPlasma tool
 	 * 
 	 * A IndicatorQuality object also calculate the Quality Indicators from the Excel file
 	 */
@@ -65,21 +65,13 @@ public class QualityIndicator {
 	
 	/**
 	 * @return number of "Defeitos Incorretamente Identificados" (DII) by the PMD tool
-
-	 */
-	public int getPMDDII() {
-		return PMDDII;
-	}
-	
-	/**
-	 * @return number of "Ausência de Defeitos Corretamente Identificados" (ADCI) by the PMD tool
 	 */
 	public int getPMDADCI() {
 		return PMDADCI;
 	}
 	
 	/**
-	 * @return number of "Ausência de Defeitos Incorretamente Identificados" (ADII) by the PMD tool
+	 * @return number of "AusÃªncia de Defeitos Incorretamente Identificados" (ADII) by the PMD tool
 	 */
 	public int getPMDADII() {
 		return PMDADII;
