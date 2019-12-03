@@ -5,12 +5,19 @@ package main.java.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+
+import main.java.model.QualityIndicator;
 
 /**
  * <h1>Code Quality Rules Results Frame</h1>
@@ -26,6 +33,8 @@ public class QualityRulesResultFrame {
 	private JFrame qualityFrame;
 	private JPanel centralPanel;
 	private JTable resultsTable;
+	private QualityIndicator qualityIndicators;
+	private JPanel southPanel;
 
 	// Window Dimensions
 	private static final int WIDTH = 800;
@@ -45,9 +54,11 @@ public class QualityRulesResultFrame {
 	 * @param colNames An array of strings with the column names for each column of
 	 *                 the data param
 	 */
-	public void fillTable(String[][] data, Object[] colNames) {
+	public void fillFrame(String[][] data, Object[] colNames, QualityIndicator qualityIndicators) {
 		resultsTable = new JTable(data, colNames);
+		this.qualityIndicators = qualityIndicators;
 		updateCentralPanel();
+		updateSouthPanel();
 	}
 
 	/**
@@ -75,6 +86,48 @@ public class QualityRulesResultFrame {
 		centralPanel.add(tableScrollPane);
 		qualityFrame.add(centralPanel, BorderLayout.CENTER);
 	}
+	
+	/**
+	 * Updates the quality indicators panel
+	 */
+	private void updateSouthPanel() {
+		southPanel = new JPanel();
+		southPanel.setBorder(new EmptyBorder(6, 6, 6, 6));
+		southPanel.setLayout(new BorderLayout(5, 5));
+
+		JPanel fileResultsPanel = new JPanel();
+		fileResultsPanel.setLayout(new GridLayout(3, 5, 5, 5));
+
+		addContentToFileResultsforPanel(fileResultsPanel);
+		southPanel.add(fileResultsPanel, BorderLayout.CENTER);
+		qualityFrame.add(southPanel, BorderLayout.SOUTH);
+	}
+	
+	/**
+	 * This method fills a panel with a grid layout of 3 by 5 with JLabels. Each one
+	 * of the JLabels is added accordingly with the layout pretended and displays
+	 * the quality indicator correspondent extracted from reading the excel file.
+	 * 
+	 * @param fileResultsPanel- the panel used to add the JLabels and display the
+	 *                          results.
+	 */
+	private void addContentToFileResultsforPanel(JPanel fileResultsPanel) {
+		fileResultsPanel.add(new JLabel(""));
+		fileResultsPanel.add(new JLabel("DCI"));
+		fileResultsPanel.add(new JLabel("DII"));
+		fileResultsPanel.add(new JLabel("ADCI"));
+		fileResultsPanel.add(new JLabel("ADII"));
+		fileResultsPanel.add(new JLabel("iPlasma"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADII())));
+		fileResultsPanel.add(new JLabel("PMD"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADII())));
+	}
 
 	/**
 	 * Builds the main frame for QualityRulesResultFrame and positions it in the
@@ -89,4 +142,5 @@ public class QualityRulesResultFrame {
 		qualityFrame.setMinimumSize(windowSize);
 		qualityFrame.setLocation(SCREEN_WIDTH / 2 - (WIDTH / 2), SCREEN_HEIGHT / 2 - (HEIGHT / 2));
 	}
+	
 }

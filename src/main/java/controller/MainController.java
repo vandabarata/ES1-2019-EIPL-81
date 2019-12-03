@@ -117,7 +117,7 @@ public class MainController {
 		excelRows = ei.getAllRows();
 		convertExcelRows();
 		instanceQualityIndicators(excelRowsConverted);
-		gui = new MainFrame(createExcelTable(), rulesList, qualityIndicator);
+		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
 
@@ -205,7 +205,7 @@ public class MainController {
 		String[][] results = getCodeQualityResults();
 		// TODO get real column names
 		String[] colNames = new String[] { "Method ID", "PMD", "iPlasma", "long_method", "feature_envy" };
-		qualityGui.fillTable(results, colNames);
+		qualityGui.fillFrame(results, colNames, qualityIndicator);
 		qualityGui.show();
 	}
 
