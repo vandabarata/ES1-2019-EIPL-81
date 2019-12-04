@@ -51,7 +51,7 @@ public class QualityIndicator {
 			if(row.getPMDResult() && !row.isLongMethod())
 				PMDDII++;
 			if(row.getIPlasmaResult() && !row.isLongMethod())
-				iPlasmaADII++;
+				iPlasmaDII++;
 			if(!row.getPMDResult() && !row.isLongMethod())
 				PMDADCI++;
 			if(!row.getIPlasmaResult() && !row.isLongMethod())
