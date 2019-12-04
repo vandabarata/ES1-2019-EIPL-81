@@ -247,6 +247,14 @@ public class MainController {
 
 	}
 
+	/**
+	 * Runs a rule over an excelRow and returns the result.
+	 * 
+	 * @param rule The rule, the result of which we require.
+	 * @param row The excel row containing the methodID over which we wish to run the rule.
+	 * @return Returns the result of running the rule over the methodID of the given ExcelRow, in string form.
+	 * @throws ScriptException
+	 */
 	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
 		String jsString = "\"use strict\"; (function() {";
 		ScriptEngineManager engineManager = new ScriptEngineManager();
@@ -257,9 +265,10 @@ public class MainController {
 	}
 
 	/**
+	 * Initializes the metric variables in the given javascript engine.
 	 * 
 	 * @param engine The engine in which the metric will be initialized.
-	 * @param row
+	 * @param row The excel row with the values for our metrics.
 	 */
 	
 	public void registerVariables(ScriptEngine engine, ExcelRow row) {
