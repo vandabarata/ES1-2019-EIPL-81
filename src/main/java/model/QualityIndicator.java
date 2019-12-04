@@ -3,23 +3,28 @@ package main.java.model;
 import java.util.ArrayList;
 
 /**
- * A class that represents the indicators quality of the tools in comparison with iPlasma and PDM
+ * A class that represents the indicators quality of the tools for comparison with iPlasma and PDM
  */
 
 public class QualityIndicator {
 
-	 /**
-	 * PMDDCI - DCI Indicator - number of faults correctly identified by the PMD tool
-	 * PMDDII - DII Indicator - number of faults incorrectly identified by the PMD tool
-	 * PMDADCI ADCI Indicator - number of absence of faults correctly identified by the PMD tool
-	 * PMDADII - ADII Indicator - number of absence of faults incorrectly identified by the PMD tool
-	 * iPlasmaDCI - DCI Indicator - number of faults correctly identified by the iPlasma tool
-	 * iPlasmaDII - DII Indicator - number of faults incorrectly identified by the iPlasma tool
-	 * iPlasmaADCI ADCI Indicator - number of absence of faults correctly identified by the iPlasma tool
-	 * iPlasmaADII - ADII Indicator - number of absence of faults incorrectly identified by the iPlasma tool
-	 *
-	 */
-	private int PMDDCI, PMDDII, PMDADCI, PMDADII, iPlasmaDCI, iPlasmaDII, iPlasmaADCI, iPlasmaADII;
+	/** PMDDCI - DII Indicator - number of faults correctly identified by the PMD tool */
+	private int PMDDCI;
+	/** PMDDII - DII Indicator - number of faults incorrectly identified by the PMD tool */
+	private int PMDDII;
+	/** PMDADCI ADCI Indicator - number of absence of faults correctly identified by the PMD tool */
+	private int PMDADCI;
+	/**  PMDADII - ADII Indicator - number of absence of faults incorrectly identified by the PMD tool */
+	private int PMDADII;
+	/** iPlasmaDCI - DCI Indicator - number of faults correctly identified by the iPlasma tool */
+	private int iPlasmaDCI;
+	/** iPlasmaDII - DII Indicator - number of faults incorrectly identified by the iPlasma tool */
+	private int iPlasmaDII;
+	/** iPlasmaADCI ADCI Indicator - number of absence of faults correctly identified by the iPlasma tool */
+	private int iPlasmaADCI;
+	/** iPlasmaADII - ADII Indicator - number of absence of faults incorrectly identified by the iPlasma tool */
+	private int iPlasmaADII;
+	/** excel Rows  - list of Excel Rows from Excel file */
 	private ArrayList<ExcelRow> excelRows;
 	
 	/**

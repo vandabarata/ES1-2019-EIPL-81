@@ -17,7 +17,7 @@ public class ExcelRow {
 	private boolean isLongMethod;
 	private boolean iPlasma;
 	private boolean PMD;
-	private boolean is_feature_envy;
+	private boolean isFeatureEnvy;
 
 	/**
 	 * Create an ExcelRow
@@ -37,7 +37,7 @@ public class ExcelRow {
 		this.isLongMethod = Boolean.parseBoolean(rowData[8]);
 		this.iPlasma = Boolean.parseBoolean(rowData[9]);
 		this.PMD = Boolean.parseBoolean(rowData[10]);
-		this.is_feature_envy = Boolean.parseBoolean(rowData[11]);
+		this.isFeatureEnvy = Boolean.parseBoolean(rowData[11]);
 	}
 
 	/**
@@ -133,14 +133,14 @@ public class ExcelRow {
 	 * @return row's is_feature_envy value
 	 */
 	public boolean isFeatureEnvy() {
-		return is_feature_envy;
+		return isFeatureEnvy;
 	}
 
 	@Override
 	public String toString() {
 		return "ID: " + id + "\nPackage: " + packageName + "\nClass: " + className + "\nMethod: " + methodName
 				+ "\nLOC: " + LOC + "\nCYCLO: " + CYCLO + "\nATFD: " + ATFD + "\nLAA: " + LAA + "\nIs Long Method: "
-				+ isLongMethod + "\niPlasma: " + iPlasma + "\nPMD: " + PMD + "\nIs Feature Envy: " + is_feature_envy;
+				+ isLongMethod + "\niPlasma: " + iPlasma + "\nPMD: " + PMD + "\nIs Feature Envy: " + isFeatureEnvy;
 	}
 
 }

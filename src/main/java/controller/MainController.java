@@ -32,10 +32,6 @@ import main.java.model.QualityIndicator;
  */
 public class MainController {
 
-	 /**
-	 * qualityIndicator - Object responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII
-	 *
-	 */
 	private MainFrame gui;
 	private QualityRulesResultFrame qualityGui;
 	private String path;
@@ -43,6 +39,7 @@ public class MainController {
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+	 /** qualityIndicator - Object responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII */
 	private QualityIndicator qualityIndicator;
 	private static MainController instance;
 	
