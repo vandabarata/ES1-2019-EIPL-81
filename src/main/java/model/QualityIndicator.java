@@ -8,21 +8,23 @@ import java.util.ArrayList;
 
 public class QualityIndicator {
 
+	 /**
+	 * PMDDCI - DCI Indicator - number of faults correctly identified by the PMD tool
+	 * PMDDII - DII Indicator - number of faults incorrectly identified by the PMD tool
+	 * PMDADCI ADCI Indicator - number of absence of faults correctly identified by the PMD tool
+	 * PMDADII - ADII Indicator - number of absence of faults incorrectly identified by the PMD tool
+	 * iPlasmaDCI - DCI Indicator - number of faults correctly identified by the iPlasma tool
+	 * iPlasmaDII - DII Indicator - number of faults incorrectly identified by the iPlasma tool
+	 * iPlasmaADCI ADCI Indicator - number of absence of faults correctly identified by the iPlasma tool
+	 * iPlasmaADII - ADII Indicator - number of absence of faults incorrectly identified by the iPlasma tool
+	 *
+	 */
 	private int PMDDCI, PMDDII, PMDADCI, PMDADII, iPlasmaDCI, iPlasmaDII, iPlasmaADCI, iPlasmaADII;
 	private ArrayList<ExcelRow> excelRows;
 	
 	/**
 	 * Creates a IndicatorQuality object based on:
-	 *
-	 * @param PMDDCI - DCI Indicator - number of faults correctly identified by the PMD tool
-	 * @param PMDDII - DII Indicator - number of faults incorrectly identified by the PMD tool
-	 * @param PMDADCI ADCI Indicator - number of absence of faults correctly identified by the PMD tool
-	 * @param PMDADII - ADII Indicator - number of absence of faults incorrectly identified by the PMD tool
-	 * @param iPlasmaDCI - DCI Indicator - number of faults correctly identified by the iPlasma tool
-	 * @param iPlasmaDII - DII Indicator - number of faults incorrectly identified by the iPlasma tool
-	 * @param iPlasmaADCI ADCI Indicator - number of absence of faults correctly identified by the iPlasma tool
-	 * @param iPlasmaADII - ADII Indicator - number of absence of faults incorrectly identified by the iPlasma tool
-	 * 
+	 * @param excelRows is the list of Excel Rows from the Excel file
 	 * A IndicatorQuality object also calculate the Quality Indicators from the Excel file
 	 */
 	public QualityIndicator(ArrayList<ExcelRow> excelRows) {
@@ -37,21 +39,21 @@ public class QualityIndicator {
 		this.excelRows = excelRows;
 		
 		for (ExcelRow row : excelRows) {
-			if(row.isPMD() && row.isIs_long_method())
+			if(row.getPMDResult() && row.isLongMethod())
 				PMDDCI++;
-			if(row.isiPlasma() && row.isIs_long_method())
+			if(row.getIPlasmaResult() && row.isLongMethod())
 				iPlasmaDCI++;
-			if(row.isPMD() && !row.isIs_long_method())
+			if(row.getPMDResult() && !row.isLongMethod())
 				PMDDII++;
-			if(row.isiPlasma() && !row.isIs_long_method())
+			if(row.getIPlasmaResult() && !row.isLongMethod())
 				iPlasmaADII++;
-			if(!row.isPMD() && !row.isIs_long_method())
+			if(!row.getPMDResult() && !row.isLongMethod())
 				PMDADCI++;
-			if(!row.isiPlasma() && !row.isIs_long_method())
+			if(!row.getIPlasmaResult() && !row.isLongMethod())
 				iPlasmaADCI++;
-			if(!row.isPMD() && row.isIs_long_method())
+			if(!row.getPMDResult() && row.isLongMethod())
 				PMDADII++;
-			if(!row.isiPlasma() && row.isIs_long_method())
+			if(!row.getIPlasmaResult() && row.isLongMethod())
 				iPlasmaADII++;
 		}
 	}

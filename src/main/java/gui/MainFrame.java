@@ -17,6 +17,10 @@ import main.java.model.CodeQualityRule;
 import main.java.model.QualityIndicator;
 
 public class MainFrame {
+	 /**
+	 * qualityIndicator - Object responsable to calcule the quality indicators from Excel file
+	 *
+	 */
 	private JFrame mainFrame;
 	private JPanel centralPanel;
 	private JPanel southPanel;

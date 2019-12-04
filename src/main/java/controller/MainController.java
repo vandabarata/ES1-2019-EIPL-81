@@ -31,6 +31,11 @@ import main.java.model.QualityIndicator;
  * the input to the model.
  */
 public class MainController {
+
+	 /**
+	 * qualityIndicator - Object responsable to calcule the quality indicators from Excel file
+	 *
+	 */
 	private MainFrame gui;
 	private QualityRulesResultFrame qualityGui;
 	private String path;
