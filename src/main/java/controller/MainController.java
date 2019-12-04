@@ -3,6 +3,9 @@ package main.java.controller;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -16,6 +19,7 @@ import main.java.gui.QualityRulesResultFrame;
 import main.java.model.CodeQualityRule;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
+import main.java.model.Metric;
 
 /**
  * <h1>Main Controller</h1> Accepts input and converts it to commands and action
@@ -195,8 +199,8 @@ public class MainController {
 	private void checkCodeQualityAndShow() {
 		String[][] results = getCodeQualityResults();
 		// TODO get real column names
-		String[] colNames = new String[5 + rulesList.size()]; 
-		colNames[0] = "Method ID"; 
+		String[] colNames = new String[5 + rulesList.size()];
+		colNames[0] = "Method ID";
 		colNames[1] = "PMD";
 		colNames[2] = "iPlasma";
 		colNames[3] = "long_method";
@@ -217,7 +221,6 @@ public class MainController {
 	 *         result line for that column
 	 */
 	private String[][] getCodeQualityResults() {
-		// TODO calculate code quality
 		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];
 		int iterator = 0;
 		for (ExcelRow row : excelRowsConverted) {
@@ -228,17 +231,52 @@ public class MainController {
 			qualityRow[3] = Boolean.toString(row.isIs_feature_envy());
 			qualityRow[4] = Boolean.toString(row.isIs_long_method());
 			int ruleIterator = 5;
+
 			for (CodeQualityRule rule : rulesList) {
-				qualityRow[ruleIterator] = rule.getRule();
+				try {
+					qualityRow[ruleIterator] = getResult(rule, row);
+				} catch (ScriptException e) {
+					e.printStackTrace();
+				}
 				ruleIterator++;
 			}
 			results[iterator] = qualityRow;
 			iterator++;
 		}
-	return results;
+		return results;
 
 	}
 
+	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
+		String jsString = "\"use strict\"; (function() {";
+		ScriptEngineManager engineManager = new ScriptEngineManager();
+		ScriptEngine engine = engineManager.getEngineByName("ECMAScript");
+		registerVariables(engine, row);
+		Object result = engine.eval("eval('" + rule.getRule() + "');");
+		return  Boolean.toString(Boolean.TRUE.equals(result));
+	}
+
+	/**
+	 * 
+	 * @param engine The engine in which the metric will be initialized.
+	 * @param row
+	 */
+	
+	public void registerVariables(ScriptEngine engine, ExcelRow row) {
+		try {
+			int ATFD = row.getATFD();
+			int CYCLO = row.getCYCLO();
+			int LOC = row.getLOC();
+			float LAA = row.getLAA();
+			
+			String filledRule = "var ATFD = " + ATFD + "; " + "var CYCLO = " + CYCLO + "; " + "var LOC = " + LOC + "; " + "var LAA = " + LAA + "; ";
+			engine.eval(filledRule);
+		} catch (ScriptException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	/**
 	 * Returns the entire rules list
 	 * 
