@@ -33,7 +33,7 @@ import main.java.model.QualityIndicator;
 public class MainController {
 
 	 /**
-	 * qualityIndicator - Object responsable to calcule the quality indicators from Excel file
+	 * qualityIndicator - Object responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII
 	 *
 	 */
 	private MainFrame gui;
