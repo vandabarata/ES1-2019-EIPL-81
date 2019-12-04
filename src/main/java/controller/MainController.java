@@ -122,7 +122,15 @@ public class MainController {
 		convertExcelRows();
 		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
-		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
+		gui.getCheckQualityButton().addActionListener(e -> {
+			try {
+				checkCodeQualityAndShow();
+			} catch (Exception e2) {
+				qualityGui.hide();
+				JOptionPane.showMessageDialog(null, "Invalid rule syntax! Please verify!");
+
+			}
+		});
 
 		editButton(this.gui.getEditButton(), this.gui.getRulesComboBox());
 		addButton(this.gui.getAddButton());
@@ -195,10 +203,12 @@ public class MainController {
 	/**
 	 * Verify the code quality based on the Rules created and sends the results to
 	 * be displayed in the QualityRulesResultFrame
+	 * 
+	 * @throws ScriptException
 	 */
-	private void checkCodeQualityAndShow() {
-		String[][] results = getCodeQualityResults();
-		// TODO get real column names
+	private void checkCodeQualityAndShow() throws ScriptException {
+		String[][] results = null;
+		results = getCodeQualityResults();
 		String[] colNames = new String[5 + rulesList.size()];
 		colNames[0] = "Method ID";
 		colNames[1] = "PMD";
@@ -210,9 +220,12 @@ public class MainController {
 			colNames[iterator] = rule.getName();
 			iterator++;
 		}
+		try {
+			qualityGui.fillTable(results, colNames);
+			qualityGui.show();
+		} catch (NullPointerException e) {
 
-		qualityGui.fillTable(results, colNames);
-		qualityGui.show();
+		}
 	}
 
 	/**
@@ -220,7 +233,7 @@ public class MainController {
 	 *         quality results for a method, and each column is the value of that
 	 *         result line for that column
 	 */
-	private String[][] getCodeQualityResults() {
+	private String[][] getCodeQualityResults() throws ScriptException {
 		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];
 		int iterator = 0;
 		for (ExcelRow row : excelRowsConverted) {
@@ -233,11 +246,7 @@ public class MainController {
 			int ruleIterator = 5;
 
 			for (CodeQualityRule rule : rulesList) {
-				try {
-					qualityRow[ruleIterator] = getResult(rule, row);
-				} catch (ScriptException e) {
-					e.printStackTrace();
-				}
+				qualityRow[ruleIterator] = getResult(rule, row);
 				ruleIterator++;
 			}
 			results[iterator] = qualityRow;
@@ -251,41 +260,39 @@ public class MainController {
 	 * Runs a rule over an excelRow and returns the result.
 	 * 
 	 * @param rule The rule, the result of which we require.
-	 * @param row The excel row containing the methodID over which we wish to run the rule.
-	 * @return Returns the result of running the rule over the methodID of the given ExcelRow, in string form.
+	 * @param row  The excel row containing the methodID over which we wish to run
+	 *             the rule.
+	 * @return Returns the result of running the rule over the methodID of the given
+	 *         ExcelRow, in string form.
 	 * @throws ScriptException
 	 */
 	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
-		String jsString = "\"use strict\"; (function() {";
 		ScriptEngineManager engineManager = new ScriptEngineManager();
 		ScriptEngine engine = engineManager.getEngineByName("ECMAScript");
 		registerVariables(engine, row);
-		Object result = engine.eval("eval('" + rule.getRule() + "');");
-		return  Boolean.toString(Boolean.TRUE.equals(result));
+		Object result = null;
+		result = engine.eval("eval('" + rule.getRule() + "');");
+		return Boolean.toString(Boolean.TRUE.equals(result));
 	}
 
 	/**
 	 * Initializes the metric variables in the given javascript engine.
 	 * 
 	 * @param engine The engine in which the metric will be initialized.
-	 * @param row The excel row with the values for our metrics.
+	 * @param row    The excel row with the values for our metrics.
+	 * @throws ScriptException
 	 */
-	
-	public void registerVariables(ScriptEngine engine, ExcelRow row) {
-		try {
-			int ATFD = row.getATFD();
-			int CYCLO = row.getCYCLO();
-			int LOC = row.getLOC();
-			float LAA = row.getLAA();
-			
-			String filledRule = "var ATFD = " + ATFD + "; " + "var CYCLO = " + CYCLO + "; " + "var LOC = " + LOC + "; " + "var LAA = " + LAA + "; ";
-			engine.eval(filledRule);
-		} catch (ScriptException e) {
-			e.printStackTrace();
-		}
+
+	public void registerVariables(ScriptEngine engine, ExcelRow row) throws ScriptException {
+		int ATFD = row.getATFD();
+		int CYCLO = row.getCYCLO();
+		int LOC = row.getLOC();
+		float LAA = row.getLAA();
+		String filledRule = "var ATFD = " + ATFD + "; " + "var CYCLO = " + CYCLO + "; " + "var LOC = " + LOC + "; "
+				+ "var LAA = " + LAA + "; ";
+		engine.eval(filledRule);
 	}
-	
-	
+
 	/**
 	 * Returns the entire rules list
 	 * 
