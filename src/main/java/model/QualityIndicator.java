@@ -28,9 +28,9 @@ public class QualityIndicator {
 	private ArrayList<ExcelRow> excelRows;
 	
 	/**
-	 * Creates a IndicatorQuality object based on:
-	 * @param excelRows is the list of Excel Rows from the Excel file
+	 * Creates a IndicatorQuality object based on excelRow.
 	 * A IndicatorQuality object also calculate the Quality Indicators from the Excel file
+	 * @param excelRows is the list of Excel Rows from the Excel file
 	 */
 	public QualityIndicator(ArrayList<ExcelRow> excelRows) {
 		PMDDCI = 0; 
