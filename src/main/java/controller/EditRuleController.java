@@ -81,7 +81,7 @@ public class EditRuleController {
 
 	/**
 	 * Sets a handler for the Edit Rule Popup save button's action. Triggers a
-	 * saveRUle method.
+	 * saveRule method.
 	 */
 	private void onSaveHandler() {
 		try {
