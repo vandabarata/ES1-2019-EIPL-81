@@ -40,7 +40,7 @@ public class EditRuleController {
 	 * Add action listeners to Save and Delete buttons from Edit Rule Popup
 	 */
 	private void initActionListeners() {
-		editRulePopup.getSaveButton().addActionListener(e -> onSaveRule());
+		editRulePopup.getSaveButton().addActionListener(e -> onSaveHandler());
 		editRulePopup.getDeleteButton().addActionListener(e -> onDeleteHandler());
 	}
 
@@ -80,26 +80,39 @@ public class EditRuleController {
 	}
 
 	/**
-	 * Determines what the Edit Rule Popup save button's action is before saving, it
-	 * checks for the rule's content and name It won't save a new rule without a
-	 * name or set conditions It also validates the conditions' validity before
-	 * saving
+	 * Sets a handler for the Edit Rule Popup save button's action. Triggers a
+	 * saveRUle method.
 	 */
-	private void onSaveRule() {
-		String newName = editRulePopup.getRuleName();
+	private void onSaveHandler() {
+		try {
+			saveRule();
+			editRulePopup.showMessage("Rule has been added successfully!");
+			editRulePopup.getFrame().dispose();
+		} catch (Exception e) {
+			editRulePopup.showMessage(e.getMessage());
+		}
+	}
+
+	/**
+	 * Tries to save a rule. It checks for the rule's content and name. It won't
+	 * save a new rule without a name or set conditions. It also validates the
+	 * conditions' validity before saving. Throws an exception otherwise.
+	 * 
+	 * @throws Exception
+	 */
+	public void saveRule() throws Exception {
+		String newName = editRulePopup.getNameText().getText();
 
 		// Verify if name is valid
 		if (newName.isEmpty()) {
-			editRulePopup.showMessage("Please insert a rule name!");
-			return;
+			throw new Exception("Please provide a rule name.");
 		}
 
 		String rawRuleConditions = editRulePopup.getRawRuleConditions().trim();
 
 		// Check if there is a rule to save
 		if (rawRuleConditions.isEmpty()) {
-			editRulePopup.showMessage("You need to set rule conditions for " + newName);
-			return;
+			throw new Exception("You need to set rule conditions for " + newName);
 		}
 
 		String newRule = getJavascriptIfStatementString(rawRuleConditions);
@@ -108,14 +121,12 @@ public class EditRuleController {
 			// Runs pre validation to try to catch some errors
 			preValidateJavascriptCode(newRule);
 		} catch (ScriptException e) {
-			editRulePopup.showMessage("The rule provided has an invalid format. Cannot save it.");
-			return;
+			throw new Exception("The rule provided has an invalid format. Cannot save it.");
 		}
 
 		if (rule.isDefault() && !isValidDefaultRuleThresholdsUpdate(rule.getName(), newRule)) {
-			editRulePopup.showMessage(
+			throw new Exception(
 					"This is a Default Rule. As such, only the thresholds \n can be edited. And values must be positive.");
-			return;
 		}
 
 		// updates the list with the new (validated) rule
@@ -131,8 +142,6 @@ public class EditRuleController {
 			rulesList.add(rule);
 		}
 		mainC.updateRulesList(rulesList);
-		editRulePopup.showMessage("Rule has been added successfully!");
-		editRulePopup.getFrame().dispose();
 	}
 
 	/**
@@ -196,6 +205,15 @@ public class EditRuleController {
 	 */
 	public EditRulePopup getEditRulePopup() {
 		return editRulePopup;
+	}
+
+	/**
+	 * Getter for the rule being edit or added
+	 * 
+	 * @return CodeQualityRule
+	 */
+	public CodeQualityRule getRule() {
+		return rule;
 	}
 
 }

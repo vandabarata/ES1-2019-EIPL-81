@@ -46,17 +46,15 @@ class TestEditRuleController {
 	}
 
 	@Test
-	void testDeleteRule() {
+	void testDeleteRule() throws Exception {
 		MainController mc = MainController.getMainControllerInstance();
 		ArrayList<CodeQualityRule> rulesList = mc.getRulesList();
 		rulesList.add(testRule);
 		mc.updateRulesList(rulesList);
 		controller = new EditRuleController(testRule);
-		try {
-			controller.deleteRule();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
+		controller.deleteRule();
+
 		ArrayList<CodeQualityRule> updatedRulesList = mc.getRulesList();
 		assertFalse(updatedRulesList.contains(testRule));
 	}
@@ -84,6 +82,129 @@ class TestEditRuleController {
 
 		ArrayList<CodeQualityRule> updatedRulesList = mc.getRulesList();
 		assertFalse(updatedRulesList.contains(testRule));
+	}
+
+	@Test
+	void testAddNewRule() throws Exception {
+		String newName = "New Rule";
+		String newRuleConditions = "LOC > 10";
+		MainController mc = MainController.getMainControllerInstance();
+		controller = new EditRuleController();
+
+		EditRulePopup popup = controller.getEditRulePopup();
+		popup.getNameText().setText(newName);
+		popup.getAdvancedModeButton().doClick();
+		popup.getRuleTextArea().setText(newRuleConditions);
+
+		controller.saveRule();
+
+		ArrayList<CodeQualityRule> updatedRulesList = mc.getRulesList();
+		assertTrue(updatedRulesList.contains(controller.getRule()));
+	}
+	
+	@Test
+	void testEditAndSaveRule() throws Exception {
+		String newRuleConditions = "LOC > 10";
+		MainController mc = MainController.getMainControllerInstance();
+		ArrayList<CodeQualityRule> rulesList = mc.getRulesList();
+		rulesList.add(testRule);
+		mc.updateRulesList(rulesList);
+		controller = new EditRuleController(testRule);
+
+		EditRulePopup popup = controller.getEditRulePopup();
+		popup.getAdvancedModeButton().doClick();
+		popup.getRuleTextArea().setText(newRuleConditions);
+		
+		controller.saveRule();
+
+		ArrayList<CodeQualityRule> updatedRulesList = mc.getRulesList();
+		int index = updatedRulesList.indexOf(testRule);
+		assertTrue(updatedRulesList.get(index).getRule().equals(newRuleConditions));
+	}
+
+	@Test
+	void testAddNewRuleWithoutName() throws Exception {
+		String newRuleConditions = "LOC > 10";
+		MainController mc = MainController.getMainControllerInstance();
+		controller = new EditRuleController();
+
+		EditRulePopup popup = controller.getEditRulePopup();
+		popup.getAdvancedModeButton().doClick();
+		popup.getRuleTextArea().setText(newRuleConditions);
+
+		assertThrows(Exception.class, () -> controller.saveRule());
+
+		ArrayList<CodeQualityRule> updatedRulesList = mc.getRulesList();
+		assertFalse(updatedRulesList.contains(controller.getRule()));
+	}
+
+	@Test
+	void testAddNewRuleWithoutRuleCondition() {
+		String newName = "New Rule";
+		MainController mc = MainController.getMainControllerInstance();
+		controller = new EditRuleController();
+
+		EditRulePopup popup = controller.getEditRulePopup();
+		popup.getNameText().setText(newName);
+
+		assertThrows(Exception.class, () -> controller.saveRule());
+
+		ArrayList<CodeQualityRule> updatedRulesList = mc.getRulesList();
+		assertFalse(updatedRulesList.contains(controller.getRule()));
+	}
+
+	@Test
+	void testAddNewRuleWithInvalidFormat() {
+		String newName = "New Rule";
+		String newRuleConditions = "INVALID_STRING";
+		MainController mc = MainController.getMainControllerInstance();
+		controller = new EditRuleController();
+
+		EditRulePopup popup = controller.getEditRulePopup();
+		popup.getNameText().setText(newName);
+		popup.getAdvancedModeButton().doClick();
+		popup.getRuleTextArea().setText(newRuleConditions);
+
+		assertThrows(Exception.class, () -> controller.saveRule());
+
+		ArrayList<CodeQualityRule> updatedRulesList = mc.getRulesList();
+		assertFalse(updatedRulesList.contains(controller.getRule()));
+	}
+
+	@Test
+	void testSaveDefaultRule() throws Exception {
+		MainController mc = MainController.getMainControllerInstance();
+		controller = new EditRuleController(testDefaultRuleFeatureEnvy);
+		String editedRuleCondition = "ATFD > 20 && LAA < 0.69";
+		EditRulePopup popup = controller.getEditRulePopup();
+		popup.getRuleTextArea().setText(editedRuleCondition);
+
+		controller.saveRule();
+
+		ArrayList<CodeQualityRule> updatedRulesList = mc.getRulesList();
+		int index = updatedRulesList.indexOf(testDefaultRuleFeatureEnvy);
+		assertTrue(updatedRulesList.get(index).getRule().equals(editedRuleCondition));
+	}
+
+	@Test
+	void testSaveDefaultRuleWithInvalidFormat() {
+		MainController mc = MainController.getMainControllerInstance();
+		controller = new EditRuleController(testDefaultRuleLongMethod);
+		String editedRuleCondition = "LAA < 80 && ATFD > 10";
+		EditRulePopup popup = controller.getEditRulePopup();
+		popup.getRuleTextArea().setText(editedRuleCondition);
+
+		assertThrows(Exception.class, () -> controller.saveRule());
+	}
+
+	@Test
+	void testValidateNonMappedDefaultRule() {
+		String ruleName = "defaultRuleNameThatDoesntExist";
+		String ruleCondition = "ATFD > 20";
+		CodeQualityRule newDefaultRule = new CodeQualityRule(ruleName, ruleCondition, true, true);
+		controller = new EditRuleController(newDefaultRule);
+
+		assertThrows(Exception.class, () -> controller.saveRule());
 	}
 
 	@Test
