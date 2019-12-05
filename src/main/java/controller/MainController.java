@@ -285,8 +285,8 @@ public class MainController {
 	 * which initializes all the necessary metric variables.
 	 * 
 	 * @param row The excel row with the values for our metrics.
-	 * @return filledRule The Sting of rule initializations to be passed on to a
-	 *         javascript engine.
+	 * @return filledRule The String of metrics turned into variables to use in the
+	 *         JS engine for running the rules.
 	 */
 	public String registerVariables(ExcelRow row) {
 		int ATFD = row.getATFD();
