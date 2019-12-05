@@ -48,9 +48,10 @@ public class EditRuleController {
 	 * Sets a handler for the Edit Rule Popup delete button's action. Triggers a
 	 * deleteRule method.
 	 */
-	public void onDeleteHandler() {
+	private void onDeleteHandler() {
 		try {
 			deleteRule();
+			mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
 			editRulePopup.showMessage("Rule has been deleted successfully!");
 			editRulePopup.getFrame().dispose();
 		} catch (Exception e) {
@@ -127,7 +128,7 @@ public class EditRuleController {
 
 		if (rule.isDefault() && !isValidDefaultRuleThresholdsUpdate(rule.getName(), newRule)) {
 			throw new Exception(
-					"This is a Default Rule. As such, only the thresholds \n can be edited. And values must be positive.");
+					"This is a Default Rule. As such, only the thresholds \n can be edited. Values must be positive.");
 		}
 
 		// updates the list with the new (validated) rule
@@ -137,6 +138,7 @@ public class EditRuleController {
 		}
 		rule.setRule(newRule);
 		rule.setIsAdvanced(true);
+		
 		// Gets the rules list from the main controller
 		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
 		if (!rulesList.contains(rule)) {
