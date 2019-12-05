@@ -243,16 +243,14 @@ public class MainController {
 			qualityRow[4] = Boolean.toString(row.isiPlasma());
 			int ruleIterator = 5;
 
-			CodeQualityRule wrongRule = null;
 			for (CodeQualityRule rule : rulesList) {
 				try {
 					qualityRow[ruleIterator] = getResult(rule, row);
 					ruleIterator++;
 				} catch (ScriptException e) {
 					qualityGui.hide();
-					wrongRule = rule;
 					JOptionPane.showMessageDialog(null,
-							"Invalid rule syntax! Please verify the rule with the name \"" + wrongRule + "\"!");
+							"Invalid rule syntax! Please verify the rule with the name \"" + rule + "\"!");
 					return null;
 				}
 			}
