@@ -123,13 +123,9 @@ public class MainController {
 		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> {
-			try {
-				checkCodeQualityAndShow();
-			} catch (Exception e2) {
-				qualityGui.hide();
-				JOptionPane.showMessageDialog(null, "Invalid rule syntax! Please verify!");
 
-			}
+			checkCodeQualityAndShow();
+
 		});
 
 		editButton(this.gui.getEditButton(), this.gui.getRulesComboBox());
@@ -206,7 +202,7 @@ public class MainController {
 	 * 
 	 * @throws ScriptException
 	 */
-	private void checkCodeQualityAndShow() throws ScriptException {
+	private void checkCodeQualityAndShow() {
 		String[][] results = null;
 		results = getCodeQualityResults();
 		String[] colNames = new String[5 + rulesList.size()];
@@ -220,11 +216,10 @@ public class MainController {
 			colNames[iterator] = rule.getName();
 			iterator++;
 		}
-		try {
+
+		if (results != null) {
 			qualityGui.fillTable(results, colNames);
 			qualityGui.show();
-		} catch (NullPointerException e) {
-
 		}
 	}
 
@@ -236,7 +231,7 @@ public class MainController {
 	 *         quality results for a method, and each column is the value of that
 	 *         result line for that column
 	 */
-	private String[][] getCodeQualityResults() throws ScriptException {
+	private String[][] getCodeQualityResults() {
 		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];
 		int iterator = 0;
 		for (ExcelRow row : excelRowsConverted) {
@@ -248,9 +243,17 @@ public class MainController {
 			qualityRow[4] = Boolean.toString(row.isiPlasma());
 			int ruleIterator = 5;
 
+			CodeQualityRule wrongRule = null;
 			for (CodeQualityRule rule : rulesList) {
-				qualityRow[ruleIterator] = getResult(rule, row);
-				ruleIterator++;
+				try {
+					qualityRow[ruleIterator] = getResult(rule, row);
+					ruleIterator++;
+				} catch (ScriptException e) {
+					qualityGui.hide();
+					wrongRule = rule;
+					JOptionPane.showMessageDialog(null, "Invalid rule syntax! Please verify rule " + wrongRule + "!");
+					return null;
+				}
 			}
 			results[iterator] = qualityRow;
 			iterator++;
@@ -279,10 +282,12 @@ public class MainController {
 	}
 
 	/**
-	 * Creates and returns a string ready to be passed on to a javascript engine, which initializes all the necessary metric variables. 
+	 * Creates and returns a string ready to be passed on to a javascript engine,
+	 * which initializes all the necessary metric variables.
 	 * 
-	 * @param row    The excel row with the values for our metrics.
-	 * @return filledRule The Sting of rule initializations to be passed on to a javascript engine.
+	 * @param row The excel row with the values for our metrics.
+	 * @return filledRule The Sting of rule initializations to be passed on to a
+	 *         javascript engine.
 	 */
 	public String registerVariables(ExcelRow row) {
 		int ATFD = row.getATFD();
