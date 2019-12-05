@@ -250,7 +250,7 @@ public class MainController {
 				} catch (ScriptException e) {
 					qualityGui.hide();
 					JOptionPane.showMessageDialog(null,
-							"Invalid rule syntax! Please verify the rule with the name \"" + rule + "\"!");
+							"Invalid rule syntax! Please verify the conditions for the rule  \"" + rule + "\"!");
 					return null;
 				}
 			}
