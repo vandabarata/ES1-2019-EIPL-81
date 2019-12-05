@@ -229,6 +229,9 @@ public class MainController {
 	}
 
 	/**
+	 * 
+	 * Returns the results of the calculation of each rule, for each method.
+	 * 
 	 * @return An Array of String arrays where each line is a row with the code
 	 *         quality results for a method, and each column is the value of that
 	 *         result line for that column
@@ -239,10 +242,10 @@ public class MainController {
 		for (ExcelRow row : excelRowsConverted) {
 			String[] qualityRow = new String[4 + excelRowsConverted.size()];
 			qualityRow[0] = Integer.toString(row.getId());
-			qualityRow[1] = Boolean.toString(row.isiPlasma());
-			qualityRow[2] = Boolean.toString(row.isPMD());
-			qualityRow[3] = Boolean.toString(row.isIs_feature_envy());
-			qualityRow[4] = Boolean.toString(row.isIs_long_method());
+			qualityRow[1] = Boolean.toString(row.isIs_long_method());
+			qualityRow[2] = Boolean.toString(row.isIs_feature_envy());
+			qualityRow[3] = Boolean.toString(row.isPMD());
+			qualityRow[4] = Boolean.toString(row.isiPlasma());
 			int ruleIterator = 5;
 
 			for (CodeQualityRule rule : rulesList) {
