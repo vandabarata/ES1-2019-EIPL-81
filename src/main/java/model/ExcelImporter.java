@@ -84,9 +84,8 @@ public class ExcelImporter {
 			for (Cell cell : row) {
 				rowContent.add(new DataFormatter().formatCellValue(cell));
 			}
-
 			rowsList.add(rowContent.toArray(new String[0]));
-
+			
 			rowContent.clear();
 		}
 

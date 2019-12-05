@@ -2,6 +2,7 @@ package test.java;
 
 import javax.swing.*;
 
+import main.java.controller.MainController;
 import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
 
@@ -18,7 +19,6 @@ class TestGUIMainFrame {
 	private static MainFrame guiWithTable;
 	private static MainFrame guiWithEmptyTable;
 	
-	
 	/**
 	 * This tests the creation of a JTable in the GUI comparing the frames width
 	 */
@@ -26,7 +26,7 @@ class TestGUIMainFrame {
 	void testJTableCreation() {
 		String[] header = {"header1", "header2"};
 		String[][] content = {{"cell0",  "cell1"},{"cell2", "cell3"}};
-		guiWithTable = new MainFrame(new JTable(content, header), MainController.getMainControllerInstance().getRulesList());
+		guiWithTable = new MainFrame(new JTable(content, header), MainController.getMainControllerInstance().getRulesList(), MainController.getMainControllerInstance().getQualityIndicator());
 	}
 
 }

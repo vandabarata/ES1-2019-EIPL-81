@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
+import main.java.controller.MainController;
 import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
 

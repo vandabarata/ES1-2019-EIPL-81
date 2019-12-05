@@ -63,8 +63,10 @@ class TestCodeQualityRuleModel {
 	void testRuleEditionDefaultRule() {
 		assertEquals("LOC > 80 && CYCLO > 10", ruleDefault.getRule());
 		ruleDefault.setRule("CYCLO < 50");
+		assertEquals("CYCLO < 50", ruleDefault.getRule());
+		assertNotEquals("LOC > 80 && CYCLO > 10", ruleDefault.getRule());
 	}
-	
+
 	/**
 	 * This test verifies if the type of a default rule can be changed with the 
 	 * setIsAdvanced method

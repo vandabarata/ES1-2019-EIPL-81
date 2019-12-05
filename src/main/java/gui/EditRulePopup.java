@@ -31,32 +31,44 @@ import main.java.model.ComparisonOperator;
  */
 public class EditRulePopup {
 
-	/** The rule being edited or created */ 
+	/** The rule being edited or created */
 	private CodeQualityRule rule;
-	/** An array of string with the rules conditions where every position
-	 *  is a new line in the condition */
+	/**
+	 * An array of string with the rules conditions where every position is a new
+	 * line in the condition
+	 */
 	private ArrayList<String> ruleConditions = new ArrayList<String>();
 	/** The main frame of the GUI */
 	private JFrame frame;
 	/** The rule name text field in the GUI */
 	private JTextField nameText;
-	/** The Combo Box displaying the options of logical operators
-	 *  available for rule creation (AND, OR), for Basic Mode */
+	/**
+	 * The Combo Box displaying the options of logical operators available for rule
+	 * creation (AND, OR), for Basic Mode
+	 */
 	private JComboBox<String> logicalOperatorListBox;
-	/** The Combo Box displaying the available metrics for
-	 * rule creation (LOC, CYCLO, ATFD, LAA), for Basic Mode */
+	/**
+	 * The Combo Box displaying the available metrics for rule creation (LOC, CYCLO,
+	 * ATFD, LAA), for Basic Mode
+	 */
 	private JComboBox<String> metricsListBox;
-	/** The Combo Box displaying the available comparison operators
-	 *  for rule creation (>, <, >=, \<=, ==, !=), in Basic Mode */
+	/**
+	 * The Combo Box displaying the available comparison operators for rule creation
+	 * (>, <, >=, \<=, ==, !=), in Basic Mode
+	 */
 	private JComboBox<String> comparisonOperatorListBox;
-	/** The Text Area the displays the rule conditions and that can be
-	 *  edited by the user */
+	/**
+	 * The Text Area the displays the rule conditions and that can be edited by the
+	 * user on Advanced Mode
+	 */
 	private JTextArea ruleTextArea;
 
 	/** The Delete rule button */
 	private JButton deleteButton;
 	/** The Save rule button */
 	private JButton saveButton;
+	/** The Save rule button */
+	private JButton advanceModeButton;
 
 	/** The main JPanel of the GUI */
 	private JPanel mainPanel;
@@ -64,12 +76,15 @@ public class EditRulePopup {
 	private JPanel namePanel;
 	/** The JPanel to display the rule's conditions */
 	private JPanel ruleConditionsPanel;
-	/** The JPanel to display the buttons to switch between
-	 *  Basic and Advanced modes */
+	/**
+	 * The JPanel to display the buttons to switch between Basic and Advanced modes
+	 */
 	private JPanel editorComplexityTogglePanel;
 	/** The JPanel to display the current rule conditions added in Basic Mode */
 	private JPanel ruleConditionsListPanel;
-	/** The JPanel to display the interface to add a new rule condition in Basic Mode */
+	/**
+	 * The JPanel to display the interface to add a new rule condition in Basic Mode
+	 */
 	private JPanel addNewRuleConditionPanel;
 	/** The JPanel to display the action buttons (Clear/Delete/Save) */
 	private JPanel controlPanel;
@@ -228,8 +243,8 @@ public class EditRulePopup {
 
 	/**
 	 * 
-	 * Returns the JPanel holding the line which allows users to add new rule conditions
-	 * into the rule's conditions list. For Basic Mode.
+	 * Returns the JPanel holding the line which allows users to add new rule
+	 * conditions into the rule's conditions list. For Basic Mode.
 	 * 
 	 * @return JPanel
 	 */
@@ -255,13 +270,15 @@ public class EditRulePopup {
 		JButton addRuleConditionButton = new JButton("Add");
 		addRuleConditionButton.addActionListener(e -> {
 			String ruleCondition;
-			String baseRuleCondition = " " + comparisonOperatorListBox.getSelectedItem() + " " + threshold.getText() + " ";
+			String baseRuleCondition = " " + comparisonOperatorListBox.getSelectedItem() + " " + threshold.getText()
+					+ " ";
 			try {
 				Integer.parseInt(threshold.getText());
 				if (ruleConditions.isEmpty()) {
 					ruleCondition = "IF " + metricsListBox.getSelectedItem() + baseRuleCondition;
 				} else {
-					ruleCondition = logicalOperatorListBox.getSelectedItem() + " " + metricsListBox.getSelectedItem() + baseRuleCondition;
+					ruleCondition = logicalOperatorListBox.getSelectedItem() + " " + metricsListBox.getSelectedItem()
+							+ baseRuleCondition;
 				}
 				ruleConditions.add(ruleCondition);
 			} catch (NumberFormatException ex) {
@@ -295,48 +312,48 @@ public class EditRulePopup {
 	 */
 	private JPanel createEditorComplexityTogglePanel() {
 		editorComplexityTogglePanel.setLayout(new BoxLayout(editorComplexityTogglePanel, BoxLayout.Y_AXIS));
-		JButton basicComplexity = new JButton("Basic");
-		JButton advancedComplexity = new JButton("Advanced");
-		basicComplexity.setAlignmentX(Component.CENTER_ALIGNMENT);
-		advancedComplexity.setAlignmentX(Component.CENTER_ALIGNMENT);
-		basicComplexity.setPreferredSize(advancedComplexity.getPreferredSize());
-		basicComplexity.setMaximumSize(advancedComplexity.getMaximumSize());
-		basicComplexity.setMinimumSize(advancedComplexity.getMinimumSize());
-		basicComplexity.setEnabled(false);
+		JButton basicModeButton = new JButton("Basic");
+		advanceModeButton = new JButton("Advanced");
+		basicModeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		advanceModeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		basicModeButton.setPreferredSize(advanceModeButton.getPreferredSize());
+		basicModeButton.setMaximumSize(advanceModeButton.getMaximumSize());
+		basicModeButton.setMinimumSize(advanceModeButton.getMinimumSize());
+		basicModeButton.setEnabled(false);
 
-		basicComplexity.addActionListener(e -> {
+		basicModeButton.addActionListener(e -> {
 			if (!(rule.isAdvanced() || rule.isDefault() || rule.getName() != "")) {
-				advancedComplexity.setEnabled(true);
+				advanceModeButton.setEnabled(true);
 				advancedMode = false;
 				createRuleConditionsPanel();
 				ruleConditionsPanel.revalidate();
 				ruleConditionsPanel.repaint();
-				basicComplexity.setEnabled(false);
+				basicModeButton.setEnabled(false);
 			}
 
 		});
 
-		advancedComplexity.addActionListener(e -> {
+		advanceModeButton.addActionListener(e -> {
 			if (rule.isAdvanced() || rule.isDefault() || rule.getName() == "") {
-				basicComplexity.setEnabled(false);
+				basicModeButton.setEnabled(false);
 			} else {
-				basicComplexity.setEnabled(true);
+				basicModeButton.setEnabled(true);
 			}
 			advancedMode = true;
 			createRuleConditionsPanel();
 			ruleConditionsPanel.revalidate();
 			ruleConditionsPanel.repaint();
-			advancedComplexity.setEnabled(false);
+			advanceModeButton.setEnabled(false);
 		});
-		editorComplexityTogglePanel.add(basicComplexity);
-		editorComplexityTogglePanel.add(advancedComplexity);
+		editorComplexityTogglePanel.add(basicModeButton);
+		editorComplexityTogglePanel.add(advanceModeButton);
 
 		return editorComplexityTogglePanel;
 	}
 
 	/**
-	 * Returns the JPanel responsible for holding the JButtons which allow all
-	 * rule conditions to be cleared, or the rule to be saved.
+	 * Returns the JPanel responsible for holding the JButtons which allow all rule
+	 * conditions to be cleared, or the rule to be saved.
 	 * 
 	 * @return JPanel
 	 */
@@ -374,8 +391,8 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * This method fills the rule's conditions list in the UI with the contents found in the
-	 * ruleConditions ArrayList.
+	 * This method fills the rule's conditions list in the UI with the contents
+	 * found in the ruleConditions ArrayList.
 	 */
 	private void fillRuleConditionsListPanel() {
 		ruleConditionsListPanel.removeAll();
@@ -394,8 +411,8 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * This method clears all current rule conditions from both the GUI and the ruleConditions
-	 * ArrayList.
+	 * This method clears all current rule conditions from both the GUI and the
+	 * ruleConditions ArrayList.
 	 */
 	private void clearRuleConditionsListPanel() {
 		ruleConditions.clear();
@@ -409,10 +426,10 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * This method handles setting the visibility of the Logical Operator ComboBox in the
-	 * line responsible for allowing the user to add new rule conditions to the list.
-	 * Basically, it stops the first rule condition, and the first rule condition only,
-	 * from having an AND or an OR attached to it.
+	 * This method handles setting the visibility of the Logical Operator ComboBox
+	 * in the line responsible for allowing the user to add new rule conditions to
+	 * the list. Basically, it stops the first rule condition, and the first rule
+	 * condition only, from having an AND or an OR attached to it.
 	 */
 	private void setLogicalOperatorBoxVisibility() {
 		if (!ruleConditions.isEmpty()) {
@@ -448,8 +465,8 @@ public class EditRulePopup {
 
 	/**
 	 * 
-	 * Returns the JComboBox which holds the logical operators for a new rule condition
-	 * (AND and OR).
+	 * Returns the JComboBox which holds the logical operators for a new rule
+	 * condition (AND and OR).
 	 * 
 	 * @return JComboBox<String>
 	 */
@@ -497,12 +514,30 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Returns the Rule's name
+	 * Returns the JButton for changing the addition mode to advanced
 	 * 
-	 * @return String
+	 * @return JButton
 	 */
-	public String getRuleName() {
-		return nameText.getText();
+	public JButton getAdvancedModeButton() {
+		return advanceModeButton;
+	}
+
+	/**
+	 * Returns the Rule's JTextField for the name input
+	 * 
+	 * @return JTextField
+	 */
+	public JTextField getNameText() {
+		return nameText;
+	}
+
+	/**
+	 * Returns the JTextArea for the rules conditions
+	 * 
+	 * @return JTextArea
+	 */
+	public JTextArea getRuleTextArea() {
+		return ruleTextArea;
 	}
 
 	/**
@@ -515,8 +550,8 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Get the correct rule conditions, based on edition mode enabled,
-	 * with no parsing of the string.
+	 * Get the correct rule conditions, based on edition mode enabled, with no
+	 * parsing of the string.
 	 * 
 	 * @return String The rule conditions string with no parsing
 	 */

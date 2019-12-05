@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 
+import main.java.controller.MainController;
 import main.java.gui.EditRulePopup;
 import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
@@ -85,7 +86,7 @@ class TestEditRulePopup {
 		main.init();
 		String[] header = {"header1", "header2"};
 		String[][] content = {{"cell0",  "cell1"},{"cell2", "cell3"}};
-		MainFrame frame = new MainFrame(new JTable(content, header), main.getRulesList());
+		MainFrame frame = new MainFrame(new JTable(content, header), main.getRulesList(), main.getQualityIndicator());
 		int numberOfRules = main.getRulesList().size();
 		assertEquals(frame.getRulesComboBox().getItemCount(), numberOfRules);
 	}
