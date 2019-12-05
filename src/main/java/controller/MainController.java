@@ -1,4 +1,4 @@
-package test.java;
+package main.java.controller;
 
 import java.io.File;
 import java.util.ArrayList;

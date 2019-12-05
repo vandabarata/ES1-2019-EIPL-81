@@ -51,11 +51,6 @@ class TestEditRulePopup {
 		addpopup.getDeleteButton();
 	}
 
-	@Test
-	void testGetRuleName() {
-		String ruleName = editpopup.getRuleName();
-		assertEquals("name", ruleName);
-	}
 
 	@Test
 	void testIsAdvancedMode() {
