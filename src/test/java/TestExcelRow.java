@@ -13,8 +13,9 @@ import main.java.model.ExcelRow;
 @RunWith(JUnitPlatform.class)
 class TestExcelRow {
 
-	ExcelRow row;
+	
 	ExcelImporter ei;
+	ExcelRow row;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -73,25 +74,25 @@ class TestExcelRow {
 
 	@Test
 	void testIsIs_long_method() {
-		boolean is_long_method = row.isIs_long_method();
+		boolean is_long_method = row.isLongMethod();
 		assertEquals(false, is_long_method);
 	}
 
 	@Test
 	void testIsiPlasma() {
-		boolean iPlasma = row.isiPlasma();
+		boolean iPlasma = row.getIPlasmaResult();
 		assertEquals(false, iPlasma);
 	}
 
 	@Test
 	void testIsPMD() {
-		boolean PMD = row.isPMD();
+		boolean PMD = row.getPMDResult();
 		assertEquals(false, PMD);
 	}
 
 	@Test
 	void testIsIs_feature_envy() {
-		boolean is_feature_envy = row.isIs_feature_envy();
+		boolean is_feature_envy = row.isFeatureEnvy();
 		assertEquals(false, is_feature_envy);
 	}
 
@@ -100,7 +101,7 @@ class TestExcelRow {
 		String rowString = row.toString();
 		assertEquals("ID: " + row.getId() + "\nPackage: " + row.getPackageName() + "\nClass: " + row.getClassName() + "\nMethod: " + row.getMethodName()
 				+ "\nLOC: " + row.getLOC() + "\nCYCLO: " + row.getCYCLO() + "\nATFD: " + row.getATFD() + "\nLAA: " + row.getLAA() + "\nIs Long Method: "
-				+ row.isIs_long_method() + "\niPlasma: " + row.isiPlasma() + "\nPMD: " + row.isPMD() + "\nIs Feature Envy: " + row.isIs_feature_envy(), rowString);
+				+ row.isLongMethod() + "\niPlasma: " + row.getIPlasmaResult() + "\nPMD: " + row.getPMDResult() + "\nIs Feature Envy: " + row.isFeatureEnvy(), rowString);
 	}
 	
 

@@ -16,6 +16,7 @@ import main.java.gui.QualityRulesResultFrame;
 import main.java.model.CodeQualityRule;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
+import main.java.model.QualityIndicator;
 
 /**
  * <h1>Main Controller</h1> Accepts input and converts it to commands and action
@@ -30,6 +31,7 @@ import main.java.model.ExcelRow;
  * the input to the model.
  */
 public class MainController {
+
 	private MainFrame gui;
 	private QualityRulesResultFrame qualityGui;
 	private String path;
@@ -37,8 +39,10 @@ public class MainController {
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+	 /** qualityIndicator - Object responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII */
+	private QualityIndicator qualityIndicator;
 	private static MainController instance;
-
+	
 	/**
 	 * Singleton MainController - only 1 instance allowed. Creates the default rules
 	 * to be used and manages the Main Frame.
@@ -113,8 +117,9 @@ public class MainController {
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
-		convertExcelRows(); 
-		gui = new MainFrame(createExcelTable(), rulesList);
+		convertExcelRows();
+		instanceQualityIndicators(excelRowsConverted);
+		gui = new MainFrame(createExcelTable(), rulesList, qualityIndicator);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
 
@@ -158,6 +163,14 @@ public class MainController {
 				throw e;
 			}
 		}
+	}
+	
+	/**
+	 * This method is used to instance a IndicatorsQuality object 
+	 * to compute the Quality Indicators
+	 */
+	public void instanceQualityIndicators(ArrayList<ExcelRow> excelRows) {
+		 qualityIndicator = new QualityIndicator(excelRows);
 	}
 
 	/**
@@ -218,6 +231,16 @@ public class MainController {
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
 	}
+	
+	/**
+	 * Returns the QualityIndicator object
+	 * 
+	 * @return ArrayList<CodeQualityRule>
+	 */
+	public QualityIndicator getQualityIndicator() {
+		return qualityIndicator;
+	}
+
 
 	/**
 	 * Receives an updated list of rules and replaces the old rules list with it

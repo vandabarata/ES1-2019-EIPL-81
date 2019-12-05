@@ -14,10 +14,10 @@ public class ExcelRow {
 	private int CYCLO;
 	private int ATFD;
 	private float LAA;
-	private boolean is_long_method;
+	private boolean isLongMethod;
 	private boolean iPlasma;
 	private boolean PMD;
-	private boolean is_feature_envy;
+	private boolean isFeatureEnvy;
 
 	/**
 	 * Create an ExcelRow
@@ -34,10 +34,10 @@ public class ExcelRow {
 		this.CYCLO = Integer.parseInt(rowData[5]);
 		this.ATFD = Integer.parseInt(rowData[6]);
 		this.LAA = Float.parseFloat(rowData[7]);
-		this.is_long_method = Boolean.parseBoolean(rowData[8]);
+		this.isLongMethod = Boolean.parseBoolean(rowData[8]);
 		this.iPlasma = Boolean.parseBoolean(rowData[9]);
 		this.PMD = Boolean.parseBoolean(rowData[10]);
-		this.is_feature_envy = Boolean.parseBoolean(rowData[11]);
+		this.isFeatureEnvy = Boolean.parseBoolean(rowData[11]);
 	}
 
 	/**
@@ -108,15 +108,15 @@ public class ExcelRow {
 	 * 
 	 * @return row's is_long_method value
 	 */
-	public boolean isIs_long_method() {
-		return is_long_method;
+	public boolean isLongMethod() {
+		return isLongMethod;
 	}
 
 	/**
 	 * 
 	 * @return row's iPlasma value
 	 */
-	public boolean isiPlasma() {
+	public boolean getIPlasmaResult() {
 		return iPlasma;
 	}
 
@@ -124,7 +124,7 @@ public class ExcelRow {
 	 * 
 	 * @return row's PMD value
 	 */
-	public boolean isPMD() {
+	public boolean getPMDResult() {
 		return PMD;
 	}
 
@@ -132,15 +132,15 @@ public class ExcelRow {
 	 * 
 	 * @return row's is_feature_envy value
 	 */
-	public boolean isIs_feature_envy() {
-		return is_feature_envy;
+	public boolean isFeatureEnvy() {
+		return isFeatureEnvy;
 	}
 
 	@Override
 	public String toString() {
 		return "ID: " + id + "\nPackage: " + packageName + "\nClass: " + className + "\nMethod: " + methodName
 				+ "\nLOC: " + LOC + "\nCYCLO: " + CYCLO + "\nATFD: " + ATFD + "\nLAA: " + LAA + "\nIs Long Method: "
-				+ is_long_method + "\niPlasma: " + iPlasma + "\nPMD: " + PMD + "\nIs Feature Envy: " + is_feature_envy;
+				+ isLongMethod + "\niPlasma: " + iPlasma + "\nPMD: " + PMD + "\nIs Feature Envy: " + isFeatureEnvy;
 	}
 
 }
