@@ -13,10 +13,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
-
 import main.java.model.CodeQualityRule;
+import main.java.model.QualityIndicator;
 
 public class MainFrame {
+	
 	private JFrame mainFrame;
 	private JPanel centralPanel;
 	private JPanel southPanel;
@@ -26,17 +27,20 @@ public class MainFrame {
 	private JButton checkQualityButton;
 	private JComboBox<Object> rulesDropDown;
 	private ArrayList<CodeQualityRule> rulesList;
+	 /** qualityIndicator - Object responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII */
+	private QualityIndicator qualityIndicators;
 
 	/**
 	 * The mainframe constructor receives an excel table, generated from the given
-	 * excel file, as well as a list containing all the rules, stored in the main
+	 * excel file, as well as a list containing all the rules and quality indicators, stored in the main
 	 * controller
 	 * 
 	 * @param excelTable
 	 * @param rulesList
+	 * @param indicatorsQuality object that it's responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII
 	 * 
 	 */
-	public MainFrame(JTable excelTable, ArrayList<CodeQualityRule> rulesList) {
+	public MainFrame(JTable excelTable, ArrayList<CodeQualityRule> rulesList, QualityIndicator qualityIndicators) {
 		mainFrame = new JFrame();
 		mainFrame.setSize(700, 500);
 		mainFrame.setLocationRelativeTo(null);
@@ -44,8 +48,10 @@ public class MainFrame {
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		this.excelTable = excelTable;
 		this.rulesList = rulesList;
+		this.qualityIndicators = qualityIndicators;
 		addContents();
 		mainFrame.setVisible(true);
+
 	}
 
 	/**
@@ -126,12 +132,11 @@ public class MainFrame {
 	/**
 	 * This method fills a panel with a grid layout of 3 by 5 with JLabels. Each one
 	 * of the JLabels is added accordingly with the layout pretended and displays
-	 * the results extracted from reading the excel file.
+	 * the quality indicator correspondent extracted from reading the excel file.
 	 * 
 	 * @param fileResultsPanel- the panel used to add the JLabels and display the
 	 *                          results.
 	 */
-	// TODO: This Method must receive The results of the excel
 	private void addContentToFileResultsforPanel(JPanel fileResultsPanel) {
 		fileResultsPanel.add(new JLabel(""));
 		fileResultsPanel.add(new JLabel("DCI"));
@@ -139,15 +144,15 @@ public class MainFrame {
 		fileResultsPanel.add(new JLabel("ADCI"));
 		fileResultsPanel.add(new JLabel("ADII"));
 		fileResultsPanel.add(new JLabel("iPlasma"));
-		fileResultsPanel.add(new JLabel("a"));
-		fileResultsPanel.add(new JLabel("b"));
-		fileResultsPanel.add(new JLabel("c"));
-		fileResultsPanel.add(new JLabel("d"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADII())));
 		fileResultsPanel.add(new JLabel("PMD"));
-		fileResultsPanel.add(new JLabel("e"));
-		fileResultsPanel.add(new JLabel("f"));
-		fileResultsPanel.add(new JLabel("g"));
-		fileResultsPanel.add(new JLabel("h"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADII())));
 	}
 
 	/**

@@ -45,8 +45,8 @@ class TestMainController {
 		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
 		CodeQualityRule rule1 = rulesList.get(0);
 		CodeQualityRule rule2 = rulesList.get(1);
-		assertEquals("is_long_method", rule1.getName());
-		assertEquals("is_feature_envy", rule2.getName());
+		assertEquals("custom_is_long_method", rule1.getName());
+		assertEquals("custom_is_feature_envy", rule2.getName());
 	}
 
 	@Test

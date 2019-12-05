@@ -19,7 +19,7 @@ import main.java.gui.QualityRulesResultFrame;
 import main.java.model.CodeQualityRule;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
-import main.java.model.Metric;
+import main.java.model.QualityIndicator;
 
 /**
  * <h1>Main Controller</h1> Accepts input and converts it to commands and action
@@ -34,6 +34,7 @@ import main.java.model.Metric;
  * the input to the model.
  */
 public class MainController {
+
 	private MainFrame gui;
 	private QualityRulesResultFrame qualityGui;
 	private String path;
@@ -41,6 +42,11 @@ public class MainController {
 	private ArrayList<String[]> excelRows;
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+	/**
+	 * qualityIndicator - Object responsible for calculating the quality indicators
+	 * such as DCI, DII, ADCI and ADII
+	 */
+	private QualityIndicator qualityIndicator;
 	private static MainController instance;
 
 	/**
@@ -120,13 +126,10 @@ public class MainController {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
 		convertExcelRows();
-		gui = new MainFrame(createExcelTable(), rulesList);
+		instanceQualityIndicators(excelRowsConverted);
+		gui = new MainFrame(createExcelTable(), rulesList, qualityIndicator);
 		qualityGui = new QualityRulesResultFrame();
-		gui.getCheckQualityButton().addActionListener(e -> {
-
-			checkCodeQualityAndShow();
-
-		});
+		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
 
 		editButton(this.gui.getEditButton(), this.gui.getRulesComboBox());
 		addButton(this.gui.getAddButton());
@@ -168,6 +171,14 @@ public class MainController {
 				throw e;
 			}
 		}
+	}
+
+	/**
+	 * This method is used to instance a IndicatorsQuality object to compute the
+	 * Quality Indicators
+	 */
+	public void instanceQualityIndicators(ArrayList<ExcelRow> excelRows) {
+		qualityIndicator = new QualityIndicator(excelRows);
 	}
 
 	/**
@@ -237,10 +248,10 @@ public class MainController {
 		for (ExcelRow row : excelRowsConverted) {
 			String[] qualityRow = new String[4 + excelRowsConverted.size()];
 			qualityRow[0] = Integer.toString(row.getId());
-			qualityRow[1] = Boolean.toString(row.isIs_long_method());
-			qualityRow[2] = Boolean.toString(row.isIs_feature_envy());
-			qualityRow[3] = Boolean.toString(row.isPMD());
-			qualityRow[4] = Boolean.toString(row.isiPlasma());
+			qualityRow[1] = Boolean.toString(row.isLongMethod());
+			qualityRow[2] = Boolean.toString(row.isFeatureEnvy());
+			qualityRow[3] = Boolean.toString(row.getPMDResult());
+			qualityRow[4] = Boolean.toString(row.getIPlasmaResult());
 			int ruleIterator = 5;
 
 			for (CodeQualityRule rule : rulesList) {
@@ -308,13 +319,24 @@ public class MainController {
 	}
 
 	/**
+	 * Returns the QualityIndicator object
+	 * 
+	 * @return ArrayList<CodeQualityRule>
+	 */
+	public QualityIndicator getQualityIndicator() {
+		return qualityIndicator;
+	}
+
+	/**
 	 * Receives an updated list of rules and replaces the old rules list with it
 	 * 
 	 * @param newRules
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
-		getMainFrame().updateRulesComboBox(newRules);
+		if (getMainFrame() != null) {
+			getMainFrame().updateRulesComboBox(newRules);
+		}
 	}
 
 	/**
