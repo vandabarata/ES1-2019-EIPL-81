@@ -226,7 +226,9 @@ public class MainController {
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
-		getMainFrame().updateRulesComboBox(newRules);
+		if (getMainFrame() != null) {
+			getMainFrame().updateRulesComboBox(newRules);
+		}
 	}
 
 	/**
