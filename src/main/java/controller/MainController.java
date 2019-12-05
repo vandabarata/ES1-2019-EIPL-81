@@ -304,8 +304,8 @@ public class MainController {
 		int CYCLO = row.getCYCLO();
 		int LOC = row.getLOC();
 		float LAA = row.getLAA();
-		String filledRule = "var ATFD = " + ATFD + "; " + "var CYCLO = " + CYCLO + "; " + "var LOC = " + LOC + "; "
-				+ "var LAA = " + LAA + "; ";
+		String filledRule = "var ATFD = " + ATFD + ", " + "CYCLO = " + CYCLO + ", " + "LOC = " + LOC + ", " + "LAA = "
+				+ LAA + "; ";
 		return filledRule;
 	}
 
