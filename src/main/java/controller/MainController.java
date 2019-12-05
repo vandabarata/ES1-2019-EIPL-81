@@ -211,10 +211,10 @@ public class MainController {
 		results = getCodeQualityResults();
 		String[] colNames = new String[5 + rulesList.size()];
 		colNames[0] = "Method ID";
-		colNames[1] = "PMD";
-		colNames[2] = "iPlasma";
-		colNames[3] = "long_method";
-		colNames[4] = "feature_envy";
+		colNames[1] = "long_method";
+		colNames[2] = "feature_envy";
+		colNames[3] = "PMD";
+		colNames[4] = "iPlasma";
 		int iterator = 5;
 		for (CodeQualityRule rule : rulesList) {
 			colNames[iterator] = rule.getName();
