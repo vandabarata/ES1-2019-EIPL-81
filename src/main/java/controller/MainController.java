@@ -206,11 +206,11 @@ public class MainController {
 		String[][] results = null;
 		results = getCodeQualityResults();
 		String[] colNames = new String[5 + rulesList.size()];
-		colNames[0] = "Method ID";
-		colNames[1] = "long_method";
-		colNames[2] = "feature_envy";
-		colNames[3] = "PMD";
-		colNames[4] = "iPlasma";
+		colNames[0] = excelRows.get(0)[0];
+		colNames[1] = excelRows.get(0)[8];
+		colNames[2] = excelRows.get(0)[11];
+		colNames[3] = excelRows.get(0)[10];
+		colNames[4] = excelRows.get(0)[9];
 		int iterator = 5;
 		for (CodeQualityRule rule : rulesList) {
 			colNames[iterator] = rule.getName();
