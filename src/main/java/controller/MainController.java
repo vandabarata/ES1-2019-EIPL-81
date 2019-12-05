@@ -272,9 +272,9 @@ public class MainController {
 	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
 		ScriptEngineManager engineManager = new ScriptEngineManager();
 		ScriptEngine engine = engineManager.getEngineByName("ECMAScript");
-		registerVariables(engine, row);
+		String filledRule = registerVariables(engine, row);
 		Object result = null;
-		result = engine.eval("eval('" + rule.getRule() + "');");
+		result = engine.eval(filledRule + "eval('" + rule.getRule() + "');");
 		return Boolean.toString(Boolean.TRUE.equals(result));
 	}
 
@@ -286,14 +286,14 @@ public class MainController {
 	 * @throws ScriptException
 	 */
 
-	public void registerVariables(ScriptEngine engine, ExcelRow row) throws ScriptException {
+	public String registerVariables(ScriptEngine engine, ExcelRow row) throws ScriptException {
 		int ATFD = row.getATFD();
 		int CYCLO = row.getCYCLO();
 		int LOC = row.getLOC();
 		float LAA = row.getLAA();
 		String filledRule = "var ATFD = " + ATFD + "; " + "var CYCLO = " + CYCLO + "; " + "var LOC = " + LOC + "; "
 				+ "var LAA = " + LAA + "; ";
-		engine.eval(filledRule);
+		return filledRule;
 	}
 
 	/**
