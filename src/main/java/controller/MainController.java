@@ -272,21 +272,19 @@ public class MainController {
 	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
 		ScriptEngineManager engineManager = new ScriptEngineManager();
 		ScriptEngine engine = engineManager.getEngineByName("ECMAScript");
-		String filledRule = registerVariables(engine, row);
+		String filledRule = registerVariables(row);
 		Object result = null;
 		result = engine.eval(filledRule + "eval('" + rule.getRule() + "');");
 		return Boolean.toString(Boolean.TRUE.equals(result));
 	}
 
 	/**
-	 * Initializes the metric variables in the given javascript engine.
+	 * Creates and returns a string ready to be passed on to a javascript engine, which initializes all the necessary metric variables. 
 	 * 
-	 * @param engine The engine in which the metric will be initialized.
 	 * @param row    The excel row with the values for our metrics.
-	 * @throws ScriptException
+	 * @return filledRule The Sting of rule initializations to be passed on to a javascript engine.
 	 */
-
-	public String registerVariables(ScriptEngine engine, ExcelRow row) throws ScriptException {
+	public String registerVariables(ExcelRow row) {
 		int ATFD = row.getATFD();
 		int CYCLO = row.getCYCLO();
 		int LOC = row.getLOC();
