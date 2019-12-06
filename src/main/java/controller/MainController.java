@@ -19,37 +19,56 @@ import main.java.model.ExcelRow;
 import main.java.model.QualityIndicator;
 
 /**
- * <h1>Main Controller</h1> Accepts input and converts it to commands and action
- * for the model or view. In addition to dividing the application into these
+ * Main Controller - Accepts input and converts it to commands and action for
+ * the model or view. In addition to dividing the application into these
  * components, the model-view-controller design defines the interactions between
  * them.
  * <p>
  * <b>Note Model-View-Controller (MVC):</b> The Model is responsible for
  * managing the data of the application. It receives user input from the
  * controller. The View means presentation of the model in a particular format.
- * The controller receives the input, optionally validates it and then passes
+ * The Controller receives the input, optionally validates it and then passes
  * the input to the model.
  */
 public class MainController {
 
+	/** mainframe where the main application runs */
 	private MainFrame gui;
-	private QualityRulesResultFrame qualityGui;
-	private String path;
-	private ExcelImporter ei;
-	private ArrayList<String[]> excelRows;
-	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
-	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
-	 /** qualityIndicator - Object responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII */
-	private QualityIndicator qualityIndicator;
-	private static MainController instance;
 	
+	/** frame that's going to present the code quality check results */
+	private QualityRulesResultFrame qualityGui;
+	
+	/** string indicating the path where the excel file is located*/
+	private String path;
+	
+	/** object that deals with importing the excel file */
+	private ExcelImporter ei;
+	
+	/** ArrayList with arrays of strings, containing raw data from the excel in string form */
+	private ArrayList<String[]> excelRows;
+	
+	/** ArrayList of ExcelRows with all the excel information */
+	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
+	
+	/** ArrayList of CodeQualityRules, listing all the existent rules */
+	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+	
+	/** qualityIndicator - Object responsible for calculating the quality indicators
+	 such as DCI, DII, ADCI and ADII */
+	private QualityIndicator qualityIndicator;
+	
+	/** single instance of the MainController */
+	private static MainController instance;
+
 	/**
 	 * Singleton MainController - only 1 instance allowed. Creates the default rules
 	 * to be used and manages the Main Frame.
 	 */
 	private MainController() {
-		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true, true);
-		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true, true);
+		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true,
+				true);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true,
+				true);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
 	}
@@ -148,11 +167,11 @@ public class MainController {
 	/**
 	 * Converts all the valid rows into ExcelRow model
 	 * 
-	 * Starts at index 1 because we only want to convert the table content
-	 * and not the header
+	 * Starts at index 1 because we only want to convert the table content and not
+	 * the header
 	 */
 	private void convertExcelRows() {
-		for(int i = 1; i < excelRows.size(); i++) {
+		for (int i = 1; i < excelRows.size(); i++) {
 			try {
 				excelRowsConverted.add(new ExcelRow(excelRows.get(i)));
 			}
@@ -164,13 +183,13 @@ public class MainController {
 			}
 		}
 	}
-	
+
 	/**
-	 * This method is used to instance a IndicatorsQuality object 
-	 * to compute the Quality Indicators
+	 * This method is used to instance a IndicatorsQuality object to compute the
+	 * Quality Indicators
 	 */
 	public void instanceQualityIndicators(ArrayList<ExcelRow> excelRows) {
-		 qualityIndicator = new QualityIndicator(excelRows);
+		qualityIndicator = new QualityIndicator(excelRows);
 	}
 
 	/**
@@ -218,40 +237,36 @@ public class MainController {
 	 */
 	private String[][] getCodeQualityResults() {
 		// TODO calculate code quality
-		String[][] results = new String[][] { { "1", "TRUE", "TRUE", "TRUE", "FALSE" }, { "2", "TRUE", "FALSE", "TRUE", "FALSE" },
-				{ "3", "TRUE", "TRUE", "FALSE", "FALSE"} };
+		String[][] results = new String[][] { { "1", "TRUE", "TRUE", "TRUE", "FALSE" },
+				{ "2", "TRUE", "FALSE", "TRUE", "FALSE" }, { "3", "TRUE", "TRUE", "FALSE", "FALSE" } };
 		return results;
 	}
 
 	/**
 	 * Returns the entire rules list
 	 * 
-	 * @return ArrayList<CodeQualityRule>
+	 * @return ArrayList<CodeQualityRule> - list of all the rules
 	 */
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
 	}
-	
+
 	/**
 	 * Returns the QualityIndicator object
 	 * 
-	 * @return ArrayList<CodeQualityRule>
+	 * @return QualityIndicator - object that manages the code quality results
 	 */
 	public QualityIndicator getQualityIndicator() {
 		return qualityIndicator;
 	}
 
-
 	/**
 	 * Receives an updated list of rules and replaces the old rules list with it
 	 * 
-	 * @param newRules
+	 * @param newRules - new list of rules to consider
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
-		if (getMainFrame() != null) {
-			getMainFrame().updateRulesComboBox(newRules);
-		}
 	}
 
 	/**

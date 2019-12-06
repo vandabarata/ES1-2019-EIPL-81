@@ -1,6 +1,5 @@
 package test.java;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -12,7 +11,6 @@ import org.junit.runner.RunWith;
 
 import main.java.controller.MainController;
 import main.java.gui.MainFrame;
-import main.java.gui.PopupUploadFile;
 import main.java.model.CodeQualityRule;
 
 @RunWith(JUnitPlatform.class)
