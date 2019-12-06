@@ -130,15 +130,15 @@ public class QualityRulesResultFrame {
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADII())));
 		//TODO change this with the correct values for custom methods
 		fileResultsPanel.add(new JLabel("custom_is_long_method"));
-		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDCI())));
-		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDII())));
-		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADCI())));
-		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongADII())));
 		fileResultsPanel.add(new JLabel("custom_is_feature_envy"));
-		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDCI())));
-		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDII())));
-		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADCI())));
-		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyADII())));
 	}
 
 	/**

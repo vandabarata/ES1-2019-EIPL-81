@@ -147,7 +147,6 @@ public class MainController {
 		ei = new ExcelImporter(path);
 		excelRows = ei.getAllRows();
 		convertExcelRows();
-		instanceQualityIndicators(excelRowsConverted);
 		gui = new MainFrame(createExcelTable(), rulesList);
 		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
@@ -199,7 +198,7 @@ public class MainController {
 	 * Quality Indicators
 	 */
 	public void instanceQualityIndicators(ArrayList<ExcelRow> excelRows) {
-		qualityIndicator = new QualityIndicator(excelRows);
+		//qualityIndicator = new QualityIndicator(excelRows);
 	}
 
 	/**
@@ -250,6 +249,7 @@ public class MainController {
 		}
 
 		if (results != null) {
+			qualityIndicator = new QualityIndicator(results);
 			qualityGui.fillFrame(results, colNames, qualityIndicator);
 			qualityGui.show();
 		}

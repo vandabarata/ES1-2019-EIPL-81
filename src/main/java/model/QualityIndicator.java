@@ -25,14 +25,22 @@ public class QualityIndicator {
 	/** iPlasmaADII - ADII Indicator - number of absence of faults incorrectly identified by the iPlasma tool */
 	private int iPlasmaADII;
 	/** excel Rows  - list of Excel Rows from Excel file */
-	private ArrayList<ExcelRow> excelRows;
+	private String[][] resultsRows;
+	private int customLongDCI;
+	private int customLongDII;
+	private int customLongADCI;
+	private int customLongADII;
+	private int customEnvyDCI;
+	private int customEnvyDII;
+	private int customEnvyADCI;
+	private int customEnvyADII;
 	
 	/**
 	 * Creates a IndicatorQuality object based on excelRow.
 	 * A IndicatorQuality object also calculate the Quality Indicators from the Excel file
 	 * @param excelRows is the list of Excel Rows from the Excel file
 	 */
-	public QualityIndicator(ArrayList<ExcelRow> excelRows) {
+	public QualityIndicator(String[][] resultsRows) {
 		PMDDCI = 0; 
 		PMDDII = 0; 
 		PMDADCI = 0; 
@@ -41,25 +49,49 @@ public class QualityIndicator {
 		iPlasmaDII = 0;
 		iPlasmaADCI = 0;
 		iPlasmaADII = 0;
-		this.excelRows = excelRows;
+		customLongDCI = 0;
+		customLongDII = 0;
+		customLongADCI = 0;
+		customLongADII = 0;
+		customEnvyDCI = 0;
+		customEnvyDII = 0;
+		customEnvyADCI = 0;
+		customEnvyADII = 0;
+		this.resultsRows = resultsRows;
 		
-		for (ExcelRow row : excelRows) {
-			if(row.getPMDResult() && row.isLongMethod())
+		for (String[] row : resultsRows) {
+			if(Boolean.parseBoolean(row[3]) && Boolean.parseBoolean(row[1]))
 				PMDDCI++;
-			if(row.getIPlasmaResult() && row.isLongMethod())
+			if(Boolean.parseBoolean(row[4]) && Boolean.parseBoolean(row[1]))
 				iPlasmaDCI++;
-			if(row.getPMDResult() && !row.isLongMethod())
+			if(Boolean.parseBoolean(row[5]) && Boolean.parseBoolean(row[1]))
+				customLongDCI++;
+			if(Boolean.parseBoolean(row[6]) && Boolean.parseBoolean(row[1]))
+				customEnvyDCI++;
+			if(Boolean.parseBoolean(row[3]) && !Boolean.parseBoolean(row[1]))
 				PMDDII++;
-			if(row.getIPlasmaResult() && !row.isLongMethod())
+			if(Boolean.parseBoolean(row[4]) && !Boolean.parseBoolean(row[1]))
 				iPlasmaDII++;
-			if(!row.getPMDResult() && !row.isLongMethod())
+			if(Boolean.parseBoolean(row[5]) && !Boolean.parseBoolean(row[1]))
+				customLongDII++;
+			if(Boolean.parseBoolean(row[6]) && !Boolean.parseBoolean(row[1]))
+				customEnvyDII++;
+			if(!Boolean.parseBoolean(row[3]) && !Boolean.parseBoolean(row[1]))
 				PMDADCI++;
-			if(!row.getIPlasmaResult() && !row.isLongMethod())
+			if(!Boolean.parseBoolean(row[4]) && !Boolean.parseBoolean(row[1]))
 				iPlasmaADCI++;
-			if(!row.getPMDResult() && row.isLongMethod())
+			if(!Boolean.parseBoolean(row[5]) && !Boolean.parseBoolean(row[1]))
+				customLongADCI++;
+			if(!Boolean.parseBoolean(row[6]) && !Boolean.parseBoolean(row[1]))
+				customEnvyADCI++;
+			if(!Boolean.parseBoolean(row[3]) && Boolean.parseBoolean(row[1]))
 				PMDADII++;
-			if(!row.getIPlasmaResult() && row.isLongMethod())
+			if(!Boolean.parseBoolean(row[4]) && Boolean.parseBoolean(row[1]))
 				iPlasmaADII++;
+			if(!Boolean.parseBoolean(row[5]) && Boolean.parseBoolean(row[1]))
+				customLongADII++;
+			if(!Boolean.parseBoolean(row[6]) && Boolean.parseBoolean(row[1]))
+				customEnvyADII++;
 		}
 	}
 	
@@ -120,5 +152,37 @@ public class QualityIndicator {
 	 */
 	public int getIPlasmaADII() {
 		return iPlasmaADII;
+	}
+
+	public int getCustomLongDCI() {
+		return customLongDCI;
+	}
+
+	public int getCustomLongADII() {
+		return customLongADII;
+	}
+
+	public int getCustomLongDII() {
+		return customLongDII;
+	}
+
+	public int getCustomLongADCI() {
+		return customLongADCI;
+	}
+
+	public int getCustomEnvyDCI() {
+		return customEnvyDCI;
+	}
+
+	public int getCustomEnvyADCI() {
+		return customEnvyADCI;
+	}
+
+	public int getCustomEnvyDII() {
+		return customEnvyDII;
+	}
+
+	public int getCustomEnvyADII() {
+		return customEnvyADII;
 	}
 }
