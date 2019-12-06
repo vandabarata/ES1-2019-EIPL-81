@@ -3,6 +3,9 @@ package main.java.controller;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -52,6 +55,12 @@ public class MainController {
 	
 	/** ArrayList of CodeQualityRules, listing all the existent rules */
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+
+	private final int METHOD_ID_INDEX = 0;
+	private final int PMD_INDEX = 10;
+	private final int IPLASMA_INDEX = 9;
+	private final int IS_LONG_METHOD__INDEX = 8;
+	private final int IS_FEATURE_ENVY__INDEX = 11;
 	
 	/** qualityIndicator - Object responsible for calculating the quality indicators
 	 such as DCI, DII, ADCI and ADII */
@@ -59,7 +68,8 @@ public class MainController {
 	
 	/** single instance of the MainController */
 	private static MainController instance;
-
+  
+  
 	/**
 	 * Singleton MainController - only 1 instance allowed. Creates the default rules
 	 * to be used and manages the Main Frame.
@@ -221,25 +231,103 @@ public class MainController {
 	/**
 	 * Verify the code quality based on the Rules created and sends the results to
 	 * be displayed in the QualityRulesResultFrame
+	 * 
+	 * @throws ScriptException
 	 */
 	private void checkCodeQualityAndShow() {
-		String[][] results = getCodeQualityResults();
-		// TODO get real column names
-		String[] colNames = new String[] { "Method ID", "PMD", "iPlasma", "long_method", "feature_envy" };
-		qualityGui.fillTable(results, colNames);
-		qualityGui.show();
+		String[][] results = null;
+		results = getCodeQualityResults();
+		String[] colNames = new String[5 + rulesList.size()];
+		colNames[0] = excelRows.get(0)[METHOD_ID_INDEX];
+		colNames[1] = excelRows.get(0)[IS_LONG_METHOD__INDEX];
+		colNames[2] = excelRows.get(0)[IS_FEATURE_ENVY__INDEX];
+		colNames[3] = excelRows.get(0)[PMD_INDEX];
+		colNames[4] = excelRows.get(0)[IPLASMA_INDEX];
+		int iterator = 5;
+		for (CodeQualityRule rule : rulesList) {
+			colNames[iterator] = rule.getName();
+			iterator++;
+		}
+
+		if (results != null) {
+			qualityGui.fillTable(results, colNames);
+			qualityGui.show();
+		}
 	}
 
 	/**
+	 * 
+	 * Returns the results of the calculation of each rule, for each method.
+	 * 
 	 * @return An Array of String arrays where each line is a row with the code
 	 *         quality results for a method, and each column is the value of that
 	 *         result line for that column
 	 */
 	private String[][] getCodeQualityResults() {
-		// TODO calculate code quality
-		String[][] results = new String[][] { { "1", "TRUE", "TRUE", "TRUE", "FALSE" },
-				{ "2", "TRUE", "FALSE", "TRUE", "FALSE" }, { "3", "TRUE", "TRUE", "FALSE", "FALSE" } };
+		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];
+		int iterator = 0;
+		for (ExcelRow row : excelRowsConverted) {
+			String[] qualityRow = new String[4 + excelRowsConverted.size()];
+			qualityRow[0] = Integer.toString(row.getId());
+			qualityRow[1] = Boolean.toString(row.isLongMethod());
+			qualityRow[2] = Boolean.toString(row.isFeatureEnvy());
+			qualityRow[3] = Boolean.toString(row.getPMDResult());
+			qualityRow[4] = Boolean.toString(row.getIPlasmaResult());
+			int ruleIterator = 5;
+
+			for (CodeQualityRule rule : rulesList) {
+				try {
+					qualityRow[ruleIterator] = getResult(rule, row);
+					ruleIterator++;
+				} catch (ScriptException e) {
+					qualityGui.hide();
+					JOptionPane.showMessageDialog(null,
+							"Invalid rule syntax! Please verify the conditions for the rule  \"" + rule + "\"!");
+					return null;
+				}
+			}
+			results[iterator] = qualityRow;
+			iterator++;
+		}
 		return results;
+
+	}
+
+	/**
+	 * Runs a rule over an excelRow and returns the result.
+	 * 
+	 * @param rule The rule, the result of which we require.
+	 * @param row  The excel row containing the methodID over which we wish to run
+	 *             the rule.
+	 * @return Returns the result of running the rule over the methodID of the given
+	 *         ExcelRow, in string form.
+	 * @throws ScriptException
+	 */
+	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
+		ScriptEngineManager engineManager = new ScriptEngineManager();
+		ScriptEngine engine = engineManager.getEngineByName("ECMAScript");
+		String filledRule = registerVariables(row);
+		Object result = null;
+		result = engine.eval(filledRule + "eval('" + rule.getRule() + "');");
+		return Boolean.toString(Boolean.TRUE.equals(result));
+	}
+
+	/**
+	 * Creates and returns a string ready to be passed on to a javascript engine,
+	 * which initializes all the necessary metric variables.
+	 * 
+	 * @param row The excel row with the values for our metrics.
+	 * @return filledRule The String of metrics turned into variables to use in the
+	 *         JS engine for running the rules.
+	 */
+	public String registerVariables(ExcelRow row) {
+		int ATFD = row.getATFD();
+		int CYCLO = row.getCYCLO();
+		int LOC = row.getLOC();
+		float LAA = row.getLAA();
+		String filledRule = "var ATFD = " + ATFD + ", " + "CYCLO = " + CYCLO + ", " + "LOC = " + LOC + ", " + "LAA = "
+				+ LAA + "; ";
+		return filledRule;
 	}
 
 	/**
