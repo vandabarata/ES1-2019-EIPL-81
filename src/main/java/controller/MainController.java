@@ -22,39 +22,54 @@ import main.java.model.ExcelRow;
 import main.java.model.QualityIndicator;
 
 /**
- * <h1>Main Controller</h1> Accepts input and converts it to commands and action
- * for the model or view. In addition to dividing the application into these
+ * Main Controller - Accepts input and converts it to commands and action for
+ * the model or view. In addition to dividing the application into these
  * components, the model-view-controller design defines the interactions between
  * them.
  * <p>
  * <b>Note Model-View-Controller (MVC):</b> The Model is responsible for
  * managing the data of the application. It receives user input from the
  * controller. The View means presentation of the model in a particular format.
- * The controller receives the input, optionally validates it and then passes
+ * The Controller receives the input, optionally validates it and then passes
  * the input to the model.
  */
 public class MainController {
 
+	/** mainframe where the main application runs */
 	private MainFrame gui;
+	
+	/** frame that's going to present the code quality check results */
 	private QualityRulesResultFrame qualityGui;
+	
+	/** string indicating the path where the excel file is located*/
 	private String path;
+	
+	/** object that deals with importing the excel file */
 	private ExcelImporter ei;
+	
+	/** ArrayList with arrays of strings, containing raw data from the excel in string form */
 	private ArrayList<String[]> excelRows;
+	
+	/** ArrayList of ExcelRows with all the excel information */
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
+	
+	/** ArrayList of CodeQualityRules, listing all the existent rules */
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
-	/**
-	 * qualityIndicator - Object responsible for calculating the quality indicators
-	 * such as DCI, DII, ADCI and ADII
-	 */
-	private QualityIndicator qualityIndicator;
-	private static MainController instance;
 
 	private final int METHOD_ID_INDEX = 0;
 	private final int PMD_INDEX = 10;
 	private final int IPLASMA_INDEX = 9;
 	private final int IS_LONG_METHOD__INDEX = 8;
 	private final int IS_FEATURE_ENVY__INDEX = 11;
-
+	
+	/** qualityIndicator - Object responsible for calculating the quality indicators
+	 such as DCI, DII, ADCI and ADII */
+	private QualityIndicator qualityIndicator;
+	
+	/** single instance of the MainController */
+	private static MainController instance;
+  
+  
 	/**
 	 * Singleton MainController - only 1 instance allowed. Creates the default rules
 	 * to be used and manages the Main Frame.
@@ -318,7 +333,7 @@ public class MainController {
 	/**
 	 * Returns the entire rules list
 	 * 
-	 * @return ArrayList<CodeQualityRule>
+	 * @return ArrayList<CodeQualityRule> - list of all the rules
 	 */
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
@@ -327,7 +342,7 @@ public class MainController {
 	/**
 	 * Returns the QualityIndicator object
 	 * 
-	 * @return ArrayList<CodeQualityRule>
+	 * @return QualityIndicator - object that manages the code quality results
 	 */
 	public QualityIndicator getQualityIndicator() {
 		return qualityIndicator;
@@ -336,13 +351,10 @@ public class MainController {
 	/**
 	 * Receives an updated list of rules and replaces the old rules list with it
 	 * 
-	 * @param newRules
+	 * @param newRules - new list of rules to consider
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
-		if (getMainFrame() != null) {
-			getMainFrame().updateRulesComboBox(newRules);
-		}
 	}
 
 	/**
