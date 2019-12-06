@@ -40,53 +40,81 @@ public class EditRuleController {
 	 * Add action listeners to Save and Delete buttons from Edit Rule Popup
 	 */
 	private void initActionListeners() {
-		editRulePopup.getSaveButton().addActionListener(e -> onSaveRule());
-		editRulePopup.getDeleteButton().addActionListener(e -> onDeleteRule());
+		editRulePopup.getSaveButton().addActionListener(e -> onSaveHandler());
+		editRulePopup.getDeleteButton().addActionListener(e -> onDeleteHandler());
 	}
 
 	/**
-	 * Sets what the Edit Rule Popup delete button's action is. In this case, only
-	 * deletes rule if it isn't a default rule and if it is present in the rules
-	 * list.
+	 * Sets a handler for the Edit Rule Popup delete button's action. Triggers a
+	 * deleteRule method.
 	 */
-	private void onDeleteRule() {
-		if (rule.isDefault()) {
-			editRulePopup.showMessage("You can't delete a default rule!");
-		} else {
-			ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
-
-			if (rulesList.contains(rule)) {
-				rulesList.remove(rule);
-				mainC.updateRulesList(rulesList);
-				editRulePopup.showMessage("Rule has been deleted successfully!");
-				editRulePopup.getFrame().dispose();
-			} else {
-				editRulePopup.showMessage("This rule is not in the rules list,\nso it cannot be deleted.");
-			}
+	private void onDeleteHandler() {
+		try {
+			deleteRule();
+			mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
+			editRulePopup.showMessage("Rule has been deleted successfully!");
+			editRulePopup.getFrame().dispose();
+		} catch (Exception e) {
+			editRulePopup.showMessage(e.getMessage());
 		}
 	}
 
 	/**
-	 * Determines what the Edit Rule Popup save button's action is Before saving, it
-	 * checks for the rule's content and name It won't save a new rule without a
-	 * name or set conditions It also validates the conditions' validity before
-	 * saving
+	 * Tries to delete a rule from the rulesList. Only deletes a rule if it isn't a
+	 * default rule and if it is present in the rules list. Throws an exception
+	 * otherwise.
+	 * 
+	 * @throws Exception Exception with the error message of the issue found.
 	 */
-	private void onSaveRule() {
-		String newName = editRulePopup.getRuleName();
+	public void deleteRule() throws Exception {
+		if (rule.isDefault()) {
+			throw new Exception("You can't delete a default rule.");
+		}
+		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
+
+		if (rulesList.contains(rule)) {
+			rulesList.remove(rule);
+			mainC.updateRulesList(rulesList);
+		} else {
+			throw new Exception("This rule is not in the rules list,\nso it cannot be deleted.");
+		}
+	}
+
+	/**
+	 * Sets a handler for the Edit Rule Popup save button's action. Triggers a
+	 * saveRule method.
+	 */
+	private void onSaveHandler() {
+		try {
+			saveRule();
+			mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());
+			editRulePopup.showMessage("Rule has been added successfully!");
+			editRulePopup.getFrame().dispose();
+		} catch (Exception e) {
+			editRulePopup.showMessage(e.getMessage());
+		}
+	}
+
+	/**
+	 * Tries to save a rule. It checks for the rule's content and name. It won't
+	 * save a new rule without a name or set conditions. It also validates the
+	 * conditions' validity before saving. Throws an exception otherwise.
+	 * 
+	 * @throws Exception
+	 */
+	public void saveRule() throws Exception {
+		String newName = editRulePopup.getNameText().getText();
 
 		// Verify if name is valid
 		if (newName.isEmpty()) {
-			editRulePopup.showMessage("Please insert a rule name!");
-			return;
+			throw new Exception("Please provide a rule name.");
 		}
 
 		String rawRuleConditions = editRulePopup.getRawRuleConditions().trim();
 
 		// Check if there is a rule to save
 		if (rawRuleConditions.isEmpty()) {
-			editRulePopup.showMessage("You need to set rule conditions for " + newName);
-			return;
+			throw new Exception("You need to set rule conditions for " + newName);
 		}
 
 		String newRule = getJavascriptIfStatementString(rawRuleConditions);
@@ -95,14 +123,12 @@ public class EditRuleController {
 			// Runs pre validation to try to catch some errors
 			preValidateJavascriptCode(newRule);
 		} catch (ScriptException e) {
-			editRulePopup.showMessage("The rule provided has an invalid format. Cannot save it.");
-			return;
+			throw new Exception("The rule provided has an invalid format. Cannot save it.");
 		}
 
 		if (rule.isDefault() && !isValidDefaultRuleThresholdsUpdate(rule.getName(), newRule)) {
-			editRulePopup.showMessage(
-					"This is a Default Rule. As such, only the thresholds \n can be edited. And values must be positive.");
-			return;
+			throw new Exception(
+					"This is a Default Rule. As such, only the thresholds \n can be edited. Values must be positive.");
 		}
 
 		// updates the list with the new (validated) rule
@@ -112,14 +138,13 @@ public class EditRuleController {
 		}
 		rule.setRule(newRule);
 		rule.setIsAdvanced(true);
+		
 		// Gets the rules list from the main controller
 		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
 		if (!rulesList.contains(rule)) {
 			rulesList.add(rule);
 		}
 		mainC.updateRulesList(rulesList);
-		editRulePopup.showMessage("Rule has been added successfully!");
-		editRulePopup.getFrame().dispose();
 	}
 
 	/**
@@ -162,7 +187,7 @@ public class EditRuleController {
 	 * isn't of a known default rule, returns false.
 	 *
 	 * @param ruleName The name of the rule to be validated
-	 * @param rule The rule string to be validated
+	 * @param rule     The rule string to be validated
 	 * @return boolean If the rule has a valid format
 	 */
 	private boolean isValidDefaultRuleThresholdsUpdate(String ruleName, String rule) {
@@ -175,13 +200,23 @@ public class EditRuleController {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Getter for editRulePopup instance
+	 * 
 	 * @return EditRulePopup controlled by this controller instance
 	 */
 	public EditRulePopup getEditRulePopup() {
 		return editRulePopup;
+	}
+
+	/**
+	 * Getter for the rule being edit or added
+	 * 
+	 * @return CodeQualityRule
+	 */
+	public CodeQualityRule getRule() {
+		return rule;
 	}
 
 }

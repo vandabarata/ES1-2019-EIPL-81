@@ -15,6 +15,7 @@ import javax.swing.border.EmptyBorder;
 import main.java.model.CodeQualityRule;
 
 public class MainFrame {
+	
 	private JFrame mainFrame;
 	private JPanel centralPanel;
 	private JPanel southPanel;
@@ -32,7 +33,7 @@ public class MainFrame {
 	 * 
 	 * @param excelTable
 	 * @param rulesList
-	 * @param indicatorsQuality
+	 * @param indicatorsQuality object that it's responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII
 	 * 
 	 */
 	public MainFrame(JTable excelTable, ArrayList<CodeQualityRule> rulesList) {

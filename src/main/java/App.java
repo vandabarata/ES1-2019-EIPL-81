@@ -2,9 +2,10 @@ package main.java;
 
 import com.bulenkov.darcula.DarculaLaf;
 
+import main.java.controller.MainController;
+
 import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicLookAndFeel;
-import main.java.controller.MainController;
 
 public class App {
 

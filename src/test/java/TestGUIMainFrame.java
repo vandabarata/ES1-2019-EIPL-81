@@ -7,6 +7,7 @@ import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
@@ -18,6 +19,13 @@ class TestGUIMainFrame {
 	
 	private static MainFrame guiWithTable;
 	private static MainFrame guiWithEmptyTable;
+	private MainFrame frame;
+	
+	@BeforeEach
+	void setUp() {
+		MainController main = MainController.getMainControllerInstance();
+		frame = new MainFrame(new JTable(), main.getRulesList());
+	}
 	
 	/**
 	 * This tests the creation of a JTable in the GUI comparing the frames width

@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import javax.swing.JTable;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
@@ -13,15 +14,59 @@ import main.java.gui.EditRulePopup;
 import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
 
-/**
- * This test is validating the window size, to ensure the popup is being
- * displayed properly.
- */
 @RunWith(JUnitPlatform.class)
 class TestEditRulePopup {
+	
+	EditRulePopup editpopup;
+	EditRulePopup addpopup;
+
+	@BeforeEach
+	void setUp() throws Exception {
+		editpopup = new EditRulePopup(new CodeQualityRule("name", "LOC > 10", true, false));
+		addpopup = new EditRulePopup(new CodeQualityRule("", "LAA < 5", false, false));
+	}
+
+	@Test
+	void testGetCondition() {
+		addpopup.getCondition();
+	}
+
+	@Test
+	void testGetValue() {
+		addpopup.getValue();
+	}
+
+	@Test
+	void testGetComparison() {
+		addpopup.getComparison();
+	}
+
+	@Test
+	void testGetSaveButton() {
+		addpopup.getSaveButton();
+	}
+
+	@Test
+	void testGetDeleteButton() {
+		addpopup.getDeleteButton();
+	}
+
+
+	@Test
+	void testIsAdvancedMode() {
+		boolean newRule = addpopup.isAdvancedMode();
+		assertFalse(newRule);
+	}
+
+	@Test
+	void testGetRawRuleConditions() {
+		editpopup.getRawRuleConditions();
+		addpopup.getRawRuleConditions();
+	}
+	
 	@Test
 	void testWindowSizeAtStart() {
-		EditRulePopup m = new EditRulePopup(new CodeQualityRule("", "", false, false));
+		EditRulePopup m = new EditRulePopup(new CodeQualityRule("", "", true, false));
 		assert (m.getFrame().getBounds().height == 300);
 		assert (m.getFrame().getBounds().width == 685);
 	}

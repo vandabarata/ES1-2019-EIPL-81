@@ -33,8 +33,9 @@ public class QualityRulesResultFrame {
 	private JFrame qualityFrame;
 	private JPanel centralPanel;
 	private JTable resultsTable;
-	private QualityIndicator qualityIndicators;
 	private JPanel southPanel;
+	/** qualityIndicator - Object responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII */
+	private QualityIndicator qualityIndicators;
 
 	// Window Dimensions
 	private static final int WIDTH = 800;

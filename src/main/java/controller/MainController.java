@@ -3,6 +3,9 @@ package main.java.controller;
 import java.io.File;
 import java.util.ArrayList;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -19,35 +22,63 @@ import main.java.model.ExcelRow;
 import main.java.model.QualityIndicator;
 
 /**
- * <h1>Main Controller</h1> Accepts input and converts it to commands and action
- * for the model or view. In addition to dividing the application into these
+ * Main Controller - Accepts input and converts it to commands and action for
+ * the model or view. In addition to dividing the application into these
  * components, the model-view-controller design defines the interactions between
  * them.
  * <p>
  * <b>Note Model-View-Controller (MVC):</b> The Model is responsible for
  * managing the data of the application. It receives user input from the
  * controller. The View means presentation of the model in a particular format.
- * The controller receives the input, optionally validates it and then passes
+ * The Controller receives the input, optionally validates it and then passes
  * the input to the model.
  */
 public class MainController {
+
+	/** mainframe where the main application runs */
 	private MainFrame gui;
-	private QualityRulesResultFrame qualityGui;
-	private String path;
-	private ExcelImporter ei;
-	private ArrayList<String[]> excelRows;
-	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
-	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
-	private QualityIndicator qualityIndicator;
-	private static MainController instance;
 	
+	/** frame that's going to present the code quality check results */
+	private QualityRulesResultFrame qualityGui;
+	
+	/** string indicating the path where the excel file is located*/
+	private String path;
+	
+	/** object that deals with importing the excel file */
+	private ExcelImporter ei;
+	
+	/** ArrayList with arrays of strings, containing raw data from the excel in string form */
+	private ArrayList<String[]> excelRows;
+	
+	/** ArrayList of ExcelRows with all the excel information */
+	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
+	
+	/** ArrayList of CodeQualityRules, listing all the existent rules */
+	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
+
+	private final int METHOD_ID_INDEX = 0;
+	private final int PMD_INDEX = 10;
+	private final int IPLASMA_INDEX = 9;
+	private final int IS_LONG_METHOD__INDEX = 8;
+	private final int IS_FEATURE_ENVY__INDEX = 11;
+	
+	/** qualityIndicator - Object responsible for calculating the quality indicators
+	 such as DCI, DII, ADCI and ADII */
+	private QualityIndicator qualityIndicator;
+	
+	/** single instance of the MainController */
+	private static MainController instance;
+  
+  
 	/**
 	 * Singleton MainController - only 1 instance allowed. Creates the default rules
 	 * to be used and manages the Main Frame.
 	 */
 	private MainController() {
-		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true, true);
-		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true, true);
+		CodeQualityRule is_long_method = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true,
+				true);
+		CodeQualityRule is_feature_envy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true,
+				true);
 		rulesList.add(is_long_method);
 		rulesList.add(is_feature_envy);
 	}
@@ -146,11 +177,11 @@ public class MainController {
 	/**
 	 * Converts all the valid rows into ExcelRow model
 	 * 
-	 * Starts at index 1 because we only want to convert the table content
-	 * and not the header
+	 * Starts at index 1 because we only want to convert the table content and not
+	 * the header
 	 */
 	private void convertExcelRows() {
-		for(int i = 1; i < excelRows.size(); i++) {
+		for (int i = 1; i < excelRows.size(); i++) {
 			try {
 				excelRowsConverted.add(new ExcelRow(excelRows.get(i)));
 			}
@@ -162,13 +193,13 @@ public class MainController {
 			}
 		}
 	}
-	
+
 	/**
-	 * This method is used to instance a IndicatorsQuality object 
-	 * to compute the Quality Indicators
+	 * This method is used to instance a IndicatorsQuality object to compute the
+	 * Quality Indicators
 	 */
 	public void instanceQualityIndicators(ArrayList<ExcelRow> excelRows) {
-		 qualityIndicator = new QualityIndicator(excelRows);
+		qualityIndicator = new QualityIndicator(excelRows);
 	}
 
 	/**
@@ -200,54 +231,130 @@ public class MainController {
 	/**
 	 * Verify the code quality based on the Rules created and sends the results to
 	 * be displayed in the QualityRulesResultFrame
+	 * 
+	 * @throws ScriptException
 	 */
 	private void checkCodeQualityAndShow() {
-		String[][] results = getCodeQualityResults();
-		// TODO get real column names
-		String[] colNames = new String[] { "Method ID", "PMD", "iPlasma", "long_method", "feature_envy" };
-		qualityGui.fillFrame(results, colNames, qualityIndicator);
-		qualityGui.show();
+		String[][] results = null;
+		results = getCodeQualityResults();
+		String[] colNames = new String[5 + rulesList.size()];
+		colNames[0] = excelRows.get(0)[METHOD_ID_INDEX];
+		colNames[1] = excelRows.get(0)[IS_LONG_METHOD__INDEX];
+		colNames[2] = excelRows.get(0)[IS_FEATURE_ENVY__INDEX];
+		colNames[3] = excelRows.get(0)[PMD_INDEX];
+		colNames[4] = excelRows.get(0)[IPLASMA_INDEX];
+		int iterator = 5;
+		for (CodeQualityRule rule : rulesList) {
+			colNames[iterator] = rule.getName();
+			iterator++;
+		}
+
+		if (results != null) {
+			qualityGui.fillFrame(results, colNames, qualityIndicator);
+			qualityGui.show();
+		}
 	}
 
 	/**
+	 * 
+	 * Returns the results of the calculation of each rule, for each method.
+	 * 
 	 * @return An Array of String arrays where each line is a row with the code
 	 *         quality results for a method, and each column is the value of that
 	 *         result line for that column
 	 */
 	private String[][] getCodeQualityResults() {
-		// TODO calculate code quality
-		String[][] results = new String[][] { { "1", "TRUE", "TRUE", "TRUE", "FALSE" }, { "2", "TRUE", "FALSE", "TRUE", "FALSE" },
-				{ "3", "TRUE", "TRUE", "FALSE", "FALSE"} };
+		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];
+		int iterator = 0;
+		for (ExcelRow row : excelRowsConverted) {
+			String[] qualityRow = new String[4 + excelRowsConverted.size()];
+			qualityRow[0] = Integer.toString(row.getId());
+			qualityRow[1] = Boolean.toString(row.isLongMethod());
+			qualityRow[2] = Boolean.toString(row.isFeatureEnvy());
+			qualityRow[3] = Boolean.toString(row.getPMDResult());
+			qualityRow[4] = Boolean.toString(row.getIPlasmaResult());
+			int ruleIterator = 5;
+
+			for (CodeQualityRule rule : rulesList) {
+				try {
+					qualityRow[ruleIterator] = getResult(rule, row);
+					ruleIterator++;
+				} catch (ScriptException e) {
+					qualityGui.hide();
+					JOptionPane.showMessageDialog(null,
+							"Invalid rule syntax! Please verify the conditions for the rule  \"" + rule + "\"!");
+					return null;
+				}
+			}
+			results[iterator] = qualityRow;
+			iterator++;
+		}
 		return results;
+
+	}
+
+	/**
+	 * Runs a rule over an excelRow and returns the result.
+	 * 
+	 * @param rule The rule, the result of which we require.
+	 * @param row  The excel row containing the methodID over which we wish to run
+	 *             the rule.
+	 * @return Returns the result of running the rule over the methodID of the given
+	 *         ExcelRow, in string form.
+	 * @throws ScriptException
+	 */
+	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
+		ScriptEngineManager engineManager = new ScriptEngineManager();
+		ScriptEngine engine = engineManager.getEngineByName("ECMAScript");
+		String filledRule = registerVariables(row);
+		Object result = null;
+		result = engine.eval(filledRule + "eval('" + rule.getRule() + "');");
+		return Boolean.toString(Boolean.TRUE.equals(result));
+	}
+
+	/**
+	 * Creates and returns a string ready to be passed on to a javascript engine,
+	 * which initializes all the necessary metric variables.
+	 * 
+	 * @param row The excel row with the values for our metrics.
+	 * @return filledRule The String of metrics turned into variables to use in the
+	 *         JS engine for running the rules.
+	 */
+	public String registerVariables(ExcelRow row) {
+		int ATFD = row.getATFD();
+		int CYCLO = row.getCYCLO();
+		int LOC = row.getLOC();
+		float LAA = row.getLAA();
+		String filledRule = "var ATFD = " + ATFD + ", " + "CYCLO = " + CYCLO + ", " + "LOC = " + LOC + ", " + "LAA = "
+				+ LAA + "; ";
+		return filledRule;
 	}
 
 	/**
 	 * Returns the entire rules list
 	 * 
-	 * @return ArrayList<CodeQualityRule>
+	 * @return ArrayList<CodeQualityRule> - list of all the rules
 	 */
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
 	}
-	
+
 	/**
 	 * Returns the QualityIndicator object
 	 * 
-	 * @return ArrayList<CodeQualityRule>
+	 * @return QualityIndicator - object that manages the code quality results
 	 */
 	public QualityIndicator getQualityIndicator() {
 		return qualityIndicator;
 	}
 
-
 	/**
 	 * Receives an updated list of rules and replaces the old rules list with it
 	 * 
-	 * @param newRules
+	 * @param newRules - new list of rules to consider
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
-		getMainFrame().updateRulesComboBox(newRules);
 	}
 
 	/**
