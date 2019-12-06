@@ -49,6 +49,12 @@ public class MainController {
 	private QualityIndicator qualityIndicator;
 	private static MainController instance;
 
+	private final int METHOD_ID_INDEX = 0;
+	private final int PMD_INDEX = 10;
+	private final int IPLASMA_INDEX = 9;
+	private final int IS_LONG_METHOD__INDEX = 8;
+	private final int IS_FEATURE_ENVY__INDEX = 11;
+
 	/**
 	 * Singleton MainController - only 1 instance allowed. Creates the default rules
 	 * to be used and manages the Main Frame.
@@ -217,11 +223,11 @@ public class MainController {
 		String[][] results = null;
 		results = getCodeQualityResults();
 		String[] colNames = new String[5 + rulesList.size()];
-		colNames[0] = excelRows.get(0)[0];
-		colNames[1] = excelRows.get(0)[8];
-		colNames[2] = excelRows.get(0)[11];
-		colNames[3] = excelRows.get(0)[10];
-		colNames[4] = excelRows.get(0)[9];
+		colNames[0] = excelRows.get(0)[METHOD_ID_INDEX];
+		colNames[1] = excelRows.get(0)[IS_LONG_METHOD__INDEX];
+		colNames[2] = excelRows.get(0)[IS_FEATURE_ENVY__INDEX];
+		colNames[3] = excelRows.get(0)[PMD_INDEX];
+		colNames[4] = excelRows.get(0)[IPLASMA_INDEX];
 		int iterator = 5;
 		for (CodeQualityRule rule : rulesList) {
 			colNames[iterator] = rule.getName();
