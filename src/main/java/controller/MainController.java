@@ -27,7 +27,7 @@ import main.java.model.QualityIndicator;
  * components, the model-view-controller design defines the interactions between
  * them.
  * <p>
- * <b>Note Model-View-Controller (MVC):</b> The Model is responsible for
+ * <b>Model-View-Controller (MVC):</b> The Model is responsible for
  * managing the data of the application. It receives user input from the
  * controller. The View means presentation of the model in a particular format.
  * The Controller receives the input, optionally validates it and then passes
@@ -193,13 +193,6 @@ public class MainController {
 		}
 	}
 
-	/**
-	 * This method is used to instance a IndicatorsQuality object to compute the
-	 * Quality Indicators
-	 */
-	public void instanceQualityIndicators(ArrayList<ExcelRow> excelRows) {
-		//qualityIndicator = new QualityIndicator(excelRows);
-	}
 
 	/**
 	 * This method is used to open the EditRuleController which controls the Rule
@@ -326,7 +319,7 @@ public class MainController {
 		int LOC = row.getLOC();
 		float LAA = row.getLAA();
 		String filledRule = "var ATFD = " + ATFD + ", " + "CYCLO = " + CYCLO + ", " + "LOC = " + LOC + ", " + "LAA = "
-				+ LAA + "; ";
+				+ LAA + ";";
 		return filledRule;
 	}
 
