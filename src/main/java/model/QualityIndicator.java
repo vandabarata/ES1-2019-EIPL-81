@@ -1,14 +1,12 @@
 package main.java.model;
 
-import java.util.ArrayList;
-
 /**
  * A class that represents the indicators quality of the tools for comparison with iPlasma and PDM
  */
 
 public class QualityIndicator {
 
-	/** PMDDCI - DII Indicator - number of faults correctly identified by the PMD tool */
+	/** PMDDCI - DCI Indicator - number of faults correctly identified by the PMD tool */
 	private int PMDDCI;
 	/** PMDDII - DII Indicator - number of faults incorrectly identified by the PMD tool */
 	private int PMDDII;
@@ -24,15 +22,31 @@ public class QualityIndicator {
 	private int iPlasmaADCI;
 	/** iPlasmaADII - ADII Indicator - number of absence of faults incorrectly identified by the iPlasma tool */
 	private int iPlasmaADII;
+	/** customLongDCI - DCI Indicator - number of faults correctly identified by the customLongMethod tool */
+	private int customLongDCI;
+	/** customLongDII - DII Indicator - number of faults incorrectly identified by the customLongMethod tool */
+	private int customLongDII;
+	/** customLongADCI ADCI Indicator - number of absence of faults correctly identified by the customLongMethod tool */
+	private int customLongADCI;
+	/**  customLongADII - ADII Indicator - number of absence of faults incorrectly identified by the customLongMethod tool */
+	private int customLongADII;
+	/** customEnvyDCI - DCI Indicator - number of faults correctly identified by the customFeatureEnvyMethod tool */
+	private int customEnvyDCI;
+	/** customEnvyDII - DII Indicator - number of faults incorrectly identified by the customFeatureEnvyMethod tool */
+	private int customEnvyDII;
+	/** customEnvyADCI ADCI Indicator - number of absence of faults correctly identified by the customFeatureEnvyMethod tool */
+	private int customEnvyADCI;
+	/** customEnvyADII - ADII Indicator - number of absence of faults incorrectly identified by the customFeatureEnvyMethod tool */
+	private int customEnvyADII;
 	/** excel Rows  - list of Excel Rows from Excel file */
-	private ArrayList<ExcelRow> excelRows;
+	private String[][] resultsRows;
 	
 	/**
 	 * Creates a IndicatorQuality object based on excelRow.
 	 * A IndicatorQuality object also calculate the Quality Indicators from the Excel file
 	 * @param excelRows is the list of Excel Rows from the Excel file
 	 */
-	public QualityIndicator(ArrayList<ExcelRow> excelRows) {
+	public QualityIndicator(String[][] resultsRows) {
 		PMDDCI = 0; 
 		PMDDII = 0; 
 		PMDADCI = 0; 
@@ -41,25 +55,59 @@ public class QualityIndicator {
 		iPlasmaDII = 0;
 		iPlasmaADCI = 0;
 		iPlasmaADII = 0;
-		this.excelRows = excelRows;
-		
-		for (ExcelRow row : excelRows) {
-			if(row.getPMDResult() && row.isLongMethod())
+		customLongDCI = 0;
+		customLongDII = 0;
+		customLongADCI = 0;
+		customLongADII = 0;
+		customEnvyDCI = 0;
+		customEnvyDII = 0;
+		customEnvyADCI = 0;
+		customEnvyADII = 0;
+		this.resultsRows = resultsRows;
+		calculateQualityIndicators();
+	}
+	
+	private void calculateQualityIndicators() {
+		for (String[] row : resultsRows) {
+			boolean is_long_method = Boolean.parseBoolean(row[1]);
+			boolean is_feature_envy = Boolean.parseBoolean(row[2]);
+			boolean PMD_result = Boolean.parseBoolean(row[3]);
+			boolean iPlasma_result = Boolean.parseBoolean(row[4]);
+			boolean customLong_result = Boolean.parseBoolean(row[5]);
+			boolean customEnvy_result = Boolean.parseBoolean(row[6]);
+			
+			if(PMD_result && is_long_method)
 				PMDDCI++;
-			if(row.getIPlasmaResult() && row.isLongMethod())
+			if(iPlasma_result && is_long_method)
 				iPlasmaDCI++;
-			if(row.getPMDResult() && !row.isLongMethod())
+			if(customLong_result && is_long_method)
+				customLongDCI++;
+			if(customEnvy_result && is_feature_envy)
+				customEnvyDCI++;
+			if(PMD_result && !is_long_method)
 				PMDDII++;
-			if(row.getIPlasmaResult() && !row.isLongMethod())
+			if(iPlasma_result && !is_long_method)
 				iPlasmaDII++;
-			if(!row.getPMDResult() && !row.isLongMethod())
+			if(customLong_result && !is_long_method)
+				customLongDII++;
+			if(customEnvy_result && !is_feature_envy)
+				customEnvyDII++;
+			if(!PMD_result && !is_long_method)
 				PMDADCI++;
-			if(!row.getIPlasmaResult() && !row.isLongMethod())
+			if(!iPlasma_result && !is_long_method)
 				iPlasmaADCI++;
-			if(!row.getPMDResult() && row.isLongMethod())
+			if(!customLong_result && !is_long_method)
+				customLongADCI++;
+			if(!customEnvy_result && !is_feature_envy)
+				customEnvyADCI++;
+			if(!PMD_result && is_long_method)
 				PMDADII++;
-			if(!row.getIPlasmaResult() && row.isLongMethod())
+			if(!iPlasma_result && is_long_method)
 				iPlasmaADII++;
+			if(!customLong_result && is_long_method)
+				customLongADII++;
+			if(!customEnvy_result && is_feature_envy)
+				customEnvyADII++;
 		}
 	}
 	
@@ -120,5 +168,61 @@ public class QualityIndicator {
 	 */
 	public int getIPlasmaADII() {
 		return iPlasmaADII;
+	}
+
+	/**
+	 * @return number of "Defeitos Incorretamente Identificados" (DII) by the customLongMethod tool
+	 */
+	public int getCustomLongDCI() {
+		return customLongDCI;
+	}
+	
+	/**
+	 * @return number of "Defeitos Incorretamente Identificados" (DII) by the customLongMethod tool
+	 */
+	public int getCustomLongADII() {
+		return customLongADII;
+	}
+
+	/**
+	 * @return number of "Ausencia de Defeitos Corretamente Identificados" (ADCI) by the customLongMethod tool
+	 */
+	public int getCustomLongADCI() {
+		return customLongADCI;
+	}
+
+	/**
+	 * @return  number of "Ausencia de Defeitos Incorretamente Identificados" (ADII) by the customLongMethod tool
+	 */
+	public int getCustomLongDII() {
+		return customLongDII;
+	}
+
+	/**
+	 * @return number of "Defeitos Incorretamente Identificados" (DII) by the customFeatureEnvyMethod tool
+	 */
+	public int getCustomEnvyDCI() {
+		return customEnvyDCI;
+	}
+
+	/**
+	 * @return number of "Defeitos Incorretamente Identificados" (DII) by the customFeatureEnvyMethod tool
+	 */
+	public int getCustomEnvyADCI() {
+		return customEnvyADCI;
+	}
+
+	/**
+	 * @return number of "Ausencia de Defeitos Corretamente Identificados" (ADCI) by the customFeatureEnvyMethod tool
+	 */
+	public int getCustomEnvyDII() {
+		return customEnvyDII;
+	}
+
+	/**
+	 * @return  number of "Ausencia de Defeitos Incorretamente Identificados" (ADII) by the customFeatureEnvyMethod tool
+	 */
+	public int getCustomEnvyADII() {
+		return customEnvyADII;
 	}
 }

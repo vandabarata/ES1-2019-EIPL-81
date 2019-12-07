@@ -5,12 +5,17 @@ package main.java.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+
+import main.java.model.QualityIndicator;
 
 /**
  * <h1>Code Quality Rules Results Frame</h1>
@@ -26,6 +31,9 @@ public class QualityRulesResultFrame {
 	private JFrame qualityFrame;
 	private JPanel centralPanel;
 	private JTable resultsTable;
+	private JPanel southPanel;
+	/** qualityIndicator - Object responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII */
+	private QualityIndicator qualityIndicators;
 
 	// Window Dimensions
 	private static final int WIDTH = 800;
@@ -45,9 +53,11 @@ public class QualityRulesResultFrame {
 	 * @param colNames An array of strings with the column names for each column of
 	 *                 the data param
 	 */
-	public void fillTable(String[][] data, Object[] colNames) {
+	public void fillFrame(String[][] data, Object[] colNames, QualityIndicator qualityIndicators) {
 		resultsTable = new JTable(data, colNames);
+		this.qualityIndicators = qualityIndicators;
 		updateCentralPanel();
+		updateSouthPanel();
 	}
 
 	/**
@@ -75,6 +85,60 @@ public class QualityRulesResultFrame {
 		centralPanel.add(tableScrollPane);
 		qualityFrame.add(centralPanel, BorderLayout.CENTER);
 	}
+	
+	/**
+	 * Updates the quality indicators panel
+	 */
+	private void updateSouthPanel() {
+		southPanel = new JPanel();
+		southPanel.setBorder(new EmptyBorder(6, 6, 6, 6));
+		southPanel.setLayout(new BorderLayout(5, 5));
+		JPanel fileResultsPanel = new JPanel();
+		fileResultsPanel.setLayout(new GridLayout(5, 5, 5, 5));
+		addContentToFileResultsforPanel(fileResultsPanel);
+		southPanel.add(fileResultsPanel, BorderLayout.CENTER);
+		qualityFrame.add(southPanel, BorderLayout.SOUTH);
+	}
+	
+	/**
+	 * This method fills a panel with a grid layout of 3 by 5 with JLabels. Each one
+	 * of the JLabels is added accordingly with the layout pretended and displays
+	 * the quality indicator correspondent extracted from reading the excel file.
+	 * 
+	 * @param fileResultsPanel- the panel used to add the JLabels and display the
+	 *                          results.
+	 */
+	private void addContentToFileResultsforPanel(JPanel fileResultsPanel) {
+		fileResultsPanel.add(new JLabel(""));
+		fileResultsPanel.add(new JLabel("DCI"));
+		fileResultsPanel.add(new JLabel("DII"));
+		fileResultsPanel.add(new JLabel("ADCI"));
+		fileResultsPanel.add(new JLabel("ADII"));
+		
+		fileResultsPanel.add(new JLabel("iPlasma"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADII())));
+		
+		fileResultsPanel.add(new JLabel("PMD"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADII())));
+		
+		fileResultsPanel.add(new JLabel("custom_is_long_method"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongADII())));
+		
+		fileResultsPanel.add(new JLabel("custom_is_feature_envy"));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyDCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyDII())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyADCI())));
+		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyADII())));
+	}
 
 	/**
 	 * Builds the main frame for QualityRulesResultFrame and positions it in the
@@ -88,5 +152,14 @@ public class QualityRulesResultFrame {
 		Dimension windowSize = new Dimension(WIDTH, HEIGHT);
 		qualityFrame.setMinimumSize(windowSize);
 		qualityFrame.setLocation(SCREEN_WIDTH / 2 - (WIDTH / 2), SCREEN_HEIGHT / 2 - (HEIGHT / 2));
+	}
+	
+	/**
+	 * Updates the content of the frame with the new results
+	 */
+	public void updateFrame() {
+		updateCentralPanel();
+		updateSouthPanel();
+		show();
 	}
 }

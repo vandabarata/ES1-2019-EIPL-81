@@ -24,7 +24,7 @@ class TestGUIMainFrame {
 	@BeforeEach
 	void setUp() {
 		MainController main = MainController.getMainControllerInstance();
-		frame = new MainFrame(new JTable(), main.getRulesList(), main.getQualityIndicator());
+		frame = new MainFrame(new JTable(), main.getRulesList());
 	}
 	
 	/**
@@ -34,7 +34,7 @@ class TestGUIMainFrame {
 	void testJTableCreation() {
 		String[] header = {"header1", "header2"};
 		String[][] content = {{"cell0",  "cell1"},{"cell2", "cell3"}};
-		guiWithTable = new MainFrame(new JTable(content, header), MainController.getMainControllerInstance().getRulesList(), MainController.getMainControllerInstance().getQualityIndicator());
+		guiWithTable = new MainFrame(new JTable(content, header), MainController.getMainControllerInstance().getRulesList());
 	}
 
 }

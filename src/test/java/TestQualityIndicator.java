@@ -65,7 +65,7 @@ public class TestQualityIndicator {
 		iPlasmaDII = 0;
 		iPlasmaADCI = 0;
 		iPlasmaADII = 0;
-		sample = new QualityIndicator(myArrayListExcelRow());
+		//sample = new QualityIndicator(myArrayListExcelRow());
 	}
 	
 	/**
