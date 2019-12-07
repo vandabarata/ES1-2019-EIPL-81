@@ -73,6 +73,7 @@ public class QualityRulesResultFrame {
 	 */
 	public void hide() {
 		qualityFrame.setVisible(false);
+		qualityFrame.dispose();
 	}
 
 	/**
