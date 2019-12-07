@@ -95,9 +95,7 @@ public class EditRulePopup {
 	private boolean advancedMode;
 	/** If the rule being edited is a Default Rule */
 	private boolean defaultRule;
-	/** If should display the logical operators ComcoBox in Basic Mode */
-	private boolean logicalOperatorsVisibility;
-
+	
 	/**
 	 * Constructs and initializes the GUI pop-up. It opens the Basic or Advanced
 	 * Mode depending on the rule it's using.
@@ -320,9 +318,12 @@ public class EditRulePopup {
 		basicModeButton.setMaximumSize(advanceModeButton.getMaximumSize());
 		basicModeButton.setMinimumSize(advanceModeButton.getMinimumSize());
 		basicModeButton.setEnabled(false);
-
+		if(rule.getName() != "") {
+			advanceModeButton.setEnabled(false);			
+		}
+		
 		basicModeButton.addActionListener(e -> {
-			if (!(rule.isAdvanced() || rule.isDefault() || rule.getName() != "")) {
+			if (!(rule.isDefault() || rule.getName() != "")) {
 				advanceModeButton.setEnabled(true);
 				advancedMode = false;
 				createRuleConditionsPanel();
@@ -334,10 +335,10 @@ public class EditRulePopup {
 		});
 
 		advanceModeButton.addActionListener(e -> {
-			if (rule.isAdvanced() || rule.isDefault() || rule.getName() == "") {
-				basicModeButton.setEnabled(false);
-			} else {
+			if (rule.isDefault() || rule.getName() == "") {
 				basicModeButton.setEnabled(true);
+			} else {
+				basicModeButton.setEnabled(false);
 			}
 			advancedMode = true;
 			createRuleConditionsPanel();
@@ -434,10 +435,9 @@ public class EditRulePopup {
 	private void setLogicalOperatorBoxVisibility() {
 		if (!ruleConditions.isEmpty()) {
 			logicalOperatorListBox.setVisible(true);
-			if (!logicalOperatorsVisibility)
+			if(logicalOperatorListBox.getItemCount() <= 0)
 				for (LogicalOperator operator : LogicalOperator.values()) {
 					logicalOperatorListBox.addItem(operator.toString());
-					logicalOperatorsVisibility = true;
 				}
 		} else {
 			logicalOperatorListBox.setVisible(false);
