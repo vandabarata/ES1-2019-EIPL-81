@@ -8,8 +8,6 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -95,10 +93,8 @@ public class QualityRulesResultFrame {
 		southPanel = new JPanel();
 		southPanel.setBorder(new EmptyBorder(6, 6, 6, 6));
 		southPanel.setLayout(new BorderLayout(5, 5));
-
 		JPanel fileResultsPanel = new JPanel();
 		fileResultsPanel.setLayout(new GridLayout(5, 5, 5, 5));
-
 		addContentToFileResultsforPanel(fileResultsPanel);
 		southPanel.add(fileResultsPanel, BorderLayout.CENTER);
 		qualityFrame.add(southPanel, BorderLayout.SOUTH);
@@ -118,22 +114,25 @@ public class QualityRulesResultFrame {
 		fileResultsPanel.add(new JLabel("DII"));
 		fileResultsPanel.add(new JLabel("ADCI"));
 		fileResultsPanel.add(new JLabel("ADII"));
+		
 		fileResultsPanel.add(new JLabel("iPlasma"));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDII())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADII())));
+		
 		fileResultsPanel.add(new JLabel("PMD"));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDII())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADII())));
-		//TODO change this with the correct values for custom methods
+		
 		fileResultsPanel.add(new JLabel("custom_is_long_method"));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongDCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongDII())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongADCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongADII())));
+		
 		fileResultsPanel.add(new JLabel("custom_is_feature_envy"));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyDCI())));
 		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyDII())));
@@ -155,4 +154,12 @@ public class QualityRulesResultFrame {
 		qualityFrame.setLocation(SCREEN_WIDTH / 2 - (WIDTH / 2), SCREEN_HEIGHT / 2 - (HEIGHT / 2));
 	}
 	
+	/**
+	 * Updates the content of the frame with the new results
+	 */
+	public void updateFrame() {
+		updateCentralPanel();
+		updateSouthPanel();
+		show();
+	}
 }

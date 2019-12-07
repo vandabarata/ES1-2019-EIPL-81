@@ -33,7 +33,6 @@ public class MainFrame {
 	 * 
 	 * @param excelTable
 	 * @param rulesList
-	 * @param indicatorsQuality object that it's responsible for calculating the quality indicators such as DCI, DII, ADCI and ADII
 	 * 
 	 */
 	public MainFrame(JTable excelTable, ArrayList<CodeQualityRule> rulesList) {
