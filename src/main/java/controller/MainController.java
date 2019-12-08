@@ -148,7 +148,6 @@ public class MainController {
 		excelRows = ei.getAllRows();
 		convertExcelRows();
 		gui = new MainFrame(createExcelTable(), rulesList);
-		qualityGui = new QualityRulesResultFrame();
 		gui.getCheckQualityButton().addActionListener(e -> checkCodeQualityAndShow());
 
 		editButton(this.gui.getEditButton(), this.gui.getRulesComboBox());
@@ -250,6 +249,10 @@ public class MainController {
 
 		if (results != null) {
 			qualityIndicator = new QualityIndicator(results);
+			if (qualityGui != null) {
+				qualityGui.hide();
+			}
+			qualityGui = new QualityRulesResultFrame();
 			qualityGui.fillFrame(results, colNames, qualityIndicator);
 			qualityGui.show();
 		}
@@ -281,6 +284,7 @@ public class MainController {
 					ruleIterator++;
 				} catch (ScriptException e) {
 					qualityGui.hide();
+					qualityGui = null;
 					JOptionPane.showMessageDialog(null,
 							"Invalid rule syntax! Please verify the conditions for the rule  \"" + rule + "\"!");
 					return null;
