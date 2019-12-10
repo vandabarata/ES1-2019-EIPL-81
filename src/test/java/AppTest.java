@@ -1,9 +1,11 @@
-package main.java;
+package test.java;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import main.java.App;
 
 class AppTest {
 
