@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import main.java.controller.MainController;
 import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
+import main.java.model.ExcelRow;
 
 @RunWith(JUnitPlatform.class)
 class TestMainController {
@@ -37,6 +38,15 @@ class TestMainController {
 		String invalidFile = "potato";
 		assertFalse(mainC.isValid(invalidFile));
 	}
+	
+	@Test
+	void testRegisterVariables() {
+		String[] rowData =  {"1", "fat", "GrammarException", "parseMethod()", "3", "45", "1", "0.55", "TRUE", "FALSE", "TRUE", "TRUE"};
+		ExcelRow row = new ExcelRow(rowData);
+		String variables = mainC.registerVariables(row);
+		assertEquals("var ATFD = 1, CYCLO = 45, LOC = 3, LAA = 0.55;", variables);
+	}
+
 
 	@Test
 	void testGetRulesList() {
@@ -45,6 +55,11 @@ class TestMainController {
 		CodeQualityRule rule2 = rulesList.get(1);
 		assertEquals("custom_is_long_method", rule1.getName());
 		assertEquals("custom_is_feature_envy", rule2.getName());
+	}
+	
+	@Test
+	void testQualityIndicator() {
+		mainC.getQualityIndicator();
 	}
 
 	@Test
