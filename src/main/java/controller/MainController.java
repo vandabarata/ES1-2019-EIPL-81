@@ -27,32 +27,33 @@ import main.java.model.QualityIndicator;
  * components, the model-view-controller design defines the interactions between
  * them.
  * <p>
- * <b>Model-View-Controller (MVC):</b> The Model is responsible for
- * managing the data of the application. It receives user input from the
- * controller. The View means presentation of the model in a particular format.
- * The Controller receives the input, optionally validates it and then passes
- * the input to the model.
+ * <b>Model-View-Controller (MVC):</b> The Model is responsible for managing the
+ * data of the application. It receives user input from the controller. The View
+ * means presentation of the model in a particular format. The Controller
+ * receives the input, optionally validates it and then passes the input to the
+ * model.
  */
 public class MainController {
 
-	/** mainframe where the main application runs */
+	/** Mainframe where the main application runs */
 	private MainFrame gui;
-	
-	/** frame that's going to present the code quality check results */
+
+	/** Frame where the code quality check results are presented */
 	private QualityRulesResultFrame qualityGui;
-	
-	/** string indicating the path where the excel file is located*/
+
+	/** String indicating the path where the excel file is located */
 	private String path;
-	
-	/** object that deals with importing the excel file */
+
+	/** Object that deals with importing the excel file */
 	private ExcelImporter ei;
-	
-	/** ArrayList with arrays of strings, containing raw data from the excel in string form */
+
+	/** ArrayList with arrays of strings, containing raw data from the excel in
+	 * string form */
 	private ArrayList<String[]> excelRows;
-	
+
 	/** ArrayList of ExcelRows with all the excel information */
 	private ArrayList<ExcelRow> excelRowsConverted = new ArrayList<ExcelRow>();
-	
+
 	/** ArrayList of CodeQualityRules, listing all the existent rules */
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
 
@@ -61,15 +62,16 @@ public class MainController {
 	private final int IPLASMA_INDEX = 9;
 	private final int IS_LONG_METHOD__INDEX = 8;
 	private final int IS_FEATURE_ENVY__INDEX = 11;
-	
-	/** qualityIndicator - Object responsible for calculating the quality indicators
-	 such as DCI, DII, ADCI and ADII */
+
+	/**
+	 * Object responsible for calculating the quality indicators such as DCI, DII,
+	 * ADCI and ADII
+	 */
 	private QualityIndicator qualityIndicator;
-	
-	/** single instance of the MainController */
+
+	/** Single instance of the MainController */
 	private static MainController instance;
-  
-  
+
 	/**
 	 * Singleton MainController - only 1 instance allowed. Creates the default rules
 	 * to be used and manages the Main Frame.
@@ -156,9 +158,10 @@ public class MainController {
 
 	/**
 	 * Formats all data to a valid format to a JTable and returns a JTable with the
-	 * cell's content
+	 * cells' content
 	 * 
-	 * @return JTable
+	 * @return JTable - Excel Table with the cells' contents, coverted from the
+	 *         initial excel file
 	 */
 	private JTable createExcelTable() {
 		String[][] dataForTable = new String[excelRows.size() - 1][excelRows.get(1).length];
@@ -192,10 +195,8 @@ public class MainController {
 		}
 	}
 
-
 	/**
-	 * This method is used to open the EditRuleController which controls the Rule
-	 * Edition GUI
+	 * Opens the EditRuleController which controls the Rule Edition GUI
 	 */
 	private void editButton(JButton editButton, JComboBox<CodeQualityRule> ruleListBox) {
 
@@ -223,7 +224,8 @@ public class MainController {
 	 * Verify the code quality based on the Rules created and sends the results to
 	 * be displayed in the QualityRulesResultFrame
 	 * 
-	 * @throws ScriptException
+	 * @throws ScriptException - Exception thrown by an error in running the rules'
+	 *                         conditions
 	 */
 	private void checkCodeQualityAndShow() {
 		String[][] results = null;
@@ -255,9 +257,9 @@ public class MainController {
 	 * 
 	 * Returns the results of the calculation of each rule, for each method.
 	 * 
-	 * @return An Array of String arrays where each line is a row with the code
-	 *         quality results for a method, and each column is the value of that
-	 *         result line for that column
+	 * @return String[][] - An matrix of strings where each line is a row with the
+	 *         code quality results for a method, and each column is a rule or tool,
+	 *         for which we're presenting results
 	 */
 	private String[][] getCodeQualityResults() {
 		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];
@@ -276,8 +278,6 @@ public class MainController {
 					qualityRow[ruleIterator] = getResult(rule, row);
 					ruleIterator++;
 				} catch (ScriptException e) {
-					qualityGui.hide();
-					qualityGui = null;
 					JOptionPane.showMessageDialog(null,
 							"Invalid rule syntax! Please verify the conditions for the rule  \"" + rule + "\"!");
 					return null;
@@ -293,12 +293,12 @@ public class MainController {
 	/**
 	 * Runs a rule over an excelRow and returns the result.
 	 * 
-	 * @param rule The rule, the result of which we require.
-	 * @param row  The excel row containing the methodID over which we wish to run
-	 *             the rule.
-	 * @return Returns the result of running the rule over the methodID of the given
+	 * @param rule - The rule, the result of which we require.
+	 * @param row  - The excel row containing the methodID over which we wish to run
+	 *               the rule.
+	 * @return String - Returns the result of running the rule over the methodID of the given
 	 *         ExcelRow, in string form.
-	 * @throws ScriptException
+	 * @throws ScriptException - An exception is thrown 
 	 */
 	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
 		ScriptEngineManager engineManager = new ScriptEngineManager();
