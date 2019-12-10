@@ -41,7 +41,7 @@ Our project consists on a tool to check code quality, based on several code stat
 * The user should start by importing the given excel file
 
 * A frame will then appear with the information taken from that file. 
-Other than the excel visualition window, the frame also has the following:
+Other than the excel visualization window, the frame also has the following:
     * A dropdown with the list of available rules
     * An edit button (to edit existing rules)
     * An add button (to add new rules)
