@@ -18,8 +18,9 @@ import main.java.model.CodeQualityRule;
 @RunWith(JUnitPlatform.class)
 class TestEditRulePopup {
 	
-	/* An EditRulePopup that will be used to test the rule addition frame */
+	/* An EditRulePopup that will be used to test the rule edition frame */
 	EditRulePopup editpopup;
+	
 	/* An EditRulePopup that will be used to test the rule addition frame */
 	EditRulePopup addpopup;
 
@@ -39,7 +40,10 @@ class TestEditRulePopup {
 	}
 	
 	/**
-	 * Tests the value returned by the EditRulePopup getter for the rule's value
+	 * Tests the metrics combobox returned by the EditRulePopup getter for the rule's metrics
+	 * Asserts that it's null in advanced mode (editpopup)
+	 * Asserts that it's not null in basic mode (addpopup)
+	 * And finally asserts that it specifically returns 4 metrics in basic mode (addpopup)
 	 */
 	@Test
 	void testGetValue() {
@@ -49,7 +53,8 @@ class TestEditRulePopup {
 	}
 	
 	/**
-	 * Tests the comparison returned by the EditRulePopup getter for rule comparison
+	 * Tests the logical operators' combobox returned by the EditRulePopup getter for rule comparison
+	 * Asserts that it's not null and returns 6 possible operators in basic mode (addpopup)
 	 */
 	@Test
 	void testGetComparison() {		
@@ -75,8 +80,7 @@ class TestEditRulePopup {
 	}
 
 	/**
-	 * Tests isAdvancedMode by passing its return value to a boolean variable
-	 * and then asserting its value
+	 * Tests if a new rule (for which advanced mode is false) returns the correct boolean
 	 */
 	@Test
 	void testIsAdvancedMode() {
@@ -84,8 +88,9 @@ class TestEditRulePopup {
 		assertFalse(newRule);
 	}
 	/**
-	 * Tests the raw rule conditions returned by the EditRulePopup getter for 
-	 * the rule's raw conditions
+	 * Tests the rule conditions returned by the EditRulePopup getter for 
+	 * the rule's conditions
+	 * Asserts that the conditions are the expected ones passed in the constructor
 	 */
 	@Test
 	void testGetRawRuleConditions() {
@@ -94,7 +99,7 @@ class TestEditRulePopup {
 	}
 	
 	/**
-	 * Tests the window size of the EdiRulePopup frame by asserting it's height and
+	 * Tests the window size of the EdiRulePopup frame by asserting its height and
 	 * width with expected values
 	 */
 	@Test
