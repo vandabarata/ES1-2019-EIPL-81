@@ -2,6 +2,7 @@ package test.java;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,10 @@ import main.java.model.CodeQualityRule;
 @RunWith(JUnitPlatform.class)
 class TestEditRulePopup {
 	
+	/* An EditRulePopup that will be used to test the rule edition frame */
 	EditRulePopup editpopup;
+	
+	/* An EditRulePopup that will be used to test the rule addition frame */
 	EditRulePopup addpopup;
 
 	@BeforeEach
@@ -26,44 +30,78 @@ class TestEditRulePopup {
 		addpopup = new EditRulePopup(new CodeQualityRule("", "LAA < 5", false, false));
 	}
 
+	/**
+	 * Tests the condition returned by the EditRulePopup getter for the rule's condition
+	 */
 	@Test
 	void testGetCondition() {
-		addpopup.getCondition();
+		assertNotNull(addpopup.getCondition());
+		assertEquals(0, addpopup.getCondition().getItemCount());
 	}
-
+	
+	/**
+	 * Tests the metrics combobox returned by the EditRulePopup getter for the rule's metrics
+	 * Asserts that it's null in advanced mode (editpopup)
+	 * Asserts that it's not null in basic mode (addpopup)
+	 * And finally asserts that it specifically returns 4 metrics in basic mode (addpopup)
+	 */
 	@Test
 	void testGetValue() {
-		addpopup.getValue();
+		assertNull(editpopup.getValue());
+		assertNotNull(addpopup.getValue());
+		assertEquals(4, addpopup.getValue().getItemCount());
 	}
-
+	
+	/**
+	 * Tests the logical operators' combobox returned by the EditRulePopup getter for rule comparison
+	 * Asserts that it's not null and returns 6 possible operators in basic mode (addpopup)
+	 */
 	@Test
-	void testGetComparison() {
-		addpopup.getComparison();
+	void testGetComparison() {		
+		assertNotNull(addpopup.getComparison());
+		assertEquals(6, addpopup.getComparison().getItemCount());
 	}
-
+	
+	/**
+	 * Tests the save button returned by the EditRulePopup getter for saving a rule
+	 */
 	@Test
-	void testGetSaveButton() {
-		addpopup.getSaveButton();
+	void testGetSaveButton() {	
+		assertNotNull(addpopup.getSaveButton());
 	}
-
+	
+	/**
+	 * Tests the delete button returned by the EditRulePopup getter for deleting a rule
+	 */
 	@Test
 	void testGetDeleteButton() {
-		addpopup.getDeleteButton();
+		assertNotNull(addpopup.getDeleteButton());
+		
 	}
 
-
+	/**
+	 * Tests if a new rule (for which advanced mode is false) returns the correct boolean
+	 */
 	@Test
 	void testIsAdvancedMode() {
 		boolean newRule = addpopup.isAdvancedMode();
 		assertFalse(newRule);
 	}
-
+	/**
+	 * Tests the rule conditions returned by the EditRulePopup getter for 
+	 * the rule's conditions
+	 * Asserts that the conditions are the expected ones passed in the constructor
+	 */
 	@Test
 	void testGetRawRuleConditions() {
-		editpopup.getRawRuleConditions();
-		addpopup.getRawRuleConditions();
+		assertEquals("LOC > 10", editpopup.getRawRuleConditions());
+		assertEquals("", addpopup.getRawRuleConditions());
 	}
 	
+	/**
+	 * Tests the window size of the EdiRulePopup frame by asserting its height and
+	 * width with expected values
+	 */
 	@Test
 	void testWindowSizeAtStart() {
 		EditRulePopup m = new EditRulePopup(new CodeQualityRule("", "", true, false));
@@ -85,4 +123,5 @@ class TestEditRulePopup {
 		int numberOfRules = main.getRulesList().size();
 		assertEquals(frame.getRulesComboBox().getItemCount(), numberOfRules);
 	}
+	
 }
