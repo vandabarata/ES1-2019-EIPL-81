@@ -30,6 +30,7 @@ Repository made for the project of Software Engineering I at our CS course in IS
 * Diego Souza, 82113, djsar@iscte-iul.pt
 * João Miguel Louro, 82544, jmalo1@iscte-iul.pt
 * Hugo Barroca, 82695, hmpdb@iscte-iul.pt
+_____
 
 ![Project Functionalities](https://img.shields.io/badge/Project-Functionalities-green?style=for-the-badge&logo=read-the-docs)
 
