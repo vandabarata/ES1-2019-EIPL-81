@@ -24,8 +24,8 @@ Repository made for the project of Software Engineering I at our CS course in IS
 ![ESI Group ID](https://img.shields.io/badge/Group-EI--PL%2081-82a1bf?style=for-the-badge)
 
 ![GitHub contributors](https://img.shields.io/github/contributors/vsfba1-iscteiul/ES1-2019-EIPL-81?style=for-the-badge&logo=github)
-* Vanda Barata, 81996, vsfba1@iscte-iul.pt
-* Franciele Faccin, 79879, ftfni@iscte-iul.pt
+* Franciele Faccin, 79879, ftfni@iscte-iul.pt - Product Owner
+* Vanda Barata, 81996, vsfba1@iscte-iul.pt - Scrum Master
 * Lino Silva, 82454, lrnsa@iscte-iul.pt
 * Diego Souza, 82113, djsar@iscte-iul.pt
 * João Miguel Louro, 82544, jmalo1@iscte-iul.pt
@@ -53,7 +53,7 @@ Other than the excel visualization window, the frame also has the following:
 * This will open a new window with the rules' results, as well as the stats for DCI, DII, ADCI, ADII for the default rules.
 
 #### Rule Edition Frame
-* Basic Mode
+* **Basic Mode**
 
 This frame contains a text box on top for the user to write or edit the rule's name (default rules can't have their name changed).
 * The rest of the frame functions as such:
@@ -71,7 +71,7 @@ This frame contains a text box on top for the user to write or edit the rule's n
     * There is also the option of switiching between advanced and basic mode for the edition of a new rule
 
 
-* Advanced Mode
+* **Advanced Mode**
 
 This frame is much less populated, sharing the rule's name text input box and the buttons to clear rule conditions, delete rule and save rule, which work the exact same way. For a default rule, there is a validation done at the time of saving which checks if only the thresholds have been modified, and nothing else. There are also validations to check if the rule's conditions are in a valid format. 
 The delete button checks if the rule is default or not - default rules are never allowed to be deleted.
