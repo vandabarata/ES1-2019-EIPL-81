@@ -47,8 +47,11 @@ Other than the excel visualization window, the frame also has the following:
     * An add button (to add new rules)
     * A button labeled "Check quality"
     
+* If the user clicks on the "Add" button, a rule edition frame opens in 'Basic Mode'. This mode was made to make it easier for users to add simple rules from scratch. There is also an 'Advanced Mode' available, if the user wants to create a more complex rule.
+* If the user clicks on the "Edit" button, the rule edition frame will open in 'Advanced Mode' with the content of the selected rule.
 * When the user clicks on "Check quality", our tool will then go through every single rule and calculate the relevant metrics and results for each one. 
 * This will open a new window with the rules' results, as well as the stats for DCI, DII, ADCI, ADII for the default rules.
+
 
 ![Missing Features](https://img.shields.io/badge/Project-Missing%20features-red?style=for-the-badge&logo=read-the-docs)
 
