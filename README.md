@@ -11,21 +11,21 @@ Repository made for the project of Software Engineering I at our CS course in IS
 
 [![Trello Boards - click for access](https://img.shields.io/badge/Trello-Boards-blue?logo=trello&style=for-the-badge)](https://trello.com/esieipl81)
 
-![GitHub license](https://img.shields.io/github/license/vsfba1-iscteiul/ES1-2019-EIPL-81)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/vsfba1-iscteiul/ES1-2019-EIPL-81)
-![GitHub last commit](https://img.shields.io/github/last-commit/vsfba1-iscteiul/ES1-2019-EIPL-81)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/vsfba1-iscteiul/ES1-2019-EIPL-81)
+[![GitHub license](https://img.shields.io/github/license/vsfba1-iscteiul/ES1-2019-EIPL-81)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/blob/master/LICENSE)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/w/vsfba1-iscteiul/ES1-2019-EIPL-81)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/commits/master)
+[![GitHub last commit](https://img.shields.io/github/last-commit/vsfba1-iscteiul/ES1-2019-EIPL-81)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/commits/master)
+[![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/vsfba1-iscteiul/ES1-2019-EIPL-81)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/tags)
 
-![GitHub issues](https://img.shields.io/github/issues/vsfba1-iscteiul/ES1-2019-EIPL-81)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/vsfba1-iscteiul/ES1-2019-EIPL-81)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/vsfba1-iscteiul/ES1-2019-EIPL-81)
-![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/vsfba1-iscteiul/ES1-2019-EIPL-81)
+[![GitHub issues](https://img.shields.io/github/issues/vsfba1-iscteiul/ES1-2019-EIPL-81)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/issues?q=is%3Aopen+is%3Aissue)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/vsfba1-iscteiul/ES1-2019-EIPL-81)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/vsfba1-iscteiul/ES1-2019-EIPL-81)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/pulls)
+[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/vsfba1-iscteiul/ES1-2019-EIPL-81)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/pulls?q=is%3Apr+is%3Aclosed)
 
 [![ESI Group ID](https://img.shields.io/badge/Group-EI--PL%2081-82a1bf?style=for-the-badge)](https://trello.com/esieipl81)
 
 [![GitHub contributors](https://img.shields.io/github/contributors/vsfba1-iscteiul/ES1-2019-EIPL-81?style=for-the-badge&logo=github)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/graphs/contributors)
-* Franciele Faccin, 79879, ftfni@iscte-iul.pt - Product Owner
-* Vanda Barata, 81996, vsfba1@iscte-iul.pt - Scrum Master
+* Franciele Faccin, 79879, ftfni@iscte-iul.pt - **Product Owner**
+* Vanda Barata, 81996, vsfba1@iscte-iul.pt - **Scrum Master**
 * Lino Silva, 82454, lrnsa@iscte-iul.pt
 * Diego Souza, 82113, djsar@iscte-iul.pt
 * João Miguel Louro, 82544, jmalo1@iscte-iul.pt
