@@ -298,7 +298,7 @@ public class MainController {
 	 *               the rule.
 	 * @return String - Returns the result of running the rule over the methodID of the given
 	 *         ExcelRow, in string form.
-	 * @throws ScriptException - An exception is thrown 
+	 * @throws ScriptException - An exception is thrown if there are invalid rule conditions
 	 */
 	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
 		ScriptEngineManager engineManager = new ScriptEngineManager();
@@ -330,7 +330,7 @@ public class MainController {
 	/**
 	 * Returns the entire rules list
 	 * 
-	 * @return ArrayList<CodeQualityRule> - list of all the rules
+	 * @return ArrayList<CodeQualityRule> - List with all the rules
 	 */
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
@@ -339,7 +339,7 @@ public class MainController {
 	/**
 	 * Returns the QualityIndicator object
 	 * 
-	 * @return QualityIndicator - object that manages the code quality results
+	 * @return QualityIndicator - Object that manages the code quality results
 	 */
 	public QualityIndicator getQualityIndicator() {
 		return qualityIndicator;
@@ -348,7 +348,7 @@ public class MainController {
 	/**
 	 * Receives an updated list of rules and replaces the old rules list with it
 	 * 
-	 * @param newRules - new list of rules to consider
+	 * @param newRules - New list of rules to consider
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;
