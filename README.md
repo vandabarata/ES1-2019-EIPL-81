@@ -57,6 +57,7 @@ Other than the excel visualization window, the frame also has the following:
 
 This frame contains a text box on top for the user to write or edit the rule's name (default rules can't have their name changed).
 The rest of the frame functions as such:
+
     * The first condition starts with an IF
     * User can then select from one of the available metrics from a dropdown box
     * Then comes the logical operator, also available from a predefined selection in a dropdown box
@@ -78,4 +79,8 @@ The delete button checks if the rule is default or not - default rules are never
 
 ![Missing Features](https://img.shields.io/badge/Project-Missing%20features-red?style=for-the-badge&logo=read-the-docs)
 
-The group didn't find any unresolved bugs, nor do we think anything is missing when compared to the requirements gathered from the Project Specifications Document given to us by the teachers. As such, we believe we have a fully functional tool to check code quality based on personalised rules, and the stats taken from the given excel file for analysis.
+We don't think anything is missing when compared to the requirements gathered from the Project Specifications Document given to us by the teachers. As such, we believe we have a fully functional tool to check code quality based on personalised rules, and the stats taken from the given excel file for analysis.
+
+That being said, there is a known bug we couldn't fix - for the rule validation on save, for the advanced mode, we check if the condition is a valid JS expression, regardless of being a comparison or not. That means that, if the user makes an assignment (=) instead of a comparison (==), the rule is saved and calculated, with the affected metrics overwritten by the assignment. 
+Since we're using a JS Engine to calculate the conditions result, an assignment on its own returns "undefined", which is converted to "false" in Java. This makes the results less reliable if the user makes a mistake at the time of writing the rule, but we didn't have enough time to find a way to alert the user or catch the error when executing.
+We don't find this critical, however, since the advanced mode is supposed to be used by a user who knows what they're doing and is not meant for less experienced users.
