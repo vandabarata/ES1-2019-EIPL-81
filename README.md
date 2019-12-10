@@ -2,10 +2,10 @@
 Repository made for the project of Software Engineering I at our CS course in ISCTE-IUL
 
 [![University](https://img.shields.io/badge/University-ISCTE--IUL-blue?style=for-the-badge)](https://www.iscte-iul.pt/)
-![Project subject](https://img.shields.io/badge/Subject-Software%20Engineering%20I-green?style=for-the-badge)
+[![Project subject](https://img.shields.io/badge/Subject-Software%20Engineering%20I-green?style=for-the-badge)](https://fenix.iscte-iul.pt/disciplinas/l5105-1/2019-2020/1-semestre)
 
 [![Version Management](https://img.shields.io/badge/Version%20Management-Git-red?logo=git&style=for-the-badge)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81)
-![IDE](https://img.shields.io/badge/IDE-Eclipse-4c1094?style=for-the-badge&logo=eclipse)
+[![IDE](https://img.shields.io/badge/IDE-Eclipse-4c1094?style=for-the-badge&logo=eclipse)](https://www.eclipse.org/)
 
 [![Project Management](https://img.shields.io/badge/Project%20Management-Trello-blue?logo=trello&style=for-the-badge)](https://trello.com/esieipl81)
 
@@ -21,9 +21,9 @@ Repository made for the project of Software Engineering I at our CS course in IS
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/vsfba1-iscteiul/ES1-2019-EIPL-81)
 ![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/vsfba1-iscteiul/ES1-2019-EIPL-81)
 
-![ESI Group ID](https://img.shields.io/badge/Group-EI--PL%2081-82a1bf?style=for-the-badge)
+[![ESI Group ID](https://img.shields.io/badge/Group-EI--PL%2081-82a1bf?style=for-the-badge)](https://trello.com/esieipl81)
 
-![GitHub contributors](https://img.shields.io/github/contributors/vsfba1-iscteiul/ES1-2019-EIPL-81?style=for-the-badge&logo=github)
+[![GitHub contributors](https://img.shields.io/github/contributors/vsfba1-iscteiul/ES1-2019-EIPL-81?style=for-the-badge&logo=github)](https://github.com/vsfba1-iscteiul/ES1-2019-EIPL-81/graphs/contributors)
 * Franciele Faccin, 79879, ftfni@iscte-iul.pt - Product Owner
 * Vanda Barata, 81996, vsfba1@iscte-iul.pt - Scrum Master
 * Lino Silva, 82454, lrnsa@iscte-iul.pt
