@@ -18,9 +18,9 @@ import main.java.model.CodeQualityRule;
 @RunWith(JUnitPlatform.class)
 class TestEditRulePopup {
 	
-	/*EditRulePopup that will be used in the tests*/
+	/* An EditRulePopup that will be used to test the rule addition frame */
 	EditRulePopup editpopup;
-	/*EditRulePopup that will be used in the tests*/
+	/* An EditRulePopup that will be used to test the rule addition frame */
 	EditRulePopup addpopup;
 
 	@BeforeEach
@@ -30,43 +30,48 @@ class TestEditRulePopup {
 	}
 
 	/**
-	 * Tests getConditon() method
+	 * Tests the condition returned by the EditRulePopup getter for the rule's condition
 	 */
 	@Test
 	void testGetCondition() {
-		addpopup.getCondition();
+		assertNotNull(addpopup.getCondition());
+		assertEquals(0, addpopup.getCondition().getItemCount());
 	}
 	
 	/**
-	 * Tests getValue() method
+	 * Tests the value returned by the EditRulePopup getter for the rule's value
 	 */
 	@Test
 	void testGetValue() {
-		addpopup.getValue();
+		assertNull(editpopup.getValue());
+		assertNotNull(addpopup.getValue());
+		assertEquals(4, addpopup.getValue().getItemCount());
 	}
 	
 	/**
-	 * Tests getComparison method
+	 * Tests the comparison returned by the EditRulePopup getter for rule comparison
 	 */
 	@Test
-	void testGetComparison() {
-		addpopup.getComparison();
+	void testGetComparison() {		
+		assertNotNull(addpopup.getComparison());
+		assertEquals(6, addpopup.getComparison().getItemCount());
 	}
 	
 	/**
-	 * Tests getSaveButton method
+	 * Tests the save button returned by the EditRulePopup getter for saving a rule
 	 */
 	@Test
-	void testGetSaveButton() {
-		addpopup.getSaveButton();
+	void testGetSaveButton() {	
+		assertNotNull(addpopup.getSaveButton());
 	}
 	
 	/**
-	 * Tests getDeleteButton method
+	 * Tests the delete button returned by the EditRulePopup getter for deleting a rule
 	 */
 	@Test
 	void testGetDeleteButton() {
-		addpopup.getDeleteButton();
+		assertNotNull(addpopup.getDeleteButton());
+		
 	}
 
 	/**
@@ -79,15 +84,19 @@ class TestEditRulePopup {
 		assertFalse(newRule);
 	}
 	/**
-	 * Tests getRawRuleConditions method
+	 * Tests the raw rule conditions returned by the EditRulePopup getter for 
+	 * the rule's raw conditions
 	 */
 	@Test
 	void testGetRawRuleConditions() {
-		editpopup.getRawRuleConditions();
-		addpopup.getRawRuleConditions();
+		assertEquals("LOC > 10", editpopup.getRawRuleConditions());
+		assertEquals("", addpopup.getRawRuleConditions());
 	}
 	
-	
+	/**
+	 * Tests the window size of the EdiRulePopup frame by asserting it's height and
+	 * width with expected values
+	 */
 	@Test
 	void testWindowSizeAtStart() {
 		EditRulePopup m = new EditRulePopup(new CodeQualityRule("", "", true, false));

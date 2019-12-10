@@ -9,5 +9,5 @@ import org.junit.runner.RunWith;
 		TestExcelImporterModel.class, TestExcelRow.class, TestGUIMainFrame.class, TestMainController.class,
 		TestQualityIndicator.class, TestQualityRulesResultFrame.class })
 public class AllTests {
-
+	
 }

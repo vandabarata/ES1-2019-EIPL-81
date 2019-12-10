@@ -1,12 +1,14 @@
 package test.java;
 
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import main.java.gui.QualityRulesResultFrame;
 import main.java.model.QualityIndicator;
 
 class TestQualityRulesResultFrame {
-	/*QualityRuleResultFrame that will be user for each test*/
+	/* QualityRuleResultFrame that will be user for each test */
 	QualityRulesResultFrame qualityRulesResultFrame;
 
 	@BeforeEach
@@ -19,6 +21,7 @@ class TestQualityRulesResultFrame {
 	 */
 	@Test
 	final void testFillFrame() {
+		assertNotNull(qualityRulesResultFrame);
 		String[] header = {"header1", "header2"};
 		String[][] content = {{"cell0",  "cell1"},{"cell2", "cell3"}};
 		String[][] mockExcelData = {{"1", "TRUE", "FALSE", "TRUE", "TRUE", "TRUE", "TRUE"}, {"2", "FALSE", "TRUE", "TRUE", "TRUE", "TRUE", "TRUE"}, {"3", "FALSE", "FALSE", "FALSE", "FALSE", "FALSE", "FALSE"}, {"4","TRUE", "TRUE", "FALSE", "FALSE", "FALSE", "FALSE"}};
@@ -27,7 +30,7 @@ class TestQualityRulesResultFrame {
 	}
 
 	/**
-	 * Tests hide method
+	 * Tests if the QualityResultsFrame hide() method is disposing of the frame correctly
 	 */
 	@Test
 	final void testHide() {

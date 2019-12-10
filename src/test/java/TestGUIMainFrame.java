@@ -44,7 +44,7 @@ class TestGUIMainFrame {
 	}
 	
 	/**
-	 * Tests if after MainFrame construction the buttons were created and are not null
+	 *  Tests if the buttons were created and are not null after the MainFrame construction 
 	 */
 	@Test
 	final void testGetCheckQualityButton() {
@@ -54,7 +54,7 @@ class TestGUIMainFrame {
 	}
 	
 	/**
-	 * Tests getFrameWidth method
+	 *  Tests if the getFrameWidth method returns the correct width value
 	 */
 	@Test
 	final void testGetFrameWidth() {
@@ -62,7 +62,7 @@ class TestGUIMainFrame {
 	}
 
 	/**
-	 * Test getRulesComboBox method by checking if its created
+	 * Test getRulesComboBox method by checking if it's been created
 	 */
 	@Test
 	final void testGetRulesComboBox() {
