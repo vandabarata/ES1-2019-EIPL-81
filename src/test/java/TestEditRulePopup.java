@@ -2,6 +2,7 @@ package test.java;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +18,9 @@ import main.java.model.CodeQualityRule;
 @RunWith(JUnitPlatform.class)
 class TestEditRulePopup {
 	
+	/*EditRulePopup that will be used in the tests*/
 	EditRulePopup editpopup;
+	/*EditRulePopup that will be used in the tests*/
 	EditRulePopup addpopup;
 
 	@BeforeEach
@@ -26,43 +29,64 @@ class TestEditRulePopup {
 		addpopup = new EditRulePopup(new CodeQualityRule("", "LAA < 5", false, false));
 	}
 
+	/**
+	 * Tests getConditon() method
+	 */
 	@Test
 	void testGetCondition() {
 		addpopup.getCondition();
 	}
-
+	
+	/**
+	 * Tests getValue() method
+	 */
 	@Test
 	void testGetValue() {
 		addpopup.getValue();
 	}
-
+	
+	/**
+	 * Tests getComparison method
+	 */
 	@Test
 	void testGetComparison() {
 		addpopup.getComparison();
 	}
-
+	
+	/**
+	 * Tests getSaveButton method
+	 */
 	@Test
 	void testGetSaveButton() {
 		addpopup.getSaveButton();
 	}
-
+	
+	/**
+	 * Tests getDeleteButton method
+	 */
 	@Test
 	void testGetDeleteButton() {
 		addpopup.getDeleteButton();
 	}
 
-
+	/**
+	 * Tests isAdvancedMode by passing its return value to a boolean variable
+	 * and then asserting its value
+	 */
 	@Test
 	void testIsAdvancedMode() {
 		boolean newRule = addpopup.isAdvancedMode();
 		assertFalse(newRule);
 	}
-
+	/**
+	 * Tests getRawRuleConditions method
+	 */
 	@Test
 	void testGetRawRuleConditions() {
 		editpopup.getRawRuleConditions();
 		addpopup.getRawRuleConditions();
 	}
+	
 	
 	@Test
 	void testWindowSizeAtStart() {
@@ -85,4 +109,5 @@ class TestEditRulePopup {
 		int numberOfRules = main.getRulesList().size();
 		assertEquals(frame.getRulesComboBox().getItemCount(), numberOfRules);
 	}
+	
 }
