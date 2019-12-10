@@ -52,7 +52,28 @@ Other than the excel visualization window, the frame also has the following:
 * When the user clicks on "Check quality", our tool will then go through every single rule and calculate the relevant metrics and results for each one. 
 * This will open a new window with the rules' results, as well as the stats for DCI, DII, ADCI, ADII for the default rules.
 
+#### Rule Edition Frame
+* Basic Mode
+This frame contains a text box on top for the user to write or edit the rule's name (default rules can't have their name changed).
+The rest of the frame functions as such:
+    * The first condition starts with an IF
+    * User can then select from one of the available metrics from a dropdown box
+    * Then comes the logical operator, also available from a predefined selection in a dropdown box
+    * Lastly, there is a text input which only accepts numerical values (for the threshold)
+    * The user must then click on "Add" to add this condition line to form the rule's conditions
+    * After the addition of the first condition, there is now a selection for "AND" or "OR" for new conditions
+    * User can keep adding conditions to the rule as they see fit, following the same process
+    * If the user clicks on "Clear Rule Conditions", all the conditions of the rule being edited are cleared and user can start anew
+    * If the user selects "Delete Rule", the selected rule is deleted. 
+    * If the user selects "Save Rule", and rule has defined name and conditions are set, then the new rule is saved
+    * After the deletion or saving of the rule, a confirmation popup is shown and the rule edition frame closes
+    * There is also the option of switiching between advanced and basic mode for the edition of a new rule
+
+* Advanced Mode
+This frame is much less populated, sharing the rule's name text input box and the buttons to clear rule conditions, delete rule and save rule, which work the exact same way. For a default rule, there is a validation done at the time of saving which checks if only the thresholds have been modified, and nothing else. There are also validations to check if the rule's conditions are in a valid format. 
+The delete button checks if the rule is default or not - default rules are never allowed to be deleted.
+
 
 ![Missing Features](https://img.shields.io/badge/Project-Missing%20features-red?style=for-the-badge&logo=read-the-docs)
 
-TBD
+The group didn't find any unresolved bugs, nor do we think anything is missing when compared to the requirements gathered from the Project Specifications Document given to us by the teachers. As such, we believe we have a fully functional tool to check code quality based on personalised rules, and the stats taken from the given excel file for analysis.
