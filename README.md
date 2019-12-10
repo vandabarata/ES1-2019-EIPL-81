@@ -54,6 +54,7 @@ Other than the excel visualization window, the frame also has the following:
 
 #### Rule Edition Frame
 * Basic Mode
+
 This frame contains a text box on top for the user to write or edit the rule's name (default rules can't have their name changed).
 The rest of the frame functions as such:
     * The first condition starts with an IF
@@ -70,6 +71,7 @@ The rest of the frame functions as such:
     * There is also the option of switiching between advanced and basic mode for the edition of a new rule
 
 * Advanced Mode
+
 This frame is much less populated, sharing the rule's name text input box and the buttons to clear rule conditions, delete rule and save rule, which work the exact same way. For a default rule, there is a validation done at the time of saving which checks if only the thresholds have been modified, and nothing else. There are also validations to check if the rule's conditions are in a valid format. 
 The delete button checks if the rule is default or not - default rules are never allowed to be deleted.
 
