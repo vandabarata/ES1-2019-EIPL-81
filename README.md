@@ -56,8 +56,7 @@ Other than the excel visualization window, the frame also has the following:
 * Basic Mode
 
 This frame contains a text box on top for the user to write or edit the rule's name (default rules can't have their name changed).
-The rest of the frame functions as such:
-
+* The rest of the frame functions as such:
     * The first condition starts with an IF
     * User can then select from one of the available metrics from a dropdown box
     * Then comes the logical operator, also available from a predefined selection in a dropdown box
@@ -70,6 +69,7 @@ The rest of the frame functions as such:
     * If the user selects "Save Rule", and rule has defined name and conditions are set, then the new rule is saved
     * After the deletion or saving of the rule, a confirmation popup is shown and the rule edition frame closes
     * There is also the option of switiching between advanced and basic mode for the edition of a new rule
+
 
 * Advanced Mode
 
