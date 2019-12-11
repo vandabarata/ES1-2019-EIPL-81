@@ -34,7 +34,7 @@ _____
 
 ![Project Functionalities](https://img.shields.io/badge/Project-Functionalities-green?style=for-the-badge&logo=read-the-docs)
 
-Our project consists on a tool to check code quality, based on several code stats given in a specific Excel file. Said file is in the root of our project. User then has access to 2 rules that exist by default. New rules can be added with any valid conditions, based on the given metrics. The 2 default rules can also have their thresholds edited for different results.
+Our project consists on a tool to check code quality, based on several code stats given in a specific Excel file. Said file is in the root of our project. User then has access to 2 rules that exist by default. New rules can be added with any valid conditions, based on the given metrics. The 2 default rules can also have their thresholds edited for different results, but can never be further edited or deleted.
 
 
 ### How to use
@@ -49,14 +49,14 @@ Other than the excel visualization window, the frame also has the following:
     
 * If the user clicks on the "Add" button, a rule edition frame opens in 'Basic Mode'. This mode was made to make it easier for users to add simple rules from scratch. There is also an 'Advanced Mode' available, if the user wants to create a more complex rule.
 * If the user clicks on the "Edit" button, the rule edition frame will open in 'Advanced Mode' with the content of the selected rule.
-* When the user clicks on "Check quality", our tool will then go through every single rule and calculate the relevant metrics and results for each one. 
+* When the user clicks on "Check quality", our tool will then go through every single rule and calculate the relevant metrics and results for each one. This calculation includes a validation for invalid rule conditions to avoid crashing the application at the time of calculation and will inform the user of which rule is causing the problem. 
 * This will open a new window with the rules' results, as well as the stats for DCI, DII, ADCI, ADII for the default rules.
 
 #### Rule Edition Frame
 * **Basic Mode**
 
-This frame contains a text box on top for the user to write or edit the rule's name (default rules can't have their name changed).
-* The rest of the frame functions as such:
+This frame contains a text box on top for the user to write or edit the rule's name.
+* The rest of the frame's elements function as such:
     * The first condition starts with an IF
     * User can then select from one of the available metrics from a dropdown box
     * Then comes the logical operator, also available from a predefined selection in a dropdown box
@@ -68,12 +68,13 @@ This frame contains a text box on top for the user to write or edit the rule's n
     * If the user selects "Delete Rule", the selected rule is deleted. 
     * If the user selects "Save Rule", and rule has defined name and conditions are set, then the new rule is saved
     * After the deletion or saving of the rule, a confirmation popup is shown and the rule edition frame closes
-    * There is also the option of switiching between advanced and basic mode for the edition of a new rule
+    * There is also the option of switching between advanced and basic mode for the edition of a new rule
 
 
 * **Advanced Mode**
 
-This frame is much less populated, sharing the rule's name text input box and the buttons to clear rule conditions, delete rule and save rule, which work the exact same way. For a default rule, there is a validation done at the time of saving which checks if only the thresholds have been modified, and nothing else. There are also validations to check if the rule's conditions are in a valid format. 
+This frame is much less populated, sharing the rule's name text input box and the buttons to clear rule conditions, delete rule and save rule, which work the exact same way. 
+For a default rule, there is a validation done at the time of saving which checks if only the thresholds have been modified, and nothing else.
 The delete button checks if the rule is default or not - default rules are never allowed to be deleted.
 
 
