@@ -16,15 +16,32 @@ import main.java.model.CodeQualityRule;
 
 public class MainFrame {
 
+	/** The frame of our MainFrame GUI */
 	private JFrame mainFrame;
+
+	/** The central panel in the MainFrame */
 	private JPanel centralPanel;
+
+	/** The panel on the bottom of the MainFrame */
 	private JPanel southPanel;
+
+	/** The Excel Table where the user can visualize the imported file's contents */
 	private JTable excelTable;
+
+	/** The JButton used for rule edition */
 	private JButton editButton;
+
+	/** The JButton used for addition of new rules */
 	private JButton addButton;
+
+	/** The JButton used for checking the code quality */
 	private JButton checkQualityButton;
-	private JComboBox<Object> rulesDropDown;
+
+	/** The list of available rules */
 	private ArrayList<CodeQualityRule> rulesList;
+
+	/** The JComboBox contaning all the rules in the rulesList */
+	private JComboBox<Object> rulesDropDown;
 
 	/**
 	 * The mainframe constructor receives an excel table, generated from the given

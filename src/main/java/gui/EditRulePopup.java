@@ -33,6 +33,7 @@ public class EditRulePopup {
 
 	/** The rule being edited or created */
 	private CodeQualityRule rule;
+	
 	/**
 	 * An array of string with the rules conditions where every position is a new
 	 * line in the condition

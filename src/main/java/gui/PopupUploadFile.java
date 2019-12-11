@@ -16,22 +16,28 @@ import javax.swing.WindowConstants;
 import javax.swing.filechooser.FileSystemView;
 
 /**
- * <h1>Pop up Upload File!</h1> This pop up allows to import a file When it's
- * clicked on the Import Button. It is opened the new pop up that it allows to
- * choose a file and import it If it is a valid Excel format!
- * <p>
- * 
- * 
- * @author djsouza
- * @since 2019-11-08
+ * This is the first frame shown to the user when initialising our tool. It
+ * allows the user to import an excel file when selecting the "Import" button. A
+ * validation is done at the time of importing to avoid files of different
+ * formats (ie. not .xls or .xlsx)
  */
 public class PopupUploadFile {
+
+	/** The frame for the file upload GUI */
 	private JFrame frame;
-	private JPanel panel;
-	private JButton import_button;
 
 	/**
-	 * This method is used to generate the frame of first pop up File Upload.
+	 * The panel at the center of the frame, asking the user to select an excel file
+	 * to import
+	 */
+	private JPanel panel;
+
+	/** The JButton used for importing the selected excel file */
+	private JButton importButton;
+
+	/**
+	 * Constructor to generate the frame with the necessary elements for importing
+	 * an excel file
 	 */
 	public PopupUploadFile() {
 		frame = new JFrame("Upload File");
@@ -46,7 +52,8 @@ public class PopupUploadFile {
 	}
 
 	/**
-	 * This method is used to set the label with information and Import button.
+	 * Creates a panel occupying the whole frame with instructions to import an
+	 * excel file and an "Import" button
 	 */
 	private void createPanel() {
 		panel = new JPanel();
@@ -54,31 +61,28 @@ public class PopupUploadFile {
 		JLabel label = new JLabel("Choose excel file to import", SwingConstants.CENTER);
 		panel.add(label, BorderLayout.CENTER);
 
-		import_button = new JButton("Import");
-		panel.add(import_button, BorderLayout.SOUTH);
+		importButton = new JButton("Import");
+		panel.add(importButton, BorderLayout.SOUTH);
 	}
 
 	/**
-	 * This method is used to communicate the instance of button to MainController.
-	 * The MainController is responsible to run the action of button.
+	 * Returns the JButton used for importing a file
 	 * 
-	 * @return JButton
+	 * @return JButton importButton
 	 */
 	public JButton getImportJButton() {
-		return import_button;
+		return importButton;
 	}
 
 	/**
-	 * This method is used to close the Upload File Pop up after selecting the file
-	 * and the file is a valid Excel format!
+	 * Method that allows for the disposal of this frame
 	 */
 	public void close() {
 		frame.dispose();
 	}
 
 	/**
-	 * This method is used to show a warning message when the selected file isn't a
-	 * valid Excel format!
+	 * Displays a warning with the given message
 	 */
 	public void displayErrorMessage(String message) {
 		JOptionPane.showMessageDialog(frame, message, "Warning", JOptionPane.WARNING_MESSAGE);
