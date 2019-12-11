@@ -15,7 +15,7 @@ import javax.swing.border.EmptyBorder;
 import main.java.model.CodeQualityRule;
 
 public class MainFrame {
-	
+
 	private JFrame mainFrame;
 	private JPanel centralPanel;
 	private JPanel southPanel;
@@ -28,11 +28,13 @@ public class MainFrame {
 
 	/**
 	 * The mainframe constructor receives an excel table, generated from the given
-	 * excel file, as well as a list containing all the rules and quality indicators, stored in the main
-	 * controller
+	 * excel file, as well as a list containing all the rules and quality
+	 * indicators, stored in the main controller
 	 * 
-	 * @param excelTable
-	 * @param rulesList
+	 * @param JTable                     excelTable - A JTable generated from the
+	 *                                   imported excel file
+	 * @param ArrayList<CodeQualityRule> rulesList - a list with the available rules
+	 *                                   - starts with 2 default rules
 	 * 
 	 */
 	public MainFrame(JTable excelTable, ArrayList<CodeQualityRule> rulesList) {
@@ -79,9 +81,9 @@ public class MainFrame {
 	}
 
 	/**
-	 * This method creates the south panel of the main frame and adds to it a panel
-	 * that will display the results of reading the excel file, and another panel
-	 * that will display buttons.
+	 * Creates the south panel of the main frame and adds to it a panel that will
+	 * display the results of reading the excel file, and another panel that will
+	 * display buttons.
 	 */
 	private void createSouthPanel() {
 		southPanel = new JPanel();
@@ -96,10 +98,10 @@ public class MainFrame {
 	}
 
 	/**
-	 * This method creates and adds the add/edit, drop drown with list of rules and
+	 * Creates and adds the add/edit buttons, drop drown with list of rules and
 	 * checkQuality buttons to a panel
 	 * 
-	 * @param buttonsPanel - the panel user to display the buttons.
+	 * @param JPanel buttonsPanel - the panel user to display the buttons.
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 
@@ -120,60 +122,52 @@ public class MainFrame {
 	/**
 	 * Returns the excel table generated from the given excel file as a JTable
 	 * 
-	 * @return JTable
+	 * @return JTable excelTable
 	 */
 	public JTable getExcelTable() {
 		return excelTable;
 	}
 
 	/**
-	 * Returns the JButton to Check Code Quality
+	 * Returns the JButton to check code quality
 	 * 
-	 * @return JButton
+	 * @return JButton checkQualityButton
 	 */
 	public JButton getCheckQualityButton() {
 		return checkQualityButton;
 	}
 
 	/**
-	 * This method is used to communicate the instance of Edit JButton to
-	 * MainController. The MainController is responsible to run the action of Edit
-	 * button.
+	 * Returns the JButton for rule edition
 	 * 
-	 * @return JButton
+	 * @return JButton editButton
 	 */
 	public JButton getEditButton() {
 		return editButton;
 	}
 
 	/**
-	 * This method is used to communicate the instance of Add JButton to
-	 * MainController. The MainController is responsible to run the action of Add
-	 * button.
+	 * Returns the JButton for adding new rules
 	 * 
-	 * @return JButton
+	 * @return JButton addButton
 	 */
 	public JButton getAddButton() {
 		return addButton;
 	}
 
 	/**
-	 * This method is used to communicate the instance of Check Quality JButton to
-	 * MainController. The MainController is responsible to run the action of Check
-	 * Quality button.
+	 * Returns the MainFrame's width
 	 * 
-	 * @return JButton
+	 * @return int width
 	 */
 	public int getFrameWidth() {
 		return mainFrame.getWidth();
 	}
 
 	/**
-	 * This method is used to communicate the instance of JComboBox to
-	 * MainController. The MainController is responsible to run the action related
-	 * with selected rule of rule list showed in JComboBox.
+	 * Returns the JComboBox holding the list of available rules
 	 * 
-	 * @return JComboBox
+	 * @return JComboBox rulesDropDown
 	 */
 	public JComboBox getRulesComboBox() {
 		return rulesDropDown;
@@ -182,7 +176,8 @@ public class MainFrame {
 	/**
 	 * Receives an updated Rules List and updates the ComboBox
 	 * 
-	 * @param updatedRulesList
+	 * @param ArrayList<CodeQualityRule> updatedRulesList - receives an updated list
+	 *                                   of rules
 	 * 
 	 */
 	public void updateRulesComboBox(ArrayList<CodeQualityRule> updatedRulesList) {
