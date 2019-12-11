@@ -142,7 +142,7 @@ public class EditRuleController {
 			rule.setName(newName);
 		}
 		rule.setRule(newRule);
-		rule.setIsAdvanced(true);
+		rule.setAdvanced(true);
 
 		// Gets the rules list from the main controller
 		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();

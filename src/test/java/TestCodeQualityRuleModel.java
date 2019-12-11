@@ -11,10 +11,13 @@ import main.java.model.CodeQualityRule;
 
 @RunWith(JUnitPlatform.class)
 class TestCodeQualityRuleModel {
-	
+
+	/** A default rule */
 	CodeQualityRule ruleDefault;
+
+	/** A new rule added by the user */
 	CodeQualityRule potatoRule;
-	
+
 	@BeforeEach
 	void setup() {
 		ruleDefault = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
@@ -22,7 +25,7 @@ class TestCodeQualityRuleModel {
 	}
 
 	/**
-	 * This test validates if a default CodeQualityRule is being created successfully
+	 * Validates if a default CodeQualityRule is being created successfully
 	 */
 	@Test
 	void testCreationOfDefaultRule() {
@@ -31,9 +34,9 @@ class TestCodeQualityRuleModel {
 		assertTrue(ruleDefault.isDefault());
 		assertTrue(ruleDefault.isAdvanced());
 	}
-	
+
 	/**
-	 * This test validates if a non default CodeQualityRule is being created successfully
+	 * Validates if a non default CodeQualityRule is being created successfully
 	 */
 	@Test
 	void testCreationOfNonDefaultRule() {
@@ -42,10 +45,9 @@ class TestCodeQualityRuleModel {
 		assertFalse(potatoRule.isDefault());
 		assertFalse(potatoRule.isAdvanced());
 	}
-	
+
 	/**
-	 * This test verifies if the name of a default rule can be changed with the 
-	 * setName method
+	 * Verifies if the name of a default rule can be changed with the setName method
 	 */
 	@Test
 	void testNameChangeDefaultRule() {
@@ -54,9 +56,9 @@ class TestCodeQualityRuleModel {
 		assertNotEquals("new_method", ruleDefault.getName());
 		assertEquals("is_long_method", ruleDefault.getName());
 	}
-	
+
 	/**
-	 * This test verifies if the rule content of a default rule can be changed with the 
+	 * Verifies if the rule content of a default rule can be changed with the
 	 * setRule method
 	 */
 	@Test
@@ -68,19 +70,19 @@ class TestCodeQualityRuleModel {
 	}
 
 	/**
-	 * This test verifies if the type of a default rule can be changed with the 
-	 * setIsAdvanced method
+	 * Verifies if the type of a default rule can be changed with the setAdvanced
+	 * method
 	 */
 	@Test
 	void testTypeChangeDefaultRule() {
 		assertTrue(ruleDefault.isAdvanced());
-		ruleDefault.setIsAdvanced(false);
+		ruleDefault.setAdvanced(false);
 		assertEquals(true, ruleDefault.isAdvanced());
 	}
-	
+
 	/**
-	 * This test verifies if the name of a non default rule can be changed with the 
-	 * setName method
+	 * Verifies if the name of a non default rule can be changed with the setName
+	 * method
 	 */
 	@Test
 	void testNameChangeNonDefaultRule() {
@@ -89,9 +91,9 @@ class TestCodeQualityRuleModel {
 		assertEquals("new_method", potatoRule.getName());
 		assertNotEquals("is_potato", potatoRule.getName());
 	}
-	
+
 	/**
-	 * This test verifies if the rule content of a non default rule can be changed with the 
+	 * Verifies if the rule content of a non default rule can be changed with the
 	 * setRule method
 	 */
 	@Test
@@ -101,18 +103,18 @@ class TestCodeQualityRuleModel {
 		assertEquals("CYCLO < 50", potatoRule.getRule());
 		assertNotEquals("ATFD > 4 && LAA < 0.42", potatoRule.getRule());
 	}
-	
+
 	/**
-	 * This test verifies if the type of a non default rule can be changed with the 
+	 * Verifies if the type of a non default rule can be changed with the
 	 * setIsAdvanced method
 	 */
 	@Test
 	void testTypeChangeNonDefaultRule() {
 		assertFalse(potatoRule.isAdvanced());
-		potatoRule.setIsAdvanced(true);
+		potatoRule.setAdvanced(true);
 		assertTrue(potatoRule.isAdvanced());
 	}
-	
+
 	/**
 	 * Tests if the toString method returns the rule's name as intended
 	 */

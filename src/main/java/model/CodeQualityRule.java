@@ -99,7 +99,7 @@ public class CodeQualityRule {
 	 * 
 	 * @param boolean isAdvanced - if a rule should be opened in advanced mode
 	 */
-	public void setIsAdvanced(boolean isAdvanced) {
+	public void setAdvanced(boolean isAdvanced) {
 		if (isDefault) {
 			this.isAdvanced = true;
 		} else {
