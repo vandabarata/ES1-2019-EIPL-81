@@ -281,7 +281,7 @@ public class EditRulePopup {
 
 		comparisonOperatorListBox = new JComboBox<>();
 		for (ComparisonOperator comp : ComparisonOperator.values()) {
-			comparisonOperatorListBox.addItem(comp.getSymbol());
+			comparisonOperatorListBox.addItem(comp.getOperator());
 		}
 
 		JTextField threshold = new JTextField("");
