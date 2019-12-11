@@ -42,7 +42,7 @@ public class QualityIndicator {
 	private String[][] resultsRows;
 	
 	/**
-	 * Creates a IndicatorQuality object based on excelRow.
+	 * Creates a QualityIndicator object based on excelRow.
 	 * A IndicatorQuality object also calculate the Quality Indicators from the Excel file
 	 * @param excelRows is the list of Excel Rows from the Excel file
 	 */
