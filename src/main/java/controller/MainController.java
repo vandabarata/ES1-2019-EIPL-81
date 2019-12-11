@@ -348,7 +348,7 @@ public class MainController {
 	/**
 	 * Receives an updated list of rules and replaces the old rules list with it
 	 * 
-	 * @param newRules - New list of rules to consider
+	 * @param ArrayList<CodeQualityRule> newRules - New list of rules to consider
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;

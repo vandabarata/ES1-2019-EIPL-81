@@ -35,8 +35,8 @@ class TestEditRulePopup {
 	 */
 	@Test
 	void testGetCondition() {
-		assertNotNull(addpopup.getCondition());
-		assertEquals(0, addpopup.getCondition().getItemCount());
+		assertNotNull(addpopup.getLogicalOperator());
+		assertEquals(0, addpopup.getLogicalOperator().getItemCount());
 	}
 	
 	/**
@@ -47,9 +47,9 @@ class TestEditRulePopup {
 	 */
 	@Test
 	void testGetValue() {
-		assertNull(editpopup.getValue());
-		assertNotNull(addpopup.getValue());
-		assertEquals(4, addpopup.getValue().getItemCount());
+		assertNull(editpopup.getMetrics());
+		assertNotNull(addpopup.getMetrics());
+		assertEquals(4, addpopup.getMetrics().getItemCount());
 	}
 	
 	/**

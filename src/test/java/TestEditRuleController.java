@@ -123,7 +123,7 @@ class TestEditRuleController {
 		controller = new EditRuleController();
 
 		EditRulePopup popup = controller.getEditRulePopup();
-		popup.getNameText().setText(newName);
+		popup.getRuleNameField().setText(newName);
 		popup.getAdvancedModeButton().doClick();
 		popup.getRuleTextArea().setText(newRuleConditions);
 
@@ -187,7 +187,7 @@ class TestEditRuleController {
 		controller = new EditRuleController();
 
 		EditRulePopup popup = controller.getEditRulePopup();
-		popup.getNameText().setText(newName);
+		popup.getRuleNameField().setText(newName);
 
 		assertThrows(Exception.class, () -> controller.saveRule());
 
@@ -206,7 +206,7 @@ class TestEditRuleController {
 		controller = new EditRuleController();
 
 		EditRulePopup popup = controller.getEditRulePopup();
-		popup.getNameText().setText(newName);
+		popup.getRuleNameField().setText(newName);
 		popup.getAdvancedModeButton().doClick();
 		popup.getRuleTextArea().setText(newRuleConditions);
 

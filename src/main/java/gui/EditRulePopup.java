@@ -38,25 +38,31 @@ public class EditRulePopup {
 	 * line in the condition
 	 */
 	private ArrayList<String> ruleConditions = new ArrayList<String>();
-	/** The main frame of the GUI */
+
+	/** The frame of the rule edition GUI */
 	private JFrame frame;
+
 	/** The rule name text field in the GUI */
-	private JTextField nameText;
+	private JTextField ruleNameField;
+
 	/**
 	 * The Combo Box displaying the options of logical operators available for rule
 	 * creation (AND, OR), for Basic Mode
 	 */
 	private JComboBox<String> logicalOperatorListBox;
+
 	/**
 	 * The Combo Box displaying the available metrics for rule creation (LOC, CYCLO,
 	 * ATFD, LAA), for Basic Mode
 	 */
 	private JComboBox<String> metricsListBox;
+
 	/**
 	 * The Combo Box displaying the available comparison operators for rule creation
 	 * (>, <, >=, \<=, ==, !=), in Basic Mode
 	 */
 	private JComboBox<String> comparisonOperatorListBox;
+
 	/**
 	 * The Text Area the displays the rule conditions and that can be edited by the
 	 * user on Advanced Mode
@@ -65,37 +71,46 @@ public class EditRulePopup {
 
 	/** The Delete rule button */
 	private JButton deleteButton;
+
 	/** The Save rule button */
 	private JButton saveButton;
+
 	/** The Save rule button */
-	private JButton advanceModeButton;
+	private JButton advancedModeButton;
 
 	/** The main JPanel of the GUI */
 	private JPanel mainPanel;
+
 	/** The JPanel to display the rule's name */
 	private JPanel namePanel;
+
 	/** The JPanel to display the rule's conditions */
 	private JPanel ruleConditionsPanel;
 	/**
 	 * The JPanel to display the buttons to switch between Basic and Advanced modes
 	 */
 	private JPanel editorComplexityTogglePanel;
+
 	/** The JPanel to display the current rule conditions added in Basic Mode */
 	private JPanel ruleConditionsListPanel;
+
 	/**
 	 * The JPanel to display the interface to add a new rule condition in Basic Mode
 	 */
 	private JPanel addNewRuleConditionPanel;
+
 	/** The JPanel to display the action buttons (Clear/Delete/Save) */
 	private JPanel controlPanel;
+
 	/** The JPanel for the content in the center of the GUI */
 	private JPanel centerPanel;
 
 	/** If the GUI is on Advanced Mode */
 	private boolean advancedMode;
+
 	/** If the rule being edited is a Default Rule */
 	private boolean defaultRule;
-	
+
 	/**
 	 * Constructs and initializes the GUI pop-up. It opens the Basic or Advanced
 	 * Mode depending on the rule it's using.
@@ -124,7 +139,7 @@ public class EditRulePopup {
 	/**
 	 * Returns the JPanel where all other JPanels are nested
 	 * 
-	 * @return JPanel
+	 * @return JPanel - the panel which shows the EditRule GUI
 	 */
 	private JPanel createMainPanel() {
 		mainPanel.setLayout(new BorderLayout());
@@ -138,22 +153,22 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * Creates the JPanel responsible for holding the rule's name. In case of
+	 * Creates the JPanel responsible for holding the rule's name. In case of a
 	 * default rule, name is a non editable text field because it cannot be changed.
 	 */
 	private void createNamePanel() {
 		JLabel nameLabel = new JLabel("Name: ", SwingConstants.LEFT);
 		namePanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		namePanel.add(nameLabel, BorderLayout.CENTER);
-		nameText = new JTextField();
-		nameText.setText(rule.getName());
-		nameText.setMinimumSize(new Dimension(500, 25));
-		nameText.setPreferredSize(new Dimension(500, 25));
+		ruleNameField = new JTextField();
+		ruleNameField.setText(rule.getName());
+		ruleNameField.setMinimumSize(new Dimension(500, 25));
+		ruleNameField.setPreferredSize(new Dimension(500, 25));
 
 		if (rule.isDefault()) {
-			nameText.setEditable(false);
+			ruleNameField.setEditable(false);
 		}
-		namePanel.add(nameText, BorderLayout.EAST);
+		namePanel.add(ruleNameField, BorderLayout.EAST);
 	}
 
 	/**
@@ -161,7 +176,8 @@ public class EditRulePopup {
 	 * which allows edits to the current rule, and the complexity toggle panel,
 	 * which allows changing in between the Basic and Advanced modes.
 	 * 
-	 * @return JPanel
+	 * @return JPanel centerPanel - the panel at the center which occupies most of
+	 *         the rule edition GUI
 	 */
 	private JPanel createCenterPanel() {
 		createRuleConditionsPanel();
@@ -178,7 +194,9 @@ public class EditRulePopup {
 	 * advanced mode, this panel holds a JTextArea, which can be freely edited by
 	 * the user.
 	 * 
-	 * @return JPanel
+	 * @return JPanel ruleConditionsPanel - panel within the centerPanel which holds
+	 *         the rules conditions. Varies depending on being in advanced or basic
+	 *         mode
 	 */
 	private JPanel createRuleConditionsPanel() {
 		if (advancedMode || defaultRule || rule.getName() != "") {
@@ -244,7 +262,9 @@ public class EditRulePopup {
 	 * Returns the JPanel holding the line which allows users to add new rule
 	 * conditions into the rule's conditions list. For Basic Mode.
 	 * 
-	 * @return JPanel
+	 * @return JPanel addNewRuleConditionPanel - the panel in basic mode which
+	 *         allows user to create conditions and shows new rule conditions when
+	 *         these are added
 	 */
 	private JPanel createAddRuleConditionPanel() {
 		addNewRuleConditionPanel.removeAll();
@@ -306,25 +326,26 @@ public class EditRulePopup {
 	 * Returns the JPanel which holds the buttons to switch between advanced and
 	 * basic modes.
 	 * 
-	 * @return JPanel
+	 * @return JPanel editorComplexityTogglePanel - Panel which allows the user to
+	 *         toggle between basic and advanced modes
 	 */
 	private JPanel createEditorComplexityTogglePanel() {
 		editorComplexityTogglePanel.setLayout(new BoxLayout(editorComplexityTogglePanel, BoxLayout.Y_AXIS));
 		JButton basicModeButton = new JButton("Basic");
-		advanceModeButton = new JButton("Advanced");
+		advancedModeButton = new JButton("Advanced");
 		basicModeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		advanceModeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		basicModeButton.setPreferredSize(advanceModeButton.getPreferredSize());
-		basicModeButton.setMaximumSize(advanceModeButton.getMaximumSize());
-		basicModeButton.setMinimumSize(advanceModeButton.getMinimumSize());
+		advancedModeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		basicModeButton.setPreferredSize(advancedModeButton.getPreferredSize());
+		basicModeButton.setMaximumSize(advancedModeButton.getMaximumSize());
+		basicModeButton.setMinimumSize(advancedModeButton.getMinimumSize());
 		basicModeButton.setEnabled(false);
-		if(rule.getName() != "") {
-			advanceModeButton.setEnabled(false);			
+		if (rule.getName() != "") {
+			advancedModeButton.setEnabled(false);
 		}
-		
+
 		basicModeButton.addActionListener(e -> {
 			if (!(rule.isDefault() || rule.getName() != "")) {
-				advanceModeButton.setEnabled(true);
+				advancedModeButton.setEnabled(true);
 				advancedMode = false;
 				createRuleConditionsPanel();
 				ruleConditionsPanel.revalidate();
@@ -334,7 +355,7 @@ public class EditRulePopup {
 
 		});
 
-		advanceModeButton.addActionListener(e -> {
+		advancedModeButton.addActionListener(e -> {
 			if (rule.isDefault() || rule.getName() == "") {
 				basicModeButton.setEnabled(true);
 			} else {
@@ -344,19 +365,20 @@ public class EditRulePopup {
 			createRuleConditionsPanel();
 			ruleConditionsPanel.revalidate();
 			ruleConditionsPanel.repaint();
-			advanceModeButton.setEnabled(false);
+			advancedModeButton.setEnabled(false);
 		});
 		editorComplexityTogglePanel.add(basicModeButton);
-		editorComplexityTogglePanel.add(advanceModeButton);
+		editorComplexityTogglePanel.add(advancedModeButton);
 
 		return editorComplexityTogglePanel;
 	}
 
 	/**
 	 * Returns the JPanel responsible for holding the JButtons which allow all rule
-	 * conditions to be cleared, or the rule to be saved.
+	 * conditions to be cleared, and rule to be saved or deleted.
 	 * 
-	 * @return JPanel
+	 * @return JPanel controlPanel - Panel which allows the user to clear metrics,
+	 *         delete rule or save it
 	 */
 	private JPanel createControlPanel() {
 		controlPanel.setLayout(new GridLayout(1, 3));
@@ -392,8 +414,8 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * This method fills the rule's conditions list in the UI with the contents
-	 * found in the ruleConditions ArrayList.
+	 * Fills the rule's conditions list in the UI with the contents found in the
+	 * ruleConditions ArrayList.
 	 */
 	private void fillRuleConditionsListPanel() {
 		ruleConditionsListPanel.removeAll();
@@ -412,8 +434,8 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * This method clears all current rule conditions from both the GUI and the
-	 * ruleConditions ArrayList.
+	 * Clears all current rule conditions from both the GUI and the ruleConditions
+	 * ArrayList.
 	 */
 	private void clearRuleConditionsListPanel() {
 		ruleConditions.clear();
@@ -427,15 +449,15 @@ public class EditRulePopup {
 	}
 
 	/**
-	 * This method handles setting the visibility of the Logical Operator ComboBox
-	 * in the line responsible for allowing the user to add new rule conditions to
-	 * the list. Basically, it stops the first rule condition, and the first rule
-	 * condition only, from having an AND or an OR attached to it.
+	 * Handles setting the visibility of the Logical Operator ComboBox in the line
+	 * responsible for allowing the user to add new rule conditions to the list.
+	 * Basically, it stops the first rule condition, and the first rule condition
+	 * only, from having an AND or an OR attached to it.
 	 */
 	private void setLogicalOperatorBoxVisibility() {
 		if (!ruleConditions.isEmpty()) {
 			logicalOperatorListBox.setVisible(true);
-			if(logicalOperatorListBox.getItemCount() <= 0)
+			if (logicalOperatorListBox.getItemCount() <= 0)
 				for (LogicalOperator operator : LogicalOperator.values()) {
 					logicalOperatorListBox.addItem(operator.toString());
 				}
@@ -448,16 +470,16 @@ public class EditRulePopup {
 	/**
 	 * Method that generates an alert with the received message
 	 * 
-	 * @param message
+	 * @param message - a String with the expected message
 	 */
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(null, message);
 	}
 
 	/**
-	 * Returns the popup's main SWING frame.
+	 * Returns the rule edition GUI frame
 	 * 
-	 * @return JFrame
+	 * @return JFrame frame - the GUI for the rule edition popup
 	 */
 	public JFrame getFrame() {
 		return frame;
@@ -468,9 +490,10 @@ public class EditRulePopup {
 	 * Returns the JComboBox which holds the logical operators for a new rule
 	 * condition (AND and OR).
 	 * 
-	 * @return JComboBox<String>
+	 * @return JComboBox<String> logicalOperatorListBox - the combobox with the 2
+	 *         available logical operators
 	 */
-	public JComboBox<String> getCondition() {
+	public JComboBox<String> getLogicalOperator() {
 		return logicalOperatorListBox;
 	}
 
@@ -478,9 +501,10 @@ public class EditRulePopup {
 	 * 
 	 * Returns the JComboBox which holds the values for metrics (LOC, LAA, etc).
 	 * 
-	 * @return JComboBox<String>
+	 * @return JComboBox<String> metricsListBox - the combobox with the available
+	 *         metrics
 	 */
-	public JComboBox<String> getValue() {
+	public JComboBox<String> getMetrics() {
 		return metricsListBox;
 	}
 
@@ -489,7 +513,8 @@ public class EditRulePopup {
 	 * Returns the JComboBox which holds the possible comparisons for a new operator
 	 * (>, >=, <, <=, ==, !=).
 	 * 
-	 * @return JComboBox<String>
+	 * @return JComboBox<String> comparisonOperatorListBox - the combobox with the
+	 *         available comparison operators
 	 */
 	public JComboBox<String> getComparison() {
 		return comparisonOperatorListBox;
@@ -498,43 +523,43 @@ public class EditRulePopup {
 	/**
 	 * Returns the JButton for saving the rule changes
 	 * 
-	 * @return JButton
+	 * @return JButton saveButton
 	 */
 	public JButton getSaveButton() {
 		return saveButton;
 	}
 
 	/**
-	 * Returns the JButton for deleting the rule changes
+	 * Returns the JButton for deleting the rule
 	 * 
-	 * @return JButton
+	 * @return JButton deleteButton
 	 */
 	public JButton getDeleteButton() {
 		return deleteButton;
 	}
 
 	/**
-	 * Returns the JButton for changing the addition mode to advanced
+	 * Returns the JButton for changing the edition mode to advanced
 	 * 
-	 * @return JButton
+	 * @return JButton advancedModeButton
 	 */
 	public JButton getAdvancedModeButton() {
-		return advanceModeButton;
+		return advancedModeButton;
 	}
 
 	/**
 	 * Returns the Rule's JTextField for the name input
 	 * 
-	 * @return JTextField
+	 * @return JTextField ruleNameField
 	 */
-	public JTextField getNameText() {
-		return nameText;
+	public JTextField getRuleNameField() {
+		return ruleNameField;
 	}
 
 	/**
 	 * Returns the JTextArea for the rules conditions
 	 * 
-	 * @return JTextArea
+	 * @return JTextArea ruleTextArea
 	 */
 	public JTextArea getRuleTextArea() {
 		return ruleTextArea;
@@ -543,7 +568,7 @@ public class EditRulePopup {
 	/**
 	 * Returns if GUI is in advanced mode or not
 	 * 
-	 * @return boolean
+	 * @return boolean advancedMode
 	 */
 	public boolean isAdvancedMode() {
 		return advancedMode;
@@ -553,7 +578,7 @@ public class EditRulePopup {
 	 * Get the correct rule conditions, based on edition mode enabled, with no
 	 * parsing of the string.
 	 * 
-	 * @return String The rule conditions string with no parsing
+	 * @return String - The rule conditions string with no parsing
 	 */
 	public String getRawRuleConditions() {
 		String rawRuleConditions = "";

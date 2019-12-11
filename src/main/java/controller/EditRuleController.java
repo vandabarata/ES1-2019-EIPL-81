@@ -108,7 +108,7 @@ public class EditRuleController {
 	 * @throws Exception - Exception with the error message of the issue found.
 	 */
 	public void saveRule() throws Exception {
-		String newName = editRulePopup.getNameText().getText();
+		String newName = editRulePopup.getRuleNameField().getText();
 
 		// Verify if name is valid
 		if (newName.isEmpty()) {
