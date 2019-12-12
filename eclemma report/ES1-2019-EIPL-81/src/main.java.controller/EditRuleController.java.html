@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EditRuleController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main.java.controller</a> &gt; <span class="el_source">EditRuleController.java</span></div><h1>EditRuleController.java</h1><pre class="source lang-java linenums">package main.java.controller;
+
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
+import main.java.gui.EditRulePopup;
+import main.java.model.CodeQualityRule;
+import main.java.model.Metric;
+
+/**
+ * Controller responsible for managing the rule edition and addition GUI
+ *
+ */
+public class EditRuleController {
+
+	/** GUI for editing and creating rules */
+	private EditRulePopup editRulePopup;
+
+	/** The rule being edited or created */
+	private CodeQualityRule rule;
+
+	/** MainController singleton */
+<span class="fc" id="L27">	private MainController mainC = MainController.getMainControllerInstance();</span>
+
+	/**
+	 * Controller to manipulate the EditRulePopup
+	 * 
+	 * @param rule - The Controller receives a CodeQualityRule to be edited in the
+	 *             GUI
+	 */
+<span class="fc" id="L35">	public EditRuleController(CodeQualityRule rule) {</span>
+<span class="fc" id="L36">		this.rule = rule;</span>
+<span class="fc" id="L37">		editRulePopup = new EditRulePopup(this.rule);</span>
+<span class="fc" id="L38">		initActionListeners();</span>
+<span class="fc" id="L39">	}</span>
+
+	/**
+	 * If no rule has been selected, creates a new empty rule, basic by default
+	 */
+	public EditRuleController() {
+<span class="fc" id="L45">		this(new CodeQualityRule(&quot;&quot;, &quot;&quot;, false, false));</span>
+<span class="fc" id="L46">	}</span>
+
+	/**
+	 * Add action listeners to Save and Delete buttons from Edit Rule Popup
+	 */
+	private void initActionListeners() {
+<span class="pc" id="L52">		editRulePopup.getSaveButton().addActionListener(e -&gt; onSaveHandler());</span>
+<span class="pc" id="L53">		editRulePopup.getDeleteButton().addActionListener(e -&gt; onDeleteHandler());</span>
+<span class="fc" id="L54">	}</span>
+
+	/**
+	 * Sets a handler for the Edit Rule Popup delete button's action. Triggers a
+	 * deleteRule method.
+	 */
+	private void onDeleteHandler() {
+		try {
+<span class="nc" id="L62">			deleteRule();</span>
+<span class="nc" id="L63">			mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());</span>
+<span class="nc" id="L64">			editRulePopup.showMessage(&quot;Rule has been deleted successfully!&quot;);</span>
+<span class="nc" id="L65">			editRulePopup.getFrame().dispose();</span>
+<span class="nc" id="L66">		} catch (Exception e) {</span>
+<span class="nc" id="L67">			editRulePopup.showMessage(e.getMessage());</span>
+		}
+<span class="nc" id="L69">	}</span>
+
+	/**
+	 * Tries to delete a rule from the rulesList. Only deletes a rule if it isn't a
+	 * default rule and if it is present in the rules list. Throws an exception
+	 * otherwise.
+	 * 
+	 * @throws Exception - Exception with the error message of the issue found.
+	 */
+	public void deleteRule() throws Exception {
+<span class="fc bfc" id="L79" title="All 2 branches covered.">		if (rule.isDefault()) {</span>
+<span class="fc" id="L80">			throw new Exception(&quot;You can't delete a default rule.&quot;);</span>
+		}
+<span class="fc" id="L82">		ArrayList&lt;CodeQualityRule&gt; rulesList = mainC.getRulesList();</span>
+
+<span class="fc bfc" id="L84" title="All 2 branches covered.">		if (rulesList.contains(rule)) {</span>
+<span class="fc" id="L85">			rulesList.remove(rule);</span>
+<span class="fc" id="L86">			mainC.updateRulesList(rulesList);</span>
+<span class="fc" id="L87">		} else {</span>
+<span class="fc" id="L88">			throw new Exception(&quot;This rule is not in the rules list,\nso it cannot be deleted.&quot;);</span>
+		}
+<span class="fc" id="L90">	}</span>
+
+	/**
+	 * Sets a handler for the Edit Rule Popup save button's action. Triggers a
+	 * saveRule method.
+	 */
+	private void onSaveHandler() {
+		try {
+<span class="nc" id="L98">			saveRule();</span>
+<span class="nc" id="L99">			mainC.getMainFrame().updateRulesComboBox(MainController.getMainControllerInstance().getRulesList());</span>
+<span class="nc" id="L100">			editRulePopup.showMessage(&quot;Rule has been added successfully!&quot;);</span>
+<span class="nc" id="L101">			editRulePopup.getFrame().dispose();</span>
+<span class="nc" id="L102">		} catch (Exception e) {</span>
+<span class="nc" id="L103">			editRulePopup.showMessage(e.getMessage());</span>
+		}
+<span class="nc" id="L105">	}</span>
+
+	/**
+	 * Tries to save a rule. It checks for the rule's content and name. It won't
+	 * save a new rule without a name or set conditions. It also validates the
+	 * conditions' validity before saving. Throws an exception otherwise.
+	 * 
+	 * @throws Exception - Exception with the error message of the issue found.
+	 */
+	public void saveRule() throws Exception {
+<span class="fc" id="L115">		String newName = editRulePopup.getRuleNameField().getText();</span>
+
+		// Verify if name is valid
+<span class="fc bfc" id="L118" title="All 2 branches covered.">		if (newName.isEmpty()) {</span>
+<span class="fc" id="L119">			throw new Exception(&quot;Please provide a rule name.&quot;);</span>
+		}
+
+<span class="fc" id="L122">		String rawRuleConditions = editRulePopup.getRawRuleConditions().trim();</span>
+
+		// Check if there is a rule to save
+<span class="fc bfc" id="L125" title="All 2 branches covered.">		if (rawRuleConditions.isEmpty()) {</span>
+<span class="fc" id="L126">			throw new Exception(&quot;You need to set rule conditions for &quot; + newName);</span>
+		}
+
+<span class="fc" id="L129">		String newRule = getJavascriptIfStatementString(rawRuleConditions);</span>
+
+		try {
+			// Runs pre validation to try to catch some errors
+<span class="fc" id="L133">			preValidateJavascriptCode(newRule);</span>
+<span class="fc" id="L134">		} catch (ScriptException e) {</span>
+<span class="fc" id="L135">			throw new Exception(&quot;The rule provided has an invalid format. Cannot save it.&quot;);</span>
+		}
+
+<span class="fc bfc" id="L138" title="All 4 branches covered.">		if (rule.isDefault() &amp;&amp; !isValidDefaultRuleThresholdsUpdate(rule.getName(), newRule)) {</span>
+<span class="fc" id="L139">			throw new Exception(</span>
+<span class="fc" id="L140">					&quot;This is a Default Rule. As such, only the thresholds \n can be edited. Values must be positive.&quot;);</span>
+		}
+
+		// updates the list with the new (validated) rule
+		// updates the list for the main controller
+<span class="fc bfc" id="L145" title="All 2 branches covered.">		if (!rule.isDefault()) {</span>
+<span class="fc" id="L146">			rule.setName(newName);</span>
+		}
+<span class="fc" id="L148">		rule.setRule(newRule);</span>
+<span class="fc" id="L149">		rule.setAdvanced(true);</span>
+
+		// Gets the rules list from the main controller
+<span class="fc" id="L152">		ArrayList&lt;CodeQualityRule&gt; rulesList = mainC.getRulesList();</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">		if (!rulesList.contains(rule)) {</span>
+<span class="fc" id="L154">			rulesList.add(rule);</span>
+		}
+<span class="fc" id="L156">		mainC.updateRulesList(rulesList);</span>
+<span class="fc" id="L157">	}</span>
+
+	/**
+	 * Parses the rule string from the Edit Rule Popup to use keywords valid for
+	 * Javascript code.
+	 * 
+	 * @param rawRuleConditions - receives a string with the rule's conditions
+	 * @return Returns a javascript-ready string for evaluation.
+	 */
+	public String getJavascriptIfStatementString(String rawRuleConditions) {
+<span class="fc" id="L167">		return rawRuleConditions.replaceAll(&quot;IF&quot;, &quot;&quot;).replaceAll(&quot;AND&quot;, &quot;&amp;&amp;&quot;).replaceAll(&quot;OR&quot;, &quot;||&quot;).trim();</span>
+	}
+
+	/**
+	 * This method will pre validate the Javascript format rule to find any initial
+	 * issues with the statement format. Will add mock data for metrics and evaluate
+	 * the string. Throws an exception if the string if founds to be invalid. Runs
+	 * normally when no initial issues are found. This is just a prevalidation, and
+	 * doesn't eliminate the necessity of using a try/catch when running the rule
+	 * against the real data.
+	 * 
+	 * @param rule - An if statement rule in Javascript format to be validated
+	 * @throws ScriptException - When the validation of the rule's conditions finds an issue, it
+	 *                         throws an exception
+	 */
+	private void preValidateJavascriptCode(String rule) throws ScriptException {
+<span class="fc" id="L183">		ScriptEngineManager engineManager = new ScriptEngineManager();</span>
+<span class="fc" id="L184">		ScriptEngine engine = engineManager.getEngineByName(&quot;ECMAScript&quot;);</span>
+<span class="fc" id="L185">		String jsString = &quot;\&quot;use strict\&quot;; (function() {&quot;;</span>
+<span class="fc bfc" id="L186" title="All 2 branches covered.">		for (Metric metric : Metric.values()) {</span>
+<span class="fc" id="L187">			jsString += &quot;var &quot; + metric + &quot; = 0; &quot;;</span>
+		}
+<span class="fc" id="L189">		jsString += &quot; return eval('&quot; + rule + &quot;');})()&quot;;</span>
+<span class="fc" id="L190">		engine.eval(jsString);</span>
+<span class="fc" id="L191">	}</span>
+
+	/**
+	 * This method validates if the default rules have their format respected and
+	 * that only the threshold values have been edited. It uses a regex tailored for
+	 * each custom rule to validate the edited rule. In case the rule name provided
+	 * isn't of a known default rule, returns false.
+	 *
+	 * @param ruleName - The name of the rule to be validated
+	 * @param rule     - The rule string to be validated
+	 * @return boolean - If the rule has a valid format
+	 */
+	private boolean isValidDefaultRuleThresholdsUpdate(String ruleName, String rule) {
+<span class="fc bfc" id="L204" title="All 3 branches covered.">		switch (ruleName) {</span>
+		case &quot;custom_is_long_method&quot;:
+<span class="fc" id="L206">			return Pattern.matches(&quot;^LOC\\s*&gt;\\s*\\d+\\s*&amp;&amp;\\s*CYCLO\\s*&gt;\\s*\\d+$&quot;, rule);</span>
+		case &quot;custom_is_feature_envy&quot;:
+<span class="fc" id="L208">			return Pattern.matches(&quot;^ATFD\\s*&gt;\\s*\\d+\\s*&amp;&amp;\\s*LAA\\s*&lt;\\s*((0(.[\\d]+)?)|1)$&quot;, rule);</span>
+		default:
+<span class="fc" id="L210">			return false;</span>
+		}
+	}
+
+	/**
+	 * Getter for an instance of EditRulePopup
+	 * 
+	 * @return EditRulePopup controlled by this controller instance
+	 */
+	public EditRulePopup getEditRulePopup() {
+<span class="fc" id="L220">		return editRulePopup;</span>
+	}
+
+	/**
+	 * Getter for the rule being edited or added
+	 * 
+	 * @return CodeQualityRule
+	 */
+	public CodeQualityRule getRule() {
+<span class="fc" id="L229">		return rule;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

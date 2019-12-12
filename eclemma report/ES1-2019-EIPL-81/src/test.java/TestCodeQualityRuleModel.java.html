@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestCodeQualityRuleModel.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test.java</a> &gt; <span class="el_source">TestCodeQualityRuleModel.java</span></div><h1>TestCodeQualityRuleModel.java</h1><pre class="source lang-java linenums">package test.java;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+import main.java.model.CodeQualityRule;
+
+/**
+ * Tests for the CodeQualityRuleModel
+ *
+ */
+@RunWith(JUnitPlatform.class)
+<span class="fc" id="L17">class TestCodeQualityRuleModel {</span>
+
+	/** A default rule */
+	CodeQualityRule ruleDefault;
+
+	/** A new rule added by the user */
+	CodeQualityRule potatoRule;
+
+	@BeforeEach
+	void setup() {
+<span class="fc" id="L27">		ruleDefault = new CodeQualityRule(&quot;is_long_method&quot;, &quot;LOC &gt; 80 &amp;&amp; CYCLO &gt; 10&quot;, true, false);</span>
+<span class="fc" id="L28">		potatoRule = new CodeQualityRule(&quot;is_potato&quot;, &quot;ATFD &gt; 4 &amp;&amp; LAA &lt; 0.42&quot;, false, false);</span>
+<span class="fc" id="L29">	}</span>
+
+	/**
+	 * Validates if a default CodeQualityRule is being created successfully
+	 */
+	@Test
+	void testCreationOfDefaultRule() {
+<span class="fc" id="L36">		assertEquals(&quot;is_long_method&quot;, ruleDefault.getName());</span>
+<span class="fc" id="L37">		assertEquals(&quot;LOC &gt; 80 &amp;&amp; CYCLO &gt; 10&quot;, ruleDefault.getRule());</span>
+<span class="fc" id="L38">		assertTrue(ruleDefault.isDefault());</span>
+<span class="fc" id="L39">		assertTrue(ruleDefault.isAdvanced());</span>
+<span class="fc" id="L40">	}</span>
+
+	/**
+	 * Validates if a non default CodeQualityRule is being created successfully
+	 */
+	@Test
+	void testCreationOfNonDefaultRule() {
+<span class="fc" id="L47">		assertEquals(&quot;is_potato&quot;, potatoRule.getName());</span>
+<span class="fc" id="L48">		assertEquals(&quot;ATFD &gt; 4 &amp;&amp; LAA &lt; 0.42&quot;, potatoRule.getRule());</span>
+<span class="fc" id="L49">		assertFalse(potatoRule.isDefault());</span>
+<span class="fc" id="L50">		assertFalse(potatoRule.isAdvanced());</span>
+<span class="fc" id="L51">	}</span>
+
+	/**
+	 * Verifies if the name of a default rule can be changed with the setName method
+	 */
+	@Test
+	void testNameChangeDefaultRule() {
+<span class="fc" id="L58">		assertEquals(&quot;is_long_method&quot;, ruleDefault.getName());</span>
+<span class="fc" id="L59">		ruleDefault.setName(&quot;new_method&quot;);</span>
+<span class="fc" id="L60">		assertNotEquals(&quot;new_method&quot;, ruleDefault.getName());</span>
+<span class="fc" id="L61">		assertEquals(&quot;is_long_method&quot;, ruleDefault.getName());</span>
+<span class="fc" id="L62">	}</span>
+
+	/**
+	 * Verifies if the rule content of a default rule can be changed with the
+	 * setRule method
+	 */
+	@Test
+	void testRuleEditionDefaultRule() {
+<span class="fc" id="L70">		assertEquals(&quot;LOC &gt; 80 &amp;&amp; CYCLO &gt; 10&quot;, ruleDefault.getRule());</span>
+<span class="fc" id="L71">		ruleDefault.setRule(&quot;CYCLO &lt; 50&quot;);</span>
+<span class="fc" id="L72">		assertEquals(&quot;CYCLO &lt; 50&quot;, ruleDefault.getRule());</span>
+<span class="fc" id="L73">		assertNotEquals(&quot;LOC &gt; 80 &amp;&amp; CYCLO &gt; 10&quot;, ruleDefault.getRule());</span>
+<span class="fc" id="L74">	}</span>
+
+	/**
+	 * Verifies if the type of a default rule can be changed with the setAdvanced
+	 * method
+	 */
+	@Test
+	void testTypeChangeDefaultRule() {
+<span class="fc" id="L82">		assertTrue(ruleDefault.isAdvanced());</span>
+<span class="fc" id="L83">		ruleDefault.setAdvanced(false);</span>
+<span class="fc" id="L84">		assertEquals(true, ruleDefault.isAdvanced());</span>
+<span class="fc" id="L85">	}</span>
+
+	/**
+	 * Verifies if the name of a non default rule can be changed with the setName
+	 * method
+	 */
+	@Test
+	void testNameChangeNonDefaultRule() {
+<span class="fc" id="L93">		assertEquals(&quot;is_potato&quot;, potatoRule.getName());</span>
+<span class="fc" id="L94">		potatoRule.setName(&quot;new_method&quot;);</span>
+<span class="fc" id="L95">		assertEquals(&quot;new_method&quot;, potatoRule.getName());</span>
+<span class="fc" id="L96">		assertNotEquals(&quot;is_potato&quot;, potatoRule.getName());</span>
+<span class="fc" id="L97">	}</span>
+
+	/**
+	 * Verifies if the rule content of a non default rule can be changed with the
+	 * setRule method
+	 */
+	@Test
+	void testRuleEditionNonDefaultRule() {
+<span class="fc" id="L105">		assertEquals(&quot;ATFD &gt; 4 &amp;&amp; LAA &lt; 0.42&quot;, potatoRule.getRule());</span>
+<span class="fc" id="L106">		potatoRule.setRule(&quot;CYCLO &lt; 50&quot;);</span>
+<span class="fc" id="L107">		assertEquals(&quot;CYCLO &lt; 50&quot;, potatoRule.getRule());</span>
+<span class="fc" id="L108">		assertNotEquals(&quot;ATFD &gt; 4 &amp;&amp; LAA &lt; 0.42&quot;, potatoRule.getRule());</span>
+<span class="fc" id="L109">	}</span>
+
+	/**
+	 * Verifies if the type of a non default rule can be changed with the
+	 * setIsAdvanced method
+	 */
+	@Test
+	void testTypeChangeNonDefaultRule() {
+<span class="fc" id="L117">		assertFalse(potatoRule.isAdvanced());</span>
+<span class="fc" id="L118">		potatoRule.setAdvanced(true);</span>
+<span class="fc" id="L119">		assertTrue(potatoRule.isAdvanced());</span>
+<span class="fc" id="L120">	}</span>
+
+	/**
+	 * Tests if the toString method returns the rule's name as intended
+	 */
+	@Test
+	void testToString() {
+<span class="fc" id="L127">		String potatoName = potatoRule.toString();</span>
+<span class="fc" id="L128">		assertEquals(potatoRule.getName(), potatoName);</span>
+<span class="fc" id="L129">	}</span>
+
+	/**
+	 * Asserts that rules with same name and content aren't equal if their ids don't match
+	 */
+	@Test
+	void testEquals() {
+<span class="fc" id="L136">		assertTrue(potatoRule.equals(potatoRule));</span>
+<span class="fc" id="L137">		CodeQualityRule otherPotato = new CodeQualityRule(&quot;is_potato&quot;, &quot;ATFD &gt; 4 &amp;&amp; LAA &lt; 0.42&quot;, false, false);</span>
+<span class="fc" id="L138">		long newID = potatoRule.getID() + 121345;</span>
+<span class="fc" id="L139">		otherPotato.setId(newID);</span>
+<span class="fc" id="L140">		assertFalse(potatoRule.equals(otherPotato));</span>
+<span class="fc" id="L141">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

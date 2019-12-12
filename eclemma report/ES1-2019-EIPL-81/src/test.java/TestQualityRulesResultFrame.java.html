@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestQualityRulesResultFrame.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test.java</a> &gt; <span class="el_source">TestQualityRulesResultFrame.java</span></div><h1>TestQualityRulesResultFrame.java</h1><pre class="source lang-java linenums">package test.java;
+
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+import main.java.gui.QualityRulesResultFrame;
+import main.java.model.QualityIndicator;
+
+/**
+ * Tests for the QualitRulesyResultFrame
+ *
+ */
+@RunWith(JUnitPlatform.class)
+<span class="fc" id="L18">class TestQualityRulesResultFrame {</span>
+
+	/* QualityRuleResultFrame that will be user for each test */
+	QualityRulesResultFrame qualityRulesResultFrame;
+
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L25">		qualityRulesResultFrame = new QualityRulesResultFrame();</span>
+<span class="fc" id="L26">	}</span>
+
+	/**
+	 * Tests fillFrame method by creating the necessary parameters and then calling
+	 * the method
+	 */
+	@Test
+	final void testFillFrame() {
+<span class="fc" id="L34">		assertNotNull(qualityRulesResultFrame);</span>
+<span class="fc" id="L35">		String[] header = { &quot;header1&quot;, &quot;header2&quot; };</span>
+<span class="fc" id="L36">		String[][] content = { { &quot;cell0&quot;, &quot;cell1&quot; }, { &quot;cell2&quot;, &quot;cell3&quot; } };</span>
+<span class="fc" id="L37">		String[][] mockExcelData = { { &quot;1&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot; },</span>
+<span class="fc" id="L38">				{ &quot;2&quot;, &quot;FALSE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot; },</span>
+<span class="fc" id="L39">				{ &quot;3&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot; },</span>
+<span class="fc" id="L40">				{ &quot;4&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot; } };</span>
+<span class="fc" id="L41">		QualityIndicator quality = new QualityIndicator(mockExcelData);</span>
+<span class="fc" id="L42">		qualityRulesResultFrame.fillFrame(content, header, quality);</span>
+<span class="fc" id="L43">	}</span>
+
+	/**
+	 * Tests if the QualityResultsFrame hide() method is disposing of the frame
+	 * correctly
+	 */
+	@Test
+	final void testHide() {
+<span class="fc" id="L51">		qualityRulesResultFrame.hide();</span>
+<span class="fc" id="L52">	}</span>
+
+	/**
+	 * Tests updateFrame by creating and filling the qualityRulesResultFrame first
+	 * and then calling the updateFrame method
+	 */
+	@Test
+	final void testUpdateFrame() {
+<span class="fc" id="L60">		String[] header = { &quot;header1&quot;, &quot;header2&quot; };</span>
+<span class="fc" id="L61">		String[][] content = { { &quot;cell0&quot;, &quot;cell1&quot; }, { &quot;cell2&quot;, &quot;cell3&quot; } };</span>
+<span class="fc" id="L62">		String[][] mockExcelData = { { &quot;1&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot; },</span>
+<span class="fc" id="L63">				{ &quot;2&quot;, &quot;FALSE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot; },</span>
+<span class="fc" id="L64">				{ &quot;3&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot; },</span>
+<span class="fc" id="L65">				{ &quot;4&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot; } };</span>
+<span class="fc" id="L66">		QualityIndicator quality = new QualityIndicator(mockExcelData);</span>
+<span class="fc" id="L67">		qualityRulesResultFrame.fillFrame(content, header, quality);</span>
+<span class="fc" id="L68">		qualityRulesResultFrame.updateFrame();</span>
+<span class="fc" id="L69">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MainController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main.java.controller</a> &gt; <span class="el_source">MainController.java</span></div><h1>MainController.java</h1><pre class="source lang-java linenums">package main.java.controller;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.filechooser.FileSystemView;
+
+import main.java.gui.MainFrame;
+import main.java.gui.PopupUploadFile;
+import main.java.gui.QualityRulesResultFrame;
+import main.java.model.CodeQualityRule;
+import main.java.model.ExcelImporter;
+import main.java.model.ExcelRow;
+import main.java.model.QualityIndicator;
+
+/**
+ * Main Controller - Accepts input and converts it to commands and action for
+ * the model or view.
+ */
+public class MainController {
+
+	/** Mainframe where the main application runs */
+	private MainFrame gui;
+
+	/** Frame where the code quality check results are presented */
+	private QualityRulesResultFrame qualityGui;
+
+	/** String indicating the path where the excel file is located */
+	private String path;
+
+	/** Object that deals with importing the excel file */
+	private ExcelImporter ei;
+
+	/**
+	 * ArrayList with arrays of strings, containing raw data from the excel in
+	 * string form
+	 */
+	private ArrayList&lt;String[]&gt; excelRows;
+
+	/** ArrayList of ExcelRows with all the excel information */
+<span class="fc" id="L49">	private ArrayList&lt;ExcelRow&gt; excelRowsConverted = new ArrayList&lt;ExcelRow&gt;();</span>
+
+	/** ArrayList of CodeQualityRules, listing all the existent rules */
+<span class="fc" id="L52">	private ArrayList&lt;CodeQualityRule&gt; rulesList = new ArrayList&lt;CodeQualityRule&gt;();</span>
+
+	/**
+	 * Constants that determine the column where the specified results can be
+	 * retrived from
+	 */
+<span class="fc" id="L58">	private final int METHOD_ID_INDEX = 0;</span>
+<span class="fc" id="L59">	private final int PMD_INDEX = 10;</span>
+<span class="fc" id="L60">	private final int IPLASMA_INDEX = 9;</span>
+<span class="fc" id="L61">	private final int IS_LONG_METHOD__INDEX = 8;</span>
+<span class="fc" id="L62">	private final int IS_FEATURE_ENVY__INDEX = 11;</span>
+
+	/**
+	 * Object responsible for calculating the quality indicators such as DCI, DII,
+	 * ADCI and ADII
+	 */
+	private QualityIndicator qualityIndicator;
+
+	/** Single instance of the MainController */
+	private static MainController instance;
+
+	/**
+	 * Singleton MainController - only 1 instance allowed. Creates the default rules
+	 * to be used and manages the Main Frame.
+	 */
+<span class="fc" id="L77">	private MainController() {</span>
+<span class="fc" id="L78">		CodeQualityRule is_long_method = new CodeQualityRule(&quot;custom_is_long_method&quot;, &quot;LOC &gt; 80 &amp;&amp; CYCLO &gt; 10&quot;, true,</span>
+<span class="fc" id="L79">				true);</span>
+<span class="fc" id="L80">		CodeQualityRule is_feature_envy = new CodeQualityRule(&quot;custom_is_feature_envy&quot;, &quot;ATFD &gt; 4 &amp;&amp; LAA &lt; 0.42&quot;, true,</span>
+<span class="fc" id="L81">				true);</span>
+<span class="fc" id="L82">		rulesList.add(is_long_method);</span>
+<span class="fc" id="L83">		rulesList.add(is_feature_envy);</span>
+<span class="fc" id="L84">	}</span>
+
+	/**
+	 * Public method that returns the main controller singleton instance
+	 * 
+	 * @return MainController instance
+	 */
+	public static MainController getMainControllerInstance() {
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		if (instance == null) {</span>
+<span class="fc" id="L93">			instance = new MainController();</span>
+		}
+<span class="fc" id="L95">		return instance;</span>
+	}
+
+	/**
+	 * Initialises the file upload frame and the button listeners
+	 */
+	public void init() {
+<span class="fc" id="L102">		PopupUploadFile uploadFile = new PopupUploadFile();</span>
+<span class="fc" id="L103">		JButton importButton = uploadFile.getImportJButton();</span>
+<span class="fc" id="L104">		initImportButtonAction(importButton, uploadFile);</span>
+<span class="fc" id="L105">	}</span>
+
+	/**
+	 * Initialises the import button's action listener
+	 * 
+	 * @param importButton - button used to import the file
+	 * @param uploadFile   - frame where the file is imported
+	 */
+	private void initImportButtonAction(JButton importButton, PopupUploadFile uploadFile) {
+<span class="pc" id="L114">		importButton.addActionListener(e -&gt; validateFile(uploadFile));</span>
+<span class="fc" id="L115">	}</span>
+
+	/**
+	 * Validates if the selected file is a valid Excel format
+	 * 
+	 * @param pathFile - the path to the imported file's location
+	 * @return boolean to validate if file is valid or not
+	 */
+	public boolean isValid(String pathFile) {
+<span class="fc bfc" id="L124" title="All 4 branches covered.">		return pathFile.endsWith(&quot;.xlsx&quot;) || pathFile.endsWith(&quot;.xls&quot;);</span>
+	}
+
+	/**
+	 * Imports the file and creates a main frame if the file is valid. Shows a
+	 * warning message otherwise.
+	 * 
+	 * @param uploadFile - frame where the excel file is imported
+	 */
+	private void validateFile(PopupUploadFile uploadFile) {
+
+<span class="nc" id="L135">		JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());</span>
+<span class="nc" id="L136">		int returnValue = jfc.showOpenDialog(null);</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">		if (returnValue == JFileChooser.APPROVE_OPTION) {</span>
+<span class="nc" id="L138">			File selectedFile = jfc.getSelectedFile();</span>
+<span class="nc" id="L139">			path = selectedFile.getAbsolutePath();</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			if (isValid(path)) {</span>
+<span class="nc" id="L142">				uploadFile.close();</span>
+<span class="nc" id="L143">				initMainFrame();</span>
+<span class="nc" id="L144">			} else {</span>
+<span class="nc" id="L145">				uploadFile.displayErrorMessage(&quot;File selected is not a valid Excel format!&quot;);</span>
+			}
+		}
+<span class="nc" id="L148">	}</span>
+
+	/**
+	 * Initialises the MainFrame and necessary objects to support it, as well as the
+	 * buttons' action listeners
+	 */
+	private void initMainFrame() {
+<span class="nc" id="L155">		ei = new ExcelImporter(path);</span>
+<span class="nc" id="L156">		excelRows = ei.getAllRows();</span>
+<span class="nc" id="L157">		convertExcelRows();</span>
+<span class="nc" id="L158">		gui = new MainFrame(createExcelTable(), rulesList);</span>
+<span class="nc" id="L159">		gui.getCheckQualityButton().addActionListener(e -&gt; checkCodeQualityAndShow());</span>
+
+<span class="nc" id="L161">		editButton(this.gui.getEditButton(), this.gui.getRulesComboBox());</span>
+<span class="nc" id="L162">		addButton(this.gui.getAddButton());</span>
+<span class="nc" id="L163">	}</span>
+
+	/**
+	 * Formats all data to a valid format to a JTable and returns a JTable with the
+	 * cells' content
+	 * 
+	 * @return JTable - Excel Table with the cells' contents, coverted from the
+	 *         initial excel file
+	 */
+	private JTable createExcelTable() {
+<span class="nc" id="L173">		String[][] dataForTable = new String[excelRows.size() - 1][excelRows.get(1).length];</span>
+
+<span class="nc bnc" id="L175" title="All 2 branches missed.">		for (int i = 0; i &lt; dataForTable.length; i++) {</span>
+<span class="nc bnc" id="L176" title="All 2 branches missed.">			for (int j = 0; j &lt; dataForTable[i].length; j++) {</span>
+<span class="nc" id="L177">				dataForTable[i][j] = excelRows.get(i + 1)[j].toString();</span>
+			}
+		}
+
+<span class="nc" id="L181">		return new JTable(dataForTable, excelRows.get(0));</span>
+	}
+
+	/**
+	 * Converts all the valid rows into ExcelRow model
+	 * 
+	 * Starts at index 1 because we only want to convert the table content and not
+	 * the header
+	 */
+	private void convertExcelRows() {
+<span class="nc bnc" id="L191" title="All 2 branches missed.">		for (int i = 1; i &lt; excelRows.size(); i++) {</span>
+			try {
+<span class="nc" id="L193">				excelRowsConverted.add(new ExcelRow(excelRows.get(i)));</span>
+<span class="nc" id="L194">			}</span>
+
+<span class="nc" id="L196">			catch (Exception e) {</span>
+<span class="nc" id="L197">				JOptionPane.showMessageDialog(null, &quot;An error occurred while converting the Excel Rows&quot;, &quot;Warning&quot;,</span>
+<span class="nc" id="L198">						JOptionPane.WARNING_MESSAGE);</span>
+<span class="nc" id="L199">				throw e;</span>
+			}
+		}
+<span class="nc" id="L202">	}</span>
+
+	/**
+	 * Opens the EditRuleController which controls the Rule Edition GUI
+	 * 
+	 * @param editButton  - button used to open a new window to edit the rules
+	 * @param ruleListBox - the combobox which lists all the available rules
+	 */
+	private void editButton(JButton editButton, JComboBox&lt;CodeQualityRule&gt; ruleListBox) {
+
+<span class="nc" id="L212">		editButton.addActionListener(e -&gt; {</span>
+
+<span class="nc" id="L214">			CodeQualityRule rule = (CodeQualityRule) ruleListBox.getSelectedItem();</span>
+
+<span class="nc bnc" id="L216" title="All 2 branches missed.">			if (rule == null) {</span>
+<span class="nc" id="L217">				new EditRuleController();</span>
+
+<span class="nc" id="L219">			} else {</span>
+<span class="nc" id="L220">				new EditRuleController(rule);</span>
+			}
+<span class="nc" id="L222">		});</span>
+<span class="nc" id="L223">	}</span>
+
+	/**
+	 * Sets the add Button in the MainFrame to open an empty Rule Edition Popup
+	 * 
+	 * @param addButton - button that opens a new window to add new rules
+	 */
+	private void addButton(JButton addButton) {
+<span class="nc" id="L231">		addButton.addActionListener(e -&gt; new EditRuleController());</span>
+<span class="nc" id="L232">	}</span>
+
+	/**
+	 * Verify the code quality based on the Rules created and sends the results to
+	 * be displayed in the QualityRulesResultFrame
+	 * 
+	 */
+	private void checkCodeQualityAndShow() {
+<span class="nc" id="L240">		String[][] results = null;</span>
+<span class="nc" id="L241">		results = getCodeQualityResults();</span>
+<span class="nc" id="L242">		String[] colNames = new String[5 + rulesList.size()];</span>
+<span class="nc" id="L243">		colNames[0] = excelRows.get(0)[METHOD_ID_INDEX];</span>
+<span class="nc" id="L244">		colNames[1] = excelRows.get(0)[IS_LONG_METHOD__INDEX];</span>
+<span class="nc" id="L245">		colNames[2] = excelRows.get(0)[IS_FEATURE_ENVY__INDEX];</span>
+<span class="nc" id="L246">		colNames[3] = excelRows.get(0)[PMD_INDEX];</span>
+<span class="nc" id="L247">		colNames[4] = excelRows.get(0)[IPLASMA_INDEX];</span>
+<span class="nc" id="L248">		int iterator = 5;</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		for (CodeQualityRule rule : rulesList) {</span>
+<span class="nc" id="L250">			colNames[iterator] = rule.getName();</span>
+<span class="nc" id="L251">			iterator++;</span>
+		}
+
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		if (results != null) {</span>
+<span class="nc" id="L255">			qualityIndicator = new QualityIndicator(results);</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">			if (qualityGui != null) {</span>
+<span class="nc" id="L257">				qualityGui.hide();</span>
+			}
+<span class="nc" id="L259">			qualityGui = new QualityRulesResultFrame();</span>
+<span class="nc" id="L260">			qualityGui.fillFrame(results, colNames, qualityIndicator);</span>
+<span class="nc" id="L261">			qualityGui.show();</span>
+		}
+<span class="nc" id="L263">	}</span>
+
+	/**
+	 * 
+	 * Returns the results of the calculation of each rule, for each method.
+	 * 
+	 * @return A matrix of strings where each line is a row with the code quality
+	 *         results for a method, and each column is a rule or tool, for which
+	 *         we're presenting results
+	 */
+	private String[][] getCodeQualityResults() {
+<span class="nc" id="L274">		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];</span>
+<span class="nc" id="L275">		int iterator = 0;</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		for (ExcelRow row : excelRowsConverted) {</span>
+<span class="nc" id="L277">			String[] qualityRow = new String[4 + excelRowsConverted.size()];</span>
+<span class="nc" id="L278">			qualityRow[0] = Integer.toString(row.getId());</span>
+<span class="nc" id="L279">			qualityRow[1] = Boolean.toString(row.isLongMethod());</span>
+<span class="nc" id="L280">			qualityRow[2] = Boolean.toString(row.isFeatureEnvy());</span>
+<span class="nc" id="L281">			qualityRow[3] = Boolean.toString(row.getPMDResult());</span>
+<span class="nc" id="L282">			qualityRow[4] = Boolean.toString(row.getIPlasmaResult());</span>
+<span class="nc" id="L283">			int ruleIterator = 5;</span>
+
+<span class="nc bnc" id="L285" title="All 2 branches missed.">			for (CodeQualityRule rule : rulesList) {</span>
+				try {
+<span class="nc" id="L287">					qualityRow[ruleIterator] = getResult(rule, row);</span>
+<span class="nc" id="L288">					ruleIterator++;</span>
+<span class="nc" id="L289">				} catch (ScriptException e) {</span>
+<span class="nc" id="L290">					JOptionPane.showMessageDialog(null,</span>
+<span class="nc" id="L291">							&quot;Invalid rule syntax! Please verify the conditions for the rule  \&quot;&quot; + rule + &quot;\&quot;!&quot;);</span>
+<span class="nc" id="L292">					return null;</span>
+				}
+			}
+<span class="nc" id="L295">			results[iterator] = qualityRow;</span>
+<span class="nc" id="L296">			iterator++;</span>
+		}
+<span class="nc" id="L298">		return results;</span>
+
+	}
+
+	/**
+	 * Runs a rule over an excelRow and returns the result.
+	 * 
+	 * @param rule - The rule, the result of which we require.
+	 * @param row  - The excel row containing the methodID over which we wish to run
+	 *             the rule.
+	 * @return result - Returns the result of running the rule over the methodID of
+	 *         the given ExcelRow, in string form.
+	 * @throws ScriptException - An exception is thrown if there are invalid rule
+	 *                         conditions
+	 */
+	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
+<span class="nc" id="L314">		ScriptEngineManager engineManager = new ScriptEngineManager();</span>
+<span class="nc" id="L315">		ScriptEngine engine = engineManager.getEngineByName(&quot;ECMAScript&quot;);</span>
+<span class="nc" id="L316">		String filledRule = registerVariables(row);</span>
+<span class="nc" id="L317">		Object result = null;</span>
+<span class="nc" id="L318">		result = engine.eval(filledRule + &quot;eval('&quot; + rule.getRule() + &quot;');&quot;);</span>
+<span class="nc" id="L319">		return Boolean.toString(Boolean.TRUE.equals(result));</span>
+	}
+
+	/**
+	 * Creates and returns a string ready to be passed on to a javascript engine,
+	 * which initializes all the necessary metric variables.
+	 * 
+	 * @param row - The excel row with the values for our metrics.
+	 * @return String filledRule - The String of metrics turned into variables to
+	 *         use in the JS engine for running the rules.
+	 */
+	public String registerVariables(ExcelRow row) {
+<span class="fc" id="L331">		int ATFD = row.getATFD();</span>
+<span class="fc" id="L332">		int CYCLO = row.getCYCLO();</span>
+<span class="fc" id="L333">		int LOC = row.getLOC();</span>
+<span class="fc" id="L334">		float LAA = row.getLAA();</span>
+<span class="fc" id="L335">		String filledRule = &quot;var ATFD = &quot; + ATFD + &quot;, &quot; + &quot;CYCLO = &quot; + CYCLO + &quot;, &quot; + &quot;LOC = &quot; + LOC + &quot;, &quot; + &quot;LAA = &quot;</span>
+<span class="fc" id="L336">				+ LAA + &quot;;&quot;;</span>
+<span class="fc" id="L337">		return filledRule;</span>
+	}
+
+	/**
+	 * Returns the entire rules list
+	 * 
+	 * @return List with all the rules
+	 */
+	public ArrayList&lt;CodeQualityRule&gt; getRulesList() {
+<span class="fc" id="L346">		return rulesList;</span>
+	}
+
+	/**
+	 * Returns the QualityIndicator object
+	 * 
+	 * @return QualityIndicator - Object that manages the code quality results
+	 */
+	public QualityIndicator getQualityIndicator() {
+<span class="fc" id="L355">		return qualityIndicator;</span>
+	}
+
+	/**
+	 * Receives an updated list of rules and replaces the old rules list with it
+	 * 
+	 * @param newRules - New list of rules to consider
+	 */
+	public void updateRulesList(ArrayList&lt;CodeQualityRule&gt; newRules) {
+<span class="fc" id="L364">		rulesList = newRules;</span>
+<span class="fc" id="L365">	}</span>
+
+	/**
+	 * Returns the main frame
+	 * 
+	 * @return MainFrame
+	 */
+	public MainFrame getMainFrame() {
+<span class="fc" id="L373">		return gui;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

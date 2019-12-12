@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>MainFrame.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main.java.gui</a> &gt; <span class="el_source">MainFrame.java</span></div><h1>MainFrame.java</h1><pre class="source lang-java linenums">package main.java.gui;
+
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.util.ArrayList;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.WindowConstants;
+import javax.swing.border.EmptyBorder;
+import main.java.model.CodeQualityRule;
+
+/**
+ * The Main Frame where the excel information is displayed and from where the
+ * user can edit and add rules, as well as calculate the code quality results
+ *
+ */
+public class MainFrame {
+
+	/** The frame of our MainFrame GUI */
+	private JFrame mainFrame;
+
+	/** The central panel in the MainFrame */
+	private JPanel centralPanel;
+
+	/** The panel on the bottom of the MainFrame */
+	private JPanel southPanel;
+
+	/** The Excel Table where the user can visualize the imported file's contents */
+	private JTable excelTable;
+
+	/** The JButton used for rule edition */
+	private JButton editButton;
+
+	/** The JButton used for addition of new rules */
+	private JButton addButton;
+
+	/** The JButton used for checking the code quality */
+	private JButton checkQualityButton;
+
+	/** The list of available rules */
+	private ArrayList&lt;CodeQualityRule&gt; rulesList;
+
+	/** The JComboBox contaning all the rules in the rulesList */
+	private JComboBox&lt;Object&gt; rulesDropDown;
+
+	/**
+	 * The mainframe constructor receives an excel table, generated from the given
+	 * excel file, as well as a list containing all the rules and quality
+	 * indicators, stored in the main controller
+	 * 
+	 * @param excelTable - A JTable generated from the imported excel file
+	 * @param rulesList  - a list with the available rules - starts with 2 default
+	 *                   rules
+	 * 
+	 */
+<span class="fc" id="L61">	public MainFrame(JTable excelTable, ArrayList&lt;CodeQualityRule&gt; rulesList) {</span>
+<span class="fc" id="L62">		mainFrame = new JFrame();</span>
+<span class="fc" id="L63">		mainFrame.setSize(700, 500);</span>
+<span class="fc" id="L64">		mainFrame.setLocationRelativeTo(null);</span>
+<span class="fc" id="L65">		mainFrame.setLayout(new BorderLayout(5, 5));</span>
+<span class="fc" id="L66">		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);</span>
+<span class="fc" id="L67">		this.excelTable = excelTable;</span>
+<span class="fc" id="L68">		this.rulesList = rulesList;</span>
+<span class="fc" id="L69">		addContents();</span>
+<span class="fc" id="L70">		mainFrame.setVisible(true);</span>
+
+<span class="fc" id="L72">	}</span>
+
+	/**
+	 * Calls methods that will create a central panel and a south panel and adds it
+	 * to the mainFrame.
+	 */
+	private void addContents() {
+<span class="fc" id="L79">		createCentralPanel();</span>
+<span class="fc" id="L80">		mainFrame.add(centralPanel, BorderLayout.CENTER);</span>
+<span class="fc" id="L81">		createSouthPanel();</span>
+<span class="fc" id="L82">		mainFrame.add(southPanel, BorderLayout.SOUTH);</span>
+<span class="fc" id="L83">	}</span>
+
+	/**
+	 * Creates the central panel for the mainFrame that will be used to display the
+	 * excel file. Its also created a ScrollPane so that the excel file can fits in
+	 * the panel
+	 */
+	private void createCentralPanel() {
+<span class="fc" id="L91">		centralPanel = new JPanel();</span>
+<span class="fc" id="L92">		centralPanel.setLayout(new BorderLayout());</span>
+
+		JScrollPane excelScrollPane;
+
+<span class="fc bfc" id="L96" title="All 2 branches covered.">		if (excelTable.getColumnCount() != 0)</span>
+<span class="fc" id="L97">			excelScrollPane = new JScrollPane(excelTable);</span>
+		else
+<span class="fc" id="L99">			excelScrollPane = new JScrollPane();</span>
+
+<span class="fc" id="L101">		centralPanel.add(excelScrollPane);</span>
+<span class="fc" id="L102">	}</span>
+
+	/**
+	 * Creates the south panel of the main frame and adds to it a panel that will
+	 * display the results of reading the excel file, and another panel that will
+	 * display buttons.
+	 */
+	private void createSouthPanel() {
+<span class="fc" id="L110">		southPanel = new JPanel();</span>
+<span class="fc" id="L111">		southPanel.setBorder(new EmptyBorder(6, 6, 6, 6));</span>
+<span class="fc" id="L112">		southPanel.setLayout(new BorderLayout(5, 5));</span>
+
+<span class="fc" id="L114">		JPanel buttonsPanel = new JPanel();</span>
+<span class="fc" id="L115">		buttonsPanel.setLayout(new GridLayout(2, 1, 5, 5));</span>
+
+<span class="fc" id="L117">		addContentToButtonsPanel(buttonsPanel);</span>
+<span class="fc" id="L118">		southPanel.add(buttonsPanel, BorderLayout.EAST);</span>
+<span class="fc" id="L119">	}</span>
+
+	/**
+	 * Creates and adds the add/edit buttons, drop drown with list of rules and
+	 * checkQuality buttons to a panel
+	 * 
+	 * @param buttonsPanel - the panel user to display the buttons.
+	 */
+	private void addContentToButtonsPanel(JPanel buttonsPanel) {
+
+<span class="fc" id="L129">		Object[] rules = rulesList.toArray();</span>
+<span class="fc" id="L130">		rulesDropDown = new JComboBox&lt;Object&gt;(rules);</span>
+
+<span class="fc" id="L132">		buttonsPanel.add(rulesDropDown);</span>
+<span class="fc" id="L133">		editButton = new JButton(&quot;Edit&quot;);</span>
+<span class="fc" id="L134">		buttonsPanel.add(editButton);</span>
+
+<span class="fc" id="L136">		addButton = new JButton(&quot;Add&quot;);</span>
+<span class="fc" id="L137">		buttonsPanel.add(addButton);</span>
+
+<span class="fc" id="L139">		checkQualityButton = new JButton(&quot;Check quality&quot;);</span>
+<span class="fc" id="L140">		buttonsPanel.add(checkQualityButton);</span>
+<span class="fc" id="L141">	}</span>
+
+	/**
+	 * Returns the excel table generated from the given excel file as a JTable
+	 * 
+	 * @return JTable excelTable
+	 */
+	public JTable getExcelTable() {
+<span class="fc" id="L149">		return excelTable;</span>
+	}
+
+	/**
+	 * Returns the JButton to check code quality
+	 * 
+	 * @return JButton checkQualityButton
+	 */
+	public JButton getCheckQualityButton() {
+<span class="fc" id="L158">		return checkQualityButton;</span>
+	}
+
+	/**
+	 * Returns the JButton for rule edition
+	 * 
+	 * @return JButton editButton
+	 */
+	public JButton getEditButton() {
+<span class="fc" id="L167">		return editButton;</span>
+	}
+
+	/**
+	 * Returns the JButton for adding new rules
+	 * 
+	 * @return JButton addButton
+	 */
+	public JButton getAddButton() {
+<span class="fc" id="L176">		return addButton;</span>
+	}
+
+	/**
+	 * Returns the MainFrame's width
+	 * 
+	 * @return int width
+	 */
+	public int getFrameWidth() {
+<span class="fc" id="L185">		return mainFrame.getWidth();</span>
+	}
+
+	/**
+	 * Returns the JComboBox holding the list of available rules
+	 * 
+	 * @return JComboBox rulesDropDown
+	 */
+	public JComboBox getRulesComboBox() {
+<span class="fc" id="L194">		return rulesDropDown;</span>
+	}
+
+	/**
+	 * Receives an updated Rules List and updates the ComboBox
+	 * 
+	 * @param updatedRulesList - receives an updated list of rules
+	 * 
+	 */
+	public void updateRulesComboBox(ArrayList&lt;CodeQualityRule&gt; updatedRulesList) {
+<span class="fc" id="L204">		rulesDropDown.removeAllItems();</span>
+
+<span class="fc" id="L206">		Object[] updatedRules = updatedRulesList.toArray();</span>
+
+<span class="fc bfc" id="L208" title="All 2 branches covered.">		for (Object rule : updatedRules) {</span>
+<span class="fc" id="L209">			rulesDropDown.addItem(rule);</span>
+		}
+<span class="fc" id="L211">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>
