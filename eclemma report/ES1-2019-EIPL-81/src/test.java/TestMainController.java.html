@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestMainController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test.java</a> &gt; <span class="el_source">TestMainController.java</span></div><h1>TestMainController.java</h1><pre class="source lang-java linenums">package test.java;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+import main.java.controller.MainController;
+import main.java.model.CodeQualityRule;
+import main.java.model.ExcelRow;
+
+/**
+ * Tests for the Main Controller
+ *
+ */
+@RunWith(JUnitPlatform.class)
+<span class="fc" id="L21">class TestMainController {</span>
+
+	/** MainController object used for testing */
+	MainController mainC;
+
+	/**
+	 * Gets the singleton MainController instance
+	 * 
+	 * @throws Exception - Exception is thrown if it fails to get the singleton
+	 *                   instance
+	 */
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L34">		mainC = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L35">	}</span>
+
+	/**
+	 * Validates that the MainController can be initialised with errors
+	 */
+	@Test
+	void testInit() {
+<span class="fc" id="L42">		mainC.init();</span>
+<span class="fc" id="L43">	}</span>
+
+	/**
+	 * Asserts that invalid files aren't accepted and valid ones are
+	 */
+	@Test
+	void testIsValid() {
+<span class="fc" id="L50">		String pathFile = &quot;excel.xls&quot;;</span>
+<span class="fc" id="L51">		assertTrue(mainC.isValid(pathFile));</span>
+<span class="fc" id="L52">		String fileX = &quot;excel.xlsx&quot;;</span>
+<span class="fc" id="L53">		assertTrue(mainC.isValid(fileX));</span>
+<span class="fc" id="L54">		String invalidFile = &quot;potato&quot;;</span>
+<span class="fc" id="L55">		assertFalse(mainC.isValid(invalidFile));</span>
+<span class="fc" id="L56">	}</span>
+
+	/**
+	 * Validates that the RegisterVariables methods is correctly parsing the
+	 * information from the excel file
+	 */
+	@Test
+	void testRegisterVariables() {
+<span class="fc" id="L64">		String[] rowData = { &quot;1&quot;, &quot;fat&quot;, &quot;GrammarException&quot;, &quot;parseMethod()&quot;, &quot;3&quot;, &quot;45&quot;, &quot;1&quot;, &quot;0.55&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;,</span>
+<span class="fc" id="L65">				&quot;TRUE&quot;, &quot;TRUE&quot; };</span>
+<span class="fc" id="L66">		ExcelRow row = new ExcelRow(rowData);</span>
+<span class="fc" id="L67">		String variables = mainC.registerVariables(row);</span>
+<span class="fc" id="L68">		assertEquals(&quot;var ATFD = 1, CYCLO = 45, LOC = 3, LAA = 0.55;&quot;, variables);</span>
+<span class="fc" id="L69">	}</span>
+
+	/**
+	 * Asserts that the rules list being returned has the expected rules in it
+	 */
+	@Test
+	void testGetRulesList() {
+<span class="fc" id="L76">		ArrayList&lt;CodeQualityRule&gt; rulesList = mainC.getRulesList();</span>
+<span class="fc" id="L77">		CodeQualityRule rule1 = rulesList.get(0);</span>
+<span class="fc" id="L78">		CodeQualityRule rule2 = rulesList.get(1);</span>
+<span class="fc" id="L79">		assertEquals(&quot;custom_is_long_method&quot;, rule1.getName());</span>
+<span class="fc" id="L80">		assertEquals(&quot;custom_is_feature_envy&quot;, rule2.getName());</span>
+<span class="fc" id="L81">	}</span>
+
+	/**
+	 * Validates that the quality indicator object is being correctly initialised
+	 */
+	@Test
+	void testQualityIndicator() {
+<span class="fc" id="L88">		mainC.getQualityIndicator();</span>
+<span class="fc" id="L89">	}</span>
+
+	/**
+	 * Asserts that the rules list is being correctly updated when new rules are
+	 * added
+	 */
+	@Test
+	void testUpdateRulesList() {
+<span class="fc" id="L97">		ArrayList&lt;CodeQualityRule&gt; rulesList = mainC.getRulesList();</span>
+<span class="fc" id="L98">		CodeQualityRule newRule = new CodeQualityRule(&quot;new&quot;, &quot;LOC &gt; 10&quot;, false, false);</span>
+<span class="fc" id="L99">		rulesList.add(newRule);</span>
+<span class="fc" id="L100">		mainC.updateRulesList(rulesList);</span>
+<span class="fc" id="L101">		assertEquals(rulesList, mainC.getRulesList());</span>
+<span class="fc" id="L102">	}</span>
+
+	/**
+	 * Validates that the main fram is being correctly initialised
+	 */
+	@Test
+	void testGetMainFrame() {
+<span class="fc" id="L109">		mainC.getMainFrame();</span>
+<span class="fc" id="L110">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

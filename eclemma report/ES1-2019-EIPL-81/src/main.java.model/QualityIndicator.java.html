@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>QualityIndicator.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main.java.model</a> &gt; <span class="el_source">QualityIndicator.java</span></div><h1>QualityIndicator.java</h1><pre class="source lang-java linenums">package main.java.model;
+
+/**
+ * A class that represents the quality indicators of the tools and rules for
+ * comparison between them
+ */
+
+public class QualityIndicator {
+
+	/**
+	 * PMDDCI - DCI Indicator - number of faults correctly identified by the PMD
+	 * tool
+	 */
+	private int PMDDCI;
+
+	/**
+	 * PMDDII - DII Indicator - number of faults incorrectly identified by the PMD
+	 * tool
+	 */
+	private int PMDDII;
+
+	/**
+	 * PMDADCI ADCI Indicator - number of absence of faults correctly identified by
+	 * the PMD tool
+	 */
+	private int PMDADCI;
+
+	/**
+	 * PMDADII - ADII Indicator - number of absence of faults incorrectly identified
+	 * by the PMD tool
+	 */
+	private int PMDADII;
+
+	/**
+	 * iPlasmaDCI - DCI Indicator - number of faults correctly identified by the
+	 * iPlasma tool
+	 */
+	private int iPlasmaDCI;
+
+	/**
+	 * iPlasmaDII - DII Indicator - number of faults incorrectly identified by the
+	 * iPlasma tool
+	 */
+	private int iPlasmaDII;
+
+	/**
+	 * iPlasmaADCI ADCI Indicator - number of absence of faults correctly identified
+	 * by the iPlasma tool
+	 */
+	private int iPlasmaADCI;
+
+	/**
+	 * iPlasmaADII - ADII Indicator - number of absence of faults incorrectly
+	 * identified by the iPlasma tool
+	 */
+	private int iPlasmaADII;
+
+	/**
+	 * customLongDCI - DCI Indicator - number of faults correctly identified by the
+	 * customLongMethod rule
+	 */
+	private int customLongDCI;
+
+	/**
+	 * customLongDII - DII Indicator - number of faults incorrectly identified by
+	 * the customLongMethod rule
+	 */
+	private int customLongDII;
+
+	/**
+	 * customLongADCI ADCI Indicator - number of absence of faults correctly
+	 * identified by the customLongMethod rule
+	 */
+	private int customLongADCI;
+
+	/**
+	 * customLongADII - ADII Indicator - number of absence of faults incorrectly
+	 * identified by the customLongMethod rule
+	 */
+	private int customLongADII;
+
+	/**
+	 * customEnvyDCI - DCI Indicator - number of faults correctly identified by the
+	 * customFeatureEnvyMethod rule
+	 */
+	private int customEnvyDCI;
+
+	/**
+	 * customEnvyDII - DII Indicator - number of faults incorrectly identified by
+	 * the customFeatureEnvy rule
+	 */
+	private int customEnvyDII;
+
+	/**
+	 * customEnvyADCI ADCI Indicator - number of absence of faults correctly
+	 * identified by the customFeatureEnvy rule
+	 */
+	private int customEnvyADCI;
+
+	/**
+	 * customEnvyADII - ADII Indicator - number of absence of faults incorrectly
+	 * identified by the customFeatureEnvy rule
+	 */
+	private int customEnvyADII;
+
+	/** results Rows - rows with the rules and tools results */
+	private String[][] resultsRows;
+
+	/**
+	 * Creates a QualityIndicator object based on excelRows, that will calculate the
+	 * Quality Indicators based on information taken from the Excel file
+	 * 
+	 * @param resultsRows - matrix holding the quality results for the tools and
+	 *                    rules in the excel and defined by the user
+	 */
+<span class="fc" id="L116">	public QualityIndicator(String[][] resultsRows) {</span>
+<span class="fc" id="L117">		PMDDCI = 0;</span>
+<span class="fc" id="L118">		PMDDII = 0;</span>
+<span class="fc" id="L119">		PMDADCI = 0;</span>
+<span class="fc" id="L120">		PMDADII = 0;</span>
+<span class="fc" id="L121">		iPlasmaDCI = 0;</span>
+<span class="fc" id="L122">		iPlasmaDII = 0;</span>
+<span class="fc" id="L123">		iPlasmaADCI = 0;</span>
+<span class="fc" id="L124">		iPlasmaADII = 0;</span>
+<span class="fc" id="L125">		customLongDCI = 0;</span>
+<span class="fc" id="L126">		customLongDII = 0;</span>
+<span class="fc" id="L127">		customLongADCI = 0;</span>
+<span class="fc" id="L128">		customLongADII = 0;</span>
+<span class="fc" id="L129">		customEnvyDCI = 0;</span>
+<span class="fc" id="L130">		customEnvyDII = 0;</span>
+<span class="fc" id="L131">		customEnvyADCI = 0;</span>
+<span class="fc" id="L132">		customEnvyADII = 0;</span>
+<span class="fc" id="L133">		this.resultsRows = resultsRows;</span>
+<span class="fc" id="L134">		calculateQualityIndicators();</span>
+<span class="fc" id="L135">	}</span>
+
+	/**
+	 * Parses the results for the default rules and given tools and calculates the
+	 * quality indicators based on the comparison between the real value (the
+	 * is_long_method boolean or the is_feature_envy boolean given in the original
+	 * excel file) and the tools or rule's results for that indicator
+	 */
+	private void calculateQualityIndicators() {
+<span class="fc bfc" id="L144" title="All 2 branches covered.">		for (String[] row : resultsRows) {</span>
+<span class="fc" id="L145">			boolean is_long_method = Boolean.parseBoolean(row[1]);</span>
+<span class="fc" id="L146">			boolean is_feature_envy = Boolean.parseBoolean(row[2]);</span>
+<span class="fc" id="L147">			boolean PMD_result = Boolean.parseBoolean(row[3]);</span>
+<span class="fc" id="L148">			boolean iPlasma_result = Boolean.parseBoolean(row[4]);</span>
+<span class="fc" id="L149">			boolean customLong_result = Boolean.parseBoolean(row[5]);</span>
+<span class="fc" id="L150">			boolean customEnvy_result = Boolean.parseBoolean(row[6]);</span>
+
+<span class="fc bfc" id="L152" title="All 4 branches covered.">			if (PMD_result &amp;&amp; is_long_method)</span>
+<span class="fc" id="L153">				PMDDCI++;</span>
+<span class="fc bfc" id="L154" title="All 4 branches covered.">			if (iPlasma_result &amp;&amp; is_long_method)</span>
+<span class="fc" id="L155">				iPlasmaDCI++;</span>
+<span class="fc bfc" id="L156" title="All 4 branches covered.">			if (customLong_result &amp;&amp; is_long_method)</span>
+<span class="fc" id="L157">				customLongDCI++;</span>
+<span class="fc bfc" id="L158" title="All 4 branches covered.">			if (customEnvy_result &amp;&amp; is_feature_envy)</span>
+<span class="fc" id="L159">				customEnvyDCI++;</span>
+<span class="fc bfc" id="L160" title="All 4 branches covered.">			if (PMD_result &amp;&amp; !is_long_method)</span>
+<span class="fc" id="L161">				PMDDII++;</span>
+<span class="fc bfc" id="L162" title="All 4 branches covered.">			if (iPlasma_result &amp;&amp; !is_long_method)</span>
+<span class="fc" id="L163">				iPlasmaDII++;</span>
+<span class="fc bfc" id="L164" title="All 4 branches covered.">			if (customLong_result &amp;&amp; !is_long_method)</span>
+<span class="fc" id="L165">				customLongDII++;</span>
+<span class="fc bfc" id="L166" title="All 4 branches covered.">			if (customEnvy_result &amp;&amp; !is_feature_envy)</span>
+<span class="fc" id="L167">				customEnvyDII++;</span>
+<span class="fc bfc" id="L168" title="All 4 branches covered.">			if (!PMD_result &amp;&amp; !is_long_method)</span>
+<span class="fc" id="L169">				PMDADCI++;</span>
+<span class="fc bfc" id="L170" title="All 4 branches covered.">			if (!iPlasma_result &amp;&amp; !is_long_method)</span>
+<span class="fc" id="L171">				iPlasmaADCI++;</span>
+<span class="fc bfc" id="L172" title="All 4 branches covered.">			if (!customLong_result &amp;&amp; !is_long_method)</span>
+<span class="fc" id="L173">				customLongADCI++;</span>
+<span class="fc bfc" id="L174" title="All 4 branches covered.">			if (!customEnvy_result &amp;&amp; !is_feature_envy)</span>
+<span class="fc" id="L175">				customEnvyADCI++;</span>
+<span class="fc bfc" id="L176" title="All 4 branches covered.">			if (!PMD_result &amp;&amp; is_long_method)</span>
+<span class="fc" id="L177">				PMDADII++;</span>
+<span class="fc bfc" id="L178" title="All 4 branches covered.">			if (!iPlasma_result &amp;&amp; is_long_method)</span>
+<span class="fc" id="L179">				iPlasmaADII++;</span>
+<span class="fc bfc" id="L180" title="All 4 branches covered.">			if (!customLong_result &amp;&amp; is_long_method)</span>
+<span class="fc" id="L181">				customLongADII++;</span>
+<span class="fc bfc" id="L182" title="All 4 branches covered.">			if (!customEnvy_result &amp;&amp; is_feature_envy)</span>
+<span class="fc" id="L183">				customEnvyADII++;</span>
+		}
+<span class="fc" id="L185">	}</span>
+
+	/**
+	 * Getter for the amount of DCI calculated for the PMD tool
+	 * 
+	 * @return int PMDDCI - amount of &quot;Defeitos Corretamente Identificados&quot; (DCI) by
+	 *         the PMD tool
+	 */
+	public int getPMDDCI() {
+<span class="fc" id="L194">		return PMDDCI;</span>
+	}
+
+	/**
+	 * Getter for the amount of DII calculated for the PMD tool
+	 * 
+	 * @return int PMDDII - amount of &quot;Defeitos Incorretamente Identificados&quot; (DII)
+	 *         by the PMD tool
+	 */
+	public int getPMDDII() {
+<span class="fc" id="L204">		return PMDDII;</span>
+	}
+
+	/**
+	 * Getter for the amount of ADCI calculated for the PMD tool
+	 * 
+	 * @return int PMDADCI - amount of &quot;Ausência de Defeitos Corretamente
+	 *         Identificados&quot; (ADCI) by the PMD tool
+	 */
+	public int getPMDADCI() {
+<span class="fc" id="L214">		return PMDADCI;</span>
+	}
+
+	/**
+	 * Getter for the amount of ADII calculated for the PMD tool
+	 * 
+	 * @return int PMDADII - amount of &quot;Ausência de Defeitos Incorretamente
+	 *         Identificados&quot; (ADII) by the PMD tool
+	 * 
+	 */
+	public int getPMDADII() {
+<span class="fc" id="L225">		return PMDADII;</span>
+	}
+
+	/**
+	 * Getter for the amount of DCI calculated for the iPlasma tool
+	 * 
+	 * @return int iPlasmaDCI - amount of &quot;Defeitos Corretamente Identificados&quot;
+	 *         (DCI) by the iPlasma tool
+	 */
+	public int getIPlasmaDCI() {
+<span class="fc" id="L235">		return iPlasmaDCI;</span>
+	}
+
+	/**
+	 * Getter for the amount of DII calculated for the iPlasma tool
+	 * 
+	 * @return int iPlasmaDII - amount of &quot;Defeitos Incorretamente Identificados&quot;
+	 *         (DII) by the iPlasma tool
+	 */
+	public int getIPlasmaDII() {
+<span class="fc" id="L245">		return iPlasmaDII;</span>
+	}
+
+	/**
+	 * Getter for the amount of ADCI calculated for the iPlasma tool
+	 * 
+	 * @return int iPlasmaADCI - amount of &quot;Ausência de Defeitos Corretamente
+	 *         Identificados&quot; (ADCI) by the iPlasma tool
+	 */
+	public int getIPlasmaADCI() {
+<span class="fc" id="L255">		return iPlasmaADCI;</span>
+	}
+
+	/**
+	 * Getter for the amount of ADII calculated for the iPlasma tool
+	 * 
+	 * @return iPlasmaADII - amount of &quot;Ausência de Defeitos Incorretamente
+	 *         Identificados&quot; (ADII) by the iPlasma tool
+	 */
+	public int getIPlasmaADII() {
+<span class="fc" id="L265">		return iPlasmaADII;</span>
+	}
+
+	/**
+	 * Getter for the amount of DCI calculated for the custom_is_long_method rule
+	 * 
+	 * @return int customLongDCI - amount of &quot;Defeitos Incorretamente Identificados&quot;
+	 *         (DII) by the custom_is_long_method rule
+	 */
+	public int getCustomLongDCI() {
+<span class="fc" id="L275">		return customLongDCI;</span>
+	}
+
+	/**
+	 * Getter for the amount of DII calculated for the custom_is_long_method rule
+	 * 
+	 * @return int customLongADII - amount of &quot;Defeitos Incorretamente
+	 *         Identificados&quot; (DII) by the custom_is_long_method rule
+	 */
+	public int getCustomLongADII() {
+<span class="fc" id="L285">		return customLongADII;</span>
+	}
+
+	/**
+	 * Getter for the amount of ADCI calculated for the custom_is_long_method rule
+	 * 
+	 * @return int customLongADCI - amount of &quot;Ausência de Defeitos Corretamente
+	 *         Identificados&quot; (ADCI) by the custom_is_long_method rule
+	 */
+	public int getCustomLongADCI() {
+<span class="fc" id="L295">		return customLongADCI;</span>
+	}
+
+	/**
+	 * Getter for the amount of DII calculated for the custom_is_long_method rule
+	 * 
+	 * @return int customLongDII - amount of &quot;Ausência de Defeitos Incorretamente
+	 *         Identificados&quot; (ADII) by the custom_is_long_method rule
+	 */
+	public int getCustomLongDII() {
+<span class="fc" id="L305">		return customLongDII;</span>
+	}
+
+	/**
+	 * Getter for the amount of DCI calculatd for the custom_is_feature_envy rule
+	 * 
+	 * @return int customEnvyDCI - amount of &quot;Defeitos Incorretamente Identificados&quot;
+	 *         (DII) by the custom_is_feature_envy rule
+	 */
+	public int getCustomEnvyDCI() {
+<span class="fc" id="L315">		return customEnvyDCI;</span>
+	}
+
+	/**
+	 * Getter for the amount of ADCI calculated for the custom_is_feature_envy rule
+	 * 
+	 * @return int customEnvyADCI - amount of &quot;Defeitos Incorretamente
+	 *         Identificados&quot; (DII) by the custom_is_feature_envy rule
+	 */
+	public int getCustomEnvyADCI() {
+<span class="fc" id="L325">		return customEnvyADCI;</span>
+	}
+
+	/**
+	 * Getter for the amount of DII calculated for the custom_is_feature_envy rule
+	 * 
+	 * @return int customEnvyDII - amount of &quot;Ausência de Defeitos Corretamente
+	 *         Identificados&quot; (ADCI) by the custom_is_feature_envy rule
+	 */
+	public int getCustomEnvyDII() {
+<span class="fc" id="L335">		return customEnvyDII;</span>
+	}
+
+	/**
+	 * Getter for the amount of ADII calculated for the custom_is_feature_envy rule
+	 * 
+	 * @return int customEnvyADII - amount of &quot;Ausência de Defeitos Incorretamente
+	 *         Identificados&quot; (ADII) by the custom_is_feature_envy rule
+	 */
+	public int getCustomEnvyADII() {
+<span class="fc" id="L345">		return customEnvyADII;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestEditRuleController.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test.java</a> &gt; <span class="el_source">TestEditRuleController.java</span></div><h1>TestEditRuleController.java</h1><pre class="source lang-java linenums">package test.java;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+import main.java.controller.EditRuleController;
+import main.java.controller.MainController;
+import main.java.gui.EditRulePopup;
+import main.java.model.CodeQualityRule;
+
+/**
+ * Tests the TestEditRuleController
+ */
+@RunWith(JUnitPlatform.class)
+<span class="fc" id="L24">class TestEditRuleController {</span>
+
+	/** A rule to be used for tests */
+	CodeQualityRule testRule;
+
+	/** A default rule for long method test */
+	CodeQualityRule testDefaultRuleLongMethod;
+
+	/** A default rule for feature envy test */
+	CodeQualityRule testDefaultRuleFeatureEnvy;
+
+	/** An EditRuleController to be used for testing */
+	EditRuleController controller;
+
+	/**
+	 * Set up default values for testing
+	 */
+	@BeforeEach
+	void setUp() {
+<span class="fc" id="L43">		testRule = new CodeQualityRule(&quot;test&quot;, &quot;LOC &gt; 10&quot;, false, true);</span>
+<span class="fc" id="L44">		testDefaultRuleLongMethod = new CodeQualityRule(&quot;custom_is_long_method&quot;, &quot;LOC &gt; 80 &amp;&amp; CYCLO &gt; 10&quot;, true, true);</span>
+<span class="fc" id="L45">		testDefaultRuleFeatureEnvy = new CodeQualityRule(&quot;custom_is_feature_envy&quot;, &quot;ATFD &gt; 4 &amp;&amp; LAA &lt; 0.42&quot;, true,</span>
+<span class="fc" id="L46">				true);</span>
+<span class="fc" id="L47">	}</span>
+
+	/**
+	 * Tests that an EditRuleController can be instantiated with a rule to be edited
+	 */
+	@Test
+	void testEditRuleControllerWithRule() {
+<span class="fc" id="L54">		controller = new EditRuleController(testRule);</span>
+<span class="fc" id="L55">	}</span>
+
+	/**
+	 * Tests that an EditRuleController can be instantiated with no rule
+	 */
+	@Test
+	void testEditRuleControllerNoRule() {
+<span class="fc" id="L62">		controller = new EditRuleController();</span>
+<span class="fc" id="L63">	}</span>
+
+	/**
+	 * Tests that a non default rule can be deleted from the rulesList.
+	 * 
+	 * @throws Exception - Exception is thrown if it fails to delete the rule
+	 */
+	@Test
+	void testDeleteRule() throws Exception {
+<span class="fc" id="L72">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L73">		ArrayList&lt;CodeQualityRule&gt; rulesList = mc.getRulesList();</span>
+<span class="fc" id="L74">		rulesList.add(testRule);</span>
+<span class="fc" id="L75">		mc.updateRulesList(rulesList);</span>
+<span class="fc" id="L76">		controller = new EditRuleController(testRule);</span>
+
+<span class="fc" id="L78">		controller.deleteRule();</span>
+
+<span class="fc" id="L80">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L81">		assertFalse(updatedRulesList.contains(testRule));</span>
+<span class="fc" id="L82">	}</span>
+
+	/**
+	 * Tests that the user cannot delete a default rule.
+	 */
+	@Test
+	void testDeleteDefaultRule() {
+<span class="fc" id="L89">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L90">		ArrayList&lt;CodeQualityRule&gt; rulesList = mc.getRulesList();</span>
+<span class="fc" id="L91">		rulesList.add(testDefaultRuleLongMethod);</span>
+<span class="fc" id="L92">		mc.updateRulesList(rulesList);</span>
+<span class="fc" id="L93">		controller = new EditRuleController(testDefaultRuleLongMethod);</span>
+
+<span class="pc" id="L95">		assertThrows(Exception.class, () -&gt; controller.deleteRule());</span>
+
+<span class="fc" id="L97">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L98">		assertTrue(updatedRulesList.contains(testDefaultRuleLongMethod));</span>
+<span class="fc" id="L99">	}</span>
+
+	/**
+	 * Tests that user cannot delete a rule that is not in the rulesList
+	 */
+	@Test
+	void testDeleteNoExistentRule() {
+<span class="fc" id="L106">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L107">		controller = new EditRuleController(testRule);</span>
+
+<span class="pc" id="L109">		assertThrows(Exception.class, () -&gt; controller.deleteRule());</span>
+
+<span class="fc" id="L111">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L112">		assertFalse(updatedRulesList.contains(testRule));</span>
+<span class="fc" id="L113">	}</span>
+
+	/**
+	 * Tests that user can add a new rule to the rules list.
+	 * 
+	 * @throws Exception - Exception is thrown if it fails to save the rule
+	 */
+	@Test
+	void testAddNewRule() throws Exception {
+<span class="fc" id="L122">		String newName = &quot;New Rule&quot;;</span>
+<span class="fc" id="L123">		String newRuleConditions = &quot;LOC &gt; 10&quot;;</span>
+<span class="fc" id="L124">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L125">		controller = new EditRuleController();</span>
+
+<span class="fc" id="L127">		EditRulePopup popup = controller.getEditRulePopup();</span>
+<span class="fc" id="L128">		popup.getRuleNameField().setText(newName);</span>
+<span class="fc" id="L129">		popup.getAdvancedModeButton().doClick();</span>
+<span class="fc" id="L130">		popup.getRuleTextArea().setText(newRuleConditions);</span>
+
+<span class="fc" id="L132">		controller.saveRule();</span>
+
+<span class="fc" id="L134">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L135">		assertTrue(updatedRulesList.contains(controller.getRule()));</span>
+<span class="fc" id="L136">	}</span>
+
+	/**
+	 * Tests that user can edit a rule condition and save it.
+	 * 
+	 * @throws Exception - Exception is thrown if it fails to save the rule
+	 */
+	@Test
+	void testEditAndSaveRule() throws Exception {
+<span class="fc" id="L145">		String newRuleConditions = &quot;LOC &gt; 10&quot;;</span>
+<span class="fc" id="L146">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L147">		ArrayList&lt;CodeQualityRule&gt; rulesList = mc.getRulesList();</span>
+<span class="fc" id="L148">		rulesList.add(testRule);</span>
+<span class="fc" id="L149">		mc.updateRulesList(rulesList);</span>
+<span class="fc" id="L150">		controller = new EditRuleController(testRule);</span>
+
+<span class="fc" id="L152">		EditRulePopup popup = controller.getEditRulePopup();</span>
+<span class="fc" id="L153">		popup.getAdvancedModeButton().doClick();</span>
+<span class="fc" id="L154">		popup.getRuleTextArea().setText(newRuleConditions);</span>
+
+<span class="fc" id="L156">		controller.saveRule();</span>
+
+<span class="fc" id="L158">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L159">		int index = updatedRulesList.indexOf(testRule);</span>
+<span class="fc" id="L160">		assertTrue(updatedRulesList.get(index).getRule().equals(newRuleConditions));</span>
+<span class="fc" id="L161">	}</span>
+
+	/**
+	 * Tests that user cannot save a rule without a name
+	 */
+	@Test
+	void testAddNewRuleWithoutName() {
+<span class="fc" id="L168">		String newRuleConditions = &quot;LOC &gt; 10&quot;;</span>
+<span class="fc" id="L169">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L170">		controller = new EditRuleController();</span>
+
+<span class="fc" id="L172">		EditRulePopup popup = controller.getEditRulePopup();</span>
+<span class="fc" id="L173">		popup.getAdvancedModeButton().doClick();</span>
+<span class="fc" id="L174">		popup.getRuleTextArea().setText(newRuleConditions);</span>
+
+<span class="pc" id="L176">		assertThrows(Exception.class, () -&gt; controller.saveRule());</span>
+
+<span class="fc" id="L178">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L179">		assertFalse(updatedRulesList.contains(controller.getRule()));</span>
+<span class="fc" id="L180">	}</span>
+
+	/**
+	 * Tests that user cannot save a rule without rule conditions.
+	 */
+	@Test
+	void testAddNewRuleWithoutRuleCondition() {
+<span class="fc" id="L187">		String newName = &quot;New Rule&quot;;</span>
+<span class="fc" id="L188">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L189">		controller = new EditRuleController();</span>
+
+<span class="fc" id="L191">		EditRulePopup popup = controller.getEditRulePopup();</span>
+<span class="fc" id="L192">		popup.getRuleNameField().setText(newName);</span>
+
+<span class="pc" id="L194">		assertThrows(Exception.class, () -&gt; controller.saveRule());</span>
+
+<span class="fc" id="L196">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L197">		assertFalse(updatedRulesList.contains(controller.getRule()));</span>
+<span class="fc" id="L198">	}</span>
+
+	/**
+	 * Tests that user cannot save a rule with an invalid string format
+	 */
+	@Test
+	void testAddNewRuleWithInvalidFormat() {
+<span class="fc" id="L205">		String newName = &quot;New Rule&quot;;</span>
+<span class="fc" id="L206">		String newRuleConditions = &quot;INVALID_STRING&quot;;</span>
+<span class="fc" id="L207">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L208">		controller = new EditRuleController();</span>
+
+<span class="fc" id="L210">		EditRulePopup popup = controller.getEditRulePopup();</span>
+<span class="fc" id="L211">		popup.getRuleNameField().setText(newName);</span>
+<span class="fc" id="L212">		popup.getAdvancedModeButton().doClick();</span>
+<span class="fc" id="L213">		popup.getRuleTextArea().setText(newRuleConditions);</span>
+
+<span class="pc" id="L215">		assertThrows(Exception.class, () -&gt; controller.saveRule());</span>
+
+<span class="fc" id="L217">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L218">		assertFalse(updatedRulesList.contains(controller.getRule()));</span>
+<span class="fc" id="L219">	}</span>
+
+	/**
+	 * Tests that user can edit a default rule's conditions and save the changes.
+	 * 
+	 * @throws Exception - Exception is thrown if it fails to save the rule
+	 */
+	@Test
+	void testSaveDefaultRule() throws Exception {
+<span class="fc" id="L228">		MainController mc = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L229">		controller = new EditRuleController(testDefaultRuleFeatureEnvy);</span>
+<span class="fc" id="L230">		String editedRuleCondition = &quot;ATFD &gt; 20 &amp;&amp; LAA &lt; 0.69&quot;;</span>
+<span class="fc" id="L231">		EditRulePopup popup = controller.getEditRulePopup();</span>
+<span class="fc" id="L232">		popup.getRuleTextArea().setText(editedRuleCondition);</span>
+
+<span class="fc" id="L234">		controller.saveRule();</span>
+
+<span class="fc" id="L236">		ArrayList&lt;CodeQualityRule&gt; updatedRulesList = mc.getRulesList();</span>
+<span class="fc" id="L237">		int index = updatedRulesList.indexOf(testDefaultRuleFeatureEnvy);</span>
+<span class="fc" id="L238">		assertTrue(updatedRulesList.get(index).getRule().equals(editedRuleCondition));</span>
+<span class="fc" id="L239">	}</span>
+
+	/**
+	 * Tests that the controller won't save a default rule when the user edited more
+	 * than just the thresholds
+	 */
+	@Test
+	void testSaveDefaultRuleWithInvalidFormat() {
+<span class="fc" id="L247">		controller = new EditRuleController(testDefaultRuleLongMethod);</span>
+<span class="fc" id="L248">		String editedRuleCondition = &quot;LAA &lt; 80 &amp;&amp; ATFD &gt; 10&quot;;</span>
+<span class="fc" id="L249">		EditRulePopup popup = controller.getEditRulePopup();</span>
+<span class="fc" id="L250">		popup.getRuleTextArea().setText(editedRuleCondition);</span>
+
+<span class="pc" id="L252">		assertThrows(Exception.class, () -&gt; controller.saveRule());</span>
+<span class="fc" id="L253">	}</span>
+
+	/**
+	 * Tests that default rules are validated on save and user can't add another
+	 * default rule
+	 */
+	@Test
+	void testValidateNonMappedDefaultRule() {
+<span class="fc" id="L261">		String ruleName = &quot;defaultRuleNameThatDoesntExist&quot;;</span>
+<span class="fc" id="L262">		String ruleCondition = &quot;ATFD &gt; 20&quot;;</span>
+<span class="fc" id="L263">		CodeQualityRule newDefaultRule = new CodeQualityRule(ruleName, ruleCondition, true, true);</span>
+<span class="fc" id="L264">		controller = new EditRuleController(newDefaultRule);</span>
+
+<span class="pc" id="L266">		assertThrows(Exception.class, () -&gt; controller.saveRule());</span>
+<span class="fc" id="L267">	}</span>
+
+	/**
+	 * Tests that the getJavascriptIfStatementString method will convert a string
+	 * with pseudo code to valid Javascript format.
+	 */
+	@Test
+	void testGetJavascriptIfStatementString() {
+<span class="fc" id="L275">		String ruleConditions = &quot;IF LOC &gt; 10 AND LAA == 20 OR LAA != 5&quot;;</span>
+<span class="fc" id="L276">		controller = new EditRuleController();</span>
+<span class="fc" id="L277">		String testJS = controller.getJavascriptIfStatementString(ruleConditions);</span>
+<span class="fc" id="L278">		assertEquals(&quot;LOC &gt; 10 &amp;&amp; LAA == 20 || LAA != 5&quot;, testJS);</span>
+<span class="fc" id="L279">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

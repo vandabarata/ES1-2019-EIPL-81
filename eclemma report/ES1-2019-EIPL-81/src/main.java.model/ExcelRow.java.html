@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ExcelRow.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main.java.model</a> &gt; <span class="el_source">ExcelRow.java</span></div><h1>ExcelRow.java</h1><pre class="source lang-java linenums">package main.java.model;
+
+/**
+ * Model which parses the content taken from an excel row to attributes we can
+ * use
+ * 
+ */
+public class ExcelRow {
+
+	/** Method ID, located in the first column */
+	private int id;
+
+	/** Package name, located in the second column */
+	private String packageName;
+
+	/** Class name, located in the third column */
+	private String className;
+
+	/** Method name, located in the fourth column */
+	private String methodName;
+
+	/** LOC quality indicator, located in the fifth column */
+	private int LOC;
+
+	/** CYCLO quality indicator, located in the sixth column */
+	private int CYCLO;
+
+	/** ATFD quality indicator, located in the seventh column */
+	private int ATFD;
+
+	/** LAA quality indicator, located in the eighth column */
+	private float LAA;
+
+	/** boolean isLongMethod, located in the ninth column */
+	private boolean isLongMethod;
+
+	/** boolean to indicate the iPlasma tool result, located in the tenth column */
+	private boolean iPlasma;
+
+	/** boolean to indicate the PMD tool result, located in the eleventh column */
+	private boolean PMD;
+
+	/** boolean isFeatureEnvy, located in the twelfth column */
+	private boolean isFeatureEnvy;
+
+	/**
+	 * Creates an ExcelRow parsing the given column values to usable attributes
+	 * 
+	 * @param rowData - unformatted row's data
+	 */
+<span class="fc" id="L51">	public ExcelRow(String[] rowData) {</span>
+<span class="fc" id="L52">		this.id = Integer.parseInt(rowData[0]);</span>
+<span class="fc" id="L53">		this.packageName = rowData[1];</span>
+<span class="fc" id="L54">		this.className = rowData[2];</span>
+<span class="fc" id="L55">		this.methodName = rowData[3];</span>
+<span class="fc" id="L56">		this.LOC = Integer.parseInt(rowData[4]);</span>
+<span class="fc" id="L57">		this.CYCLO = Integer.parseInt(rowData[5]);</span>
+<span class="fc" id="L58">		this.ATFD = Integer.parseInt(rowData[6]);</span>
+<span class="fc" id="L59">		this.LAA = Float.parseFloat(rowData[7]);</span>
+<span class="fc" id="L60">		this.isLongMethod = Boolean.parseBoolean(rowData[8]);</span>
+<span class="fc" id="L61">		this.iPlasma = Boolean.parseBoolean(rowData[9]);</span>
+<span class="fc" id="L62">		this.PMD = Boolean.parseBoolean(rowData[10]);</span>
+<span class="fc" id="L63">		this.isFeatureEnvy = Boolean.parseBoolean(rowData[11]);</span>
+<span class="fc" id="L64">	}</span>
+
+	/**
+	 * Returns the row's MethodID
+	 * 
+	 * @return int id - MethodID
+	 */
+	public int getId() {
+<span class="fc" id="L72">		return id;</span>
+	}
+
+	/**
+	 * Returns Package name
+	 * 
+	 * @return String packageName
+	 */
+	public String getPackageName() {
+<span class="fc" id="L81">		return packageName;</span>
+	}
+
+	/**
+	 * Returns Class name
+	 * 
+	 * @return String className
+	 */
+	public String getClassName() {
+<span class="fc" id="L90">		return className;</span>
+	}
+
+	/**
+	 * Returns Method name
+	 * 
+	 * @return String methodName
+	 */
+	public String getMethodName() {
+<span class="fc" id="L99">		return methodName;</span>
+	}
+
+	/**
+	 * Returns LOC value
+	 * 
+	 * @return int LOC
+	 */
+	public int getLOC() {
+<span class="fc" id="L108">		return LOC;</span>
+	}
+
+	/**
+	 * Returns CYCLO value
+	 * 
+	 * @return int CYCLO
+	 */
+	public int getCYCLO() {
+<span class="fc" id="L117">		return CYCLO;</span>
+	}
+
+	/**
+	 * Returns ATFD value
+	 * 
+	 * @return int ATFD
+	 */
+	public int getATFD() {
+<span class="fc" id="L126">		return ATFD;</span>
+	}
+
+	/**
+	 * Returns LAA value
+	 * 
+	 * @return float LAA
+	 */
+	public float getLAA() {
+<span class="fc" id="L135">		return LAA;</span>
+	}
+
+	/**
+	 * Returns isLongMethod boolean result
+	 * 
+	 * @return boolean isLongMethod
+	 */
+	public boolean isLongMethod() {
+<span class="fc" id="L144">		return isLongMethod;</span>
+	}
+
+	/**
+	 * Returns iPlasma tool's result
+	 * 
+	 * @return boolean iPlasma
+	 */
+	public boolean getIPlasmaResult() {
+<span class="fc" id="L153">		return iPlasma;</span>
+	}
+
+	/**
+	 * Returns PMD tool's result
+	 * 
+	 * @return boolean PMD
+	 */
+	public boolean getPMDResult() {
+<span class="fc" id="L162">		return PMD;</span>
+	}
+
+	/**
+	 * Returns isFeatureEnvy boolean result
+	 * 
+	 * @return boolean isFeatureEnvy
+	 */
+	public boolean isFeatureEnvy() {
+<span class="fc" id="L171">		return isFeatureEnvy;</span>
+	}
+
+	/**
+	 * Makes an excel row be displayed by its attributes accompanied by the
+	 * attribute's name, ordered by column number
+	 * 
+	 * @return String ExcelRow's attirbutes
+	 */
+	@Override
+	public String toString() {
+<span class="fc" id="L182">		return &quot;ID: &quot; + id + &quot;\nPackage: &quot; + packageName + &quot;\nClass: &quot; + className + &quot;\nMethod: &quot; + methodName</span>
+<span class="fc" id="L183">				+ &quot;\nLOC: &quot; + LOC + &quot;\nCYCLO: &quot; + CYCLO + &quot;\nATFD: &quot; + ATFD + &quot;\nLAA: &quot; + LAA + &quot;\nIs Long Method: &quot;</span>
+<span class="fc" id="L184">				+ isLongMethod + &quot;\niPlasma: &quot; + iPlasma + &quot;\nPMD: &quot; + PMD + &quot;\nIs Feature Envy: &quot; + isFeatureEnvy;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestQualityIndicator.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test.java</a> &gt; <span class="el_source">TestQualityIndicator.java</span></div><h1>TestQualityIndicator.java</h1><pre class="source lang-java linenums">package test.java;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+import main.java.model.QualityIndicator;
+
+/**
+ * Tests for the Quality Indicator Model
+ *
+ */
+@RunWith(JUnitPlatform.class)
+<span class="fc" id="L17">class TestQualityIndicator {</span>
+
+	/** QualityIndicator object used for testing */
+	QualityIndicator quality;
+
+	/**
+	 * Initialises a QualityIndicator object for testing that can test every single
+	 * case for calculations
+	 * 
+	 * @throws Exception - Exception is thrown if the object can't be created
+	 */
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L30">		String[][] mockExcelData = { { &quot;1&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot; },</span>
+<span class="fc" id="L31">				{ &quot;2&quot;, &quot;FALSE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;TRUE&quot; },</span>
+<span class="fc" id="L32">				{ &quot;3&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot; },</span>
+<span class="fc" id="L33">				{ &quot;4&quot;, &quot;TRUE&quot;, &quot;TRUE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot;, &quot;FALSE&quot; } };</span>
+<span class="fc" id="L34">		quality = new QualityIndicator(mockExcelData);</span>
+<span class="fc" id="L35">	}</span>
+
+	/**
+	 * Asserts that the DCI results for the PMD tool match what's expected
+	 */
+	@Test
+	void testGetPMDDCI() {
+<span class="fc" id="L42">		int PMDDCI = 1;</span>
+<span class="fc" id="L43">		assertEquals(PMDDCI, quality.getPMDDCI());</span>
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * Asserts that the DII results for the PMD tool match what's expected
+	 */
+	@Test
+	void testGetPMDDII() {
+<span class="fc" id="L51">		int PMDDII = 1;</span>
+<span class="fc" id="L52">		assertEquals(PMDDII, quality.getPMDDII());</span>
+<span class="fc" id="L53">	}</span>
+
+	/**
+	 * Asserts that the ADCI results for the PMD tool match what's expected
+	 */
+	@Test
+	void testGetPMDADCI() {
+<span class="fc" id="L60">		int PMDADCI = 1;</span>
+<span class="fc" id="L61">		assertEquals(PMDADCI, quality.getPMDADCI());</span>
+<span class="fc" id="L62">	}</span>
+
+	/**
+	 * Asserts that the ADII results for the PMD tool match what's expected
+	 */
+	@Test
+	void testGetPMDADII() {
+<span class="fc" id="L69">		int PMDADII = 1;</span>
+<span class="fc" id="L70">		assertEquals(PMDADII, quality.getPMDADII());</span>
+<span class="fc" id="L71">	}</span>
+
+	/**
+	 * Asserts that the DCI results for the iPlasma tool match what's expected
+	 */
+	@Test
+	void testGetIPlasmaDCI() {
+<span class="fc" id="L78">		int iPlasmaDCI = 1;</span>
+<span class="fc" id="L79">		assertEquals(iPlasmaDCI, quality.getIPlasmaDCI());</span>
+<span class="fc" id="L80">	}</span>
+
+	/**
+	 * Asserts that the DII results for the iPlasma tool match what's expected
+	 */
+	@Test
+	void testGetIPlasmaDII() {
+<span class="fc" id="L87">		int iPlasmaDII = 1;</span>
+<span class="fc" id="L88">		assertEquals(iPlasmaDII, quality.getIPlasmaDII());</span>
+<span class="fc" id="L89">	}</span>
+
+	/**
+	 * Asserts that the ADCI results for the iPlasma tool match what's expected
+	 */
+	@Test
+	void testGetIPlasmaADCI() {
+<span class="fc" id="L96">		int iPlasmaADCI = 1;</span>
+<span class="fc" id="L97">		assertEquals(iPlasmaADCI, quality.getIPlasmaADCI());</span>
+<span class="fc" id="L98">	}</span>
+
+	/**
+	 * Asserts that the ADII results for the iPlasma tool match what's expected
+	 */
+	@Test
+	void testGetIPlasmaADII() {
+<span class="fc" id="L105">		int iPlasmaADII = 1;</span>
+<span class="fc" id="L106">		assertEquals(iPlasmaADII, quality.getIPlasmaADII());</span>
+<span class="fc" id="L107">	}</span>
+
+	/**
+	 * Asserts that the DCI results for the custom is_long_method rule match what's
+	 * expected
+	 */
+	@Test
+	void testGetCustomLongDCI() {
+<span class="fc" id="L115">		int customLongDCI = 1;</span>
+<span class="fc" id="L116">		assertEquals(customLongDCI, quality.getCustomLongDCI());</span>
+<span class="fc" id="L117">	}</span>
+
+	/**
+	 * Asserts that the ADII results for the custom is_long_method rule match what's
+	 * expected
+	 */
+	@Test
+	void testGetCustomLongADII() {
+<span class="fc" id="L125">		int customLongADII = 1;</span>
+<span class="fc" id="L126">		assertEquals(customLongADII, quality.getCustomLongADII());</span>
+<span class="fc" id="L127">	}</span>
+
+	/**
+	 * Asserts that the ADCI results for the custom is_long_method rule match what's
+	 * expected
+	 */
+	@Test
+	void testGetCustomLongADCI() {
+<span class="fc" id="L135">		int customLongADCI = 1;</span>
+<span class="fc" id="L136">		assertEquals(customLongADCI, quality.getCustomLongADCI());</span>
+<span class="fc" id="L137">	}</span>
+
+	/**
+	 * Asserts that the DII results for the custom is_long_method rule match what's
+	 * expected
+	 */
+	@Test
+	void testGetCustomLongDII() {
+<span class="fc" id="L145">		int customLongDII = 1;</span>
+<span class="fc" id="L146">		assertEquals(customLongDII, quality.getCustomLongDII());</span>
+<span class="fc" id="L147">	}</span>
+
+	/**
+	 * Asserts that the DCI results for the custom is_feature_envy rule match what's
+	 * expected
+	 */
+	@Test
+	void testGetCustomEnvyDCI() {
+<span class="fc" id="L155">		int customEnvyDCI = 1;</span>
+<span class="fc" id="L156">		assertEquals(customEnvyDCI, quality.getCustomEnvyDCI());</span>
+<span class="fc" id="L157">	}</span>
+
+	/**
+	 * Asserts that the ADCI results for the custom is_feature_envy rule match
+	 * what's expected
+	 */
+	@Test
+	void testGetCustomEnvyADCI() {
+<span class="fc" id="L165">		int customEnvyADCI = 1;</span>
+<span class="fc" id="L166">		assertEquals(customEnvyADCI, quality.getCustomEnvyADCI());</span>
+<span class="fc" id="L167">	}</span>
+
+	/**
+	 * Asserts that the DII results for the custom is_feature_envy rule match what's
+	 * expected
+	 */
+	@Test
+	void testGetCustomEnvyDII() {
+<span class="fc" id="L175">		int customEnvyDII = 1;</span>
+<span class="fc" id="L176">		assertEquals(customEnvyDII, quality.getCustomEnvyDII());</span>
+<span class="fc" id="L177">	}</span>
+
+	/**
+	 * Asserts that the ADII results for the custom is_feature_envy rule match
+	 * what's expected
+	 */
+	@Test
+	void testGetCustomEnvyADII() {
+<span class="fc" id="L185">		int customEnvyADII = 1;</span>
+<span class="fc" id="L186">		assertEquals(customEnvyADII, quality.getCustomEnvyADII());</span>
+<span class="fc" id="L187">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>

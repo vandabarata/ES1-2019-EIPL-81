@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>ExcelImporter.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 18:12:12)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main.java.model</a> &gt; <span class="el_source">ExcelImporter.java</span></div><h1>ExcelImporter.java</h1><pre class="source lang-java linenums">package main.java.model;
+
+import java.io.FileInputStream;
+import java.util.ArrayList;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
+/**
+ * Object that reads an imported Excel file.
+ * 
+ */
+public class ExcelImporter {
+
+	/**
+	 * The excel workbook object generated from the information of the imported
+	 * excel file
+	 */
+	private Workbook wb;
+
+	/**
+	 * Receives an excel file and parses it to a workbook object, if valid
+	 * 
+	 * @param file - excel file to be imported
+	 */
+<span class="fc" id="L30">	public ExcelImporter(String file) {</span>
+		try {
+<span class="fc" id="L32">			this.wb = WorkbookFactory.create(new FileInputStream(file));</span>
+<span class="fc" id="L33">		} catch (Exception ioe) {</span>
+<span class="fc" id="L34">			System.out.println(&quot;Invalid file&quot;);</span>
+		}
+<span class="fc" id="L36">	}</span>
+
+	/**
+	 * Gets the data from a row of the excel in a selected sheet
+	 * 
+	 * @param sheetIndex - Index of the Excel sheet
+	 * @param rowIndex   - Index of the row from the Excel
+	 * @return rowContent - An array with the cell values from the chosen row
+	 */
+	public String[] getSingleRow(int sheetIndex, int rowIndex) {
+<span class="fc" id="L46">		ArrayList&lt;String&gt; rowContent = new ArrayList&lt;String&gt;();</span>
+
+<span class="fc" id="L48">		Sheet sheet = wb.getSheetAt(sheetIndex);</span>
+
+<span class="fc" id="L50">		Row row = sheet.getRow(rowIndex);</span>
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">		for (Cell cell : row) {</span>
+<span class="fc" id="L53">			rowContent.add(new DataFormatter().formatCellValue(cell));</span>
+		}
+
+<span class="fc" id="L56">		return rowContent.toArray(new String[0]);</span>
+	}
+
+	/**
+	 * Gets the data from a row of the excel from the first sheet
+	 * 
+	 * @param rowIndex - Index of the row from the Excel
+	 * @return rowContent - An array with the cell values taken from the chosen row
+	 *         from the first sheet
+	 */
+	public String[] getSingleRow(int rowIndex) {
+<span class="fc" id="L67">		ArrayList&lt;String&gt; rowContent = new ArrayList&lt;String&gt;();</span>
+
+<span class="fc" id="L69">		Sheet sheet = wb.getSheetAt(0);</span>
+
+<span class="fc" id="L71">		Row row = sheet.getRow(rowIndex);</span>
+
+<span class="fc bfc" id="L73" title="All 2 branches covered.">		for (Cell cell : row) {</span>
+<span class="fc" id="L74">			rowContent.add(new DataFormatter().formatCellValue(cell));</span>
+		}
+
+<span class="fc" id="L77">		return rowContent.toArray(new String[0]);</span>
+	}
+
+	/**
+	 * Gets the data from all rows of the excel file
+	 * 
+	 * @param sheetIndex - Index of the Excel sheet
+	 * @return rowsList - A list with an array for each row with their cell values
+	 */
+	public ArrayList&lt;String[]&gt; getAllRows(int sheetIndex) {
+<span class="fc" id="L87">		ArrayList&lt;String[]&gt; rowsList = new ArrayList&lt;String[]&gt;();</span>
+<span class="fc" id="L88">		ArrayList&lt;String&gt; rowContent = new ArrayList&lt;String&gt;();</span>
+
+<span class="fc" id="L90">		Sheet sheet = wb.getSheetAt(sheetIndex);</span>
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">		for (Row row : sheet) {</span>
+
+<span class="fc bfc" id="L94" title="All 2 branches covered.">			for (Cell cell : row) {</span>
+<span class="fc" id="L95">				rowContent.add(new DataFormatter().formatCellValue(cell));</span>
+			}
+<span class="fc" id="L97">			rowsList.add(rowContent.toArray(new String[0]));</span>
+
+<span class="fc" id="L99">			rowContent.clear();</span>
+		}
+
+<span class="fc" id="L102">		return rowsList;</span>
+	}
+
+	/**
+	 * Gets the data from all rows from the excel's first sheet
+	 * 
+	 * @return rowsList - A list with an array for each row with their cell values
+	 */
+	public ArrayList&lt;String[]&gt; getAllRows() {
+<span class="fc" id="L111">		ArrayList&lt;String[]&gt; rowsList = new ArrayList&lt;String[]&gt;();</span>
+<span class="fc" id="L112">		ArrayList&lt;String&gt; rowContent = new ArrayList&lt;String&gt;();</span>
+
+<span class="fc" id="L114">		Sheet sheet = wb.getSheetAt(0);</span>
+
+<span class="fc bfc" id="L116" title="All 2 branches covered.">		for (Row row : sheet) {</span>
+
+<span class="fc bfc" id="L118" title="All 2 branches covered.">			for (Cell cell : row) {</span>
+<span class="fc" id="L119">				rowContent.add(new DataFormatter().formatCellValue(cell));</span>
+			}
+
+<span class="fc" id="L122">			rowsList.add(rowContent.toArray(new String[0]));</span>
+
+<span class="fc" id="L124">			rowContent.clear();</span>
+		}
+
+<span class="fc" id="L127">		return rowsList;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 18:12:12)</div></body></html>
