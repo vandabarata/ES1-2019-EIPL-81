@@ -8,7 +8,7 @@ import javax.swing.UIManager;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 
 /**
- * Where the main application is run This application is organized by the MVC
+ * Where the main application is run. This application is organized by the MVC
  * model. This can be summarised as such:
  * <p>
  * <b>Model-View-Controller (MVC):</b> The Model is responsible for managing the
