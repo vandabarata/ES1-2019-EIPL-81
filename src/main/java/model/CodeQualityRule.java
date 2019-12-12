@@ -135,5 +135,23 @@ public class CodeQualityRule {
 	public boolean equals(CodeQualityRule otherRule) {
 		return this.id == otherRule.id;
 	}
+	
+	/**
+	 * Sets a new ID for the rule
+	 * 
+	 * @param newId - the new long value being set
+	 */
+	public void setId(long newId) {
+		this.id = newId;
+	}
+	
+	/**
+	 * Getter for the rule's ID value
+	 * 
+	 * @return long value with rule's ID
+	 */
+	public long getID() {
+		return this.id;
+	}
 
 }

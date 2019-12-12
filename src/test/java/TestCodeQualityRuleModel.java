@@ -128,4 +128,16 @@ class TestCodeQualityRuleModel {
 		assertEquals(potatoRule.getName(), potatoName);
 	}
 
+	/**
+	 * Asserts that rules with same name and content aren't equal if their ids don't match
+	 */
+	@Test
+	void testEquals() {
+		assertTrue(potatoRule.equals(potatoRule));
+		CodeQualityRule otherPotato = new CodeQualityRule("is_potato", "ATFD > 4 && LAA < 0.42", false, false);
+		long newID = potatoRule.getID() + 121345;
+		otherPotato.setId(newID);
+		assertFalse(potatoRule.equals(otherPotato));
+	}
+
 }
