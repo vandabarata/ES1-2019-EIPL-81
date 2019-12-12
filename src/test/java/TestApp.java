@@ -14,7 +14,7 @@ import main.java.App;
 class TestApp {
 
 	/**
-	 * Attempts to initialise the main app Fails if anything goes wrong during this
+	 * Attempts to initialise the main app. Fails if anything goes wrong during this
 	 * process
 	 */
 	@Test

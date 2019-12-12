@@ -107,7 +107,7 @@ public class QualityIndicator {
 	private String[][] resultsRows;
 
 	/**
-	 * Creates a QualityIndicator object based on excelRows, that will calculate the
+	 * Constructor based on excelRows, that will calculate the
 	 * Quality Indicators based on information taken from the Excel file
 	 * 
 	 * @param resultsRows - matrix holding the quality results for the tools and
@@ -207,7 +207,7 @@ public class QualityIndicator {
 	/**
 	 * Getter for the amount of ADCI calculated for the PMD tool
 	 * 
-	 * @return int PMDADCI - amount of "Ausência de Defeitos Corretamente
+	 * @return int PMDADCI - amount of "AusÃªncia de Defeitos Corretamente
 	 *         Identificados" (ADCI) by the PMD tool
 	 */
 	public int getPMDADCI() {
@@ -217,7 +217,7 @@ public class QualityIndicator {
 	/**
 	 * Getter for the amount of ADII calculated for the PMD tool
 	 * 
-	 * @return int PMDADII - amount of "Ausência de Defeitos Incorretamente
+	 * @return int PMDADII - amount of "AusÃªncia de Defeitos Incorretamente
 	 *         Identificados" (ADII) by the PMD tool
 	 * 
 	 */
@@ -248,7 +248,7 @@ public class QualityIndicator {
 	/**
 	 * Getter for the amount of ADCI calculated for the iPlasma tool
 	 * 
-	 * @return int iPlasmaADCI - amount of "Ausência de Defeitos Corretamente
+	 * @return int iPlasmaADCI - amount of "AusÃªncia de Defeitos Corretamente
 	 *         Identificados" (ADCI) by the iPlasma tool
 	 */
 	public int getIPlasmaADCI() {
@@ -258,7 +258,7 @@ public class QualityIndicator {
 	/**
 	 * Getter for the amount of ADII calculated for the iPlasma tool
 	 * 
-	 * @return iPlasmaADII - amount of "Ausência de Defeitos Incorretamente
+	 * @return iPlasmaADII - amount of "AusÃªncia de Defeitos Incorretamente
 	 *         Identificados" (ADII) by the iPlasma tool
 	 */
 	public int getIPlasmaADII() {
@@ -288,7 +288,7 @@ public class QualityIndicator {
 	/**
 	 * Getter for the amount of ADCI calculated for the custom_is_long_method rule
 	 * 
-	 * @return int customLongADCI - amount of "Ausência de Defeitos Corretamente
+	 * @return int customLongADCI - amount of "AusÃªncia de Defeitos Corretamente
 	 *         Identificados" (ADCI) by the custom_is_long_method rule
 	 */
 	public int getCustomLongADCI() {
@@ -298,7 +298,7 @@ public class QualityIndicator {
 	/**
 	 * Getter for the amount of DII calculated for the custom_is_long_method rule
 	 * 
-	 * @return int customLongDII - amount of "Ausência de Defeitos Incorretamente
+	 * @return int customLongDII - amount of "AusÃªncia de Defeitos Incorretamente
 	 *         Identificados" (ADII) by the custom_is_long_method rule
 	 */
 	public int getCustomLongDII() {
@@ -328,7 +328,7 @@ public class QualityIndicator {
 	/**
 	 * Getter for the amount of DII calculated for the custom_is_feature_envy rule
 	 * 
-	 * @return int customEnvyDII - amount of "Ausência de Defeitos Corretamente
+	 * @return int customEnvyDII - amount of "AusÃªncia de Defeitos Corretamente
 	 *         Identificados" (ADCI) by the custom_is_feature_envy rule
 	 */
 	public int getCustomEnvyDII() {
@@ -338,7 +338,7 @@ public class QualityIndicator {
 	/**
 	 * Getter for the amount of ADII calculated for the custom_is_feature_envy rule
 	 * 
-	 * @return int customEnvyADII - amount of "Ausência de Defeitos Incorretamente
+	 * @return int customEnvyADII - amount of "AusÃªncia de Defeitos Incorretamente
 	 *         Identificados" (ADII) by the custom_is_feature_envy rule
 	 */
 	public int getCustomEnvyADII() {
