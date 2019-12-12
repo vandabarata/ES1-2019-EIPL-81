@@ -23,9 +23,7 @@ import main.java.model.QualityIndicator;
 
 /**
  * Main Controller - Accepts input and converts it to commands and action for
- * the model or view. In addition to dividing the application into these
- * components, the model-view-controller design defines the interactions between
- * them.
+ * the model or view.
  */
 public class MainController {
 
