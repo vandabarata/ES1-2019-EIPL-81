@@ -105,7 +105,7 @@ public class MainController {
 	}
 
 	/**
-	 * Initialises the import button action listeners
+	 * Initialises the import button's action listener
 	 * 
 	 * @param importButton - button used to import the file
 	 * @param uploadFile   - frame where the file is imported
