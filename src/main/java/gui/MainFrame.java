@@ -118,7 +118,7 @@ public class MainFrame {
 	}
 
 	/**
-	 * Creates and adds the add/edit buttons, drop drown with list of rules and
+	 * Creates and adds the add and edit buttons, dropdown with list of rules and
 	 * checkQuality buttons to a panel
 	 * 
 	 * @param buttonsPanel - the panel user to display the buttons.

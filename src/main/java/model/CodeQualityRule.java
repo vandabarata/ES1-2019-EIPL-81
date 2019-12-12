@@ -21,7 +21,7 @@ public class CodeQualityRule {
 	/** If the rule should be opened in advanced mode for edition */
 	private boolean isAdvanced;
 
-	/** timestamp which allows us to ID the rules */
+	/** Timestamp which allows us to ID the rules */
 	private long id;
 
 	/**

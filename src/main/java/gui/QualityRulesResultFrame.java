@@ -60,7 +60,7 @@ public class QualityRulesResultFrame {
 	/**
 	 * Displays the table with the results, as well as the quality indicators
 	 * 
-	 * @param data              - An Array of String arrays where which line is a
+	 * @param data              - An Array of String arrays where each line is a
 	 *                          row in the results table, and each column is the
 	 *                          value of that result line for that column
 	 * @param colNames          - An array of strings with the column names for each
