@@ -20,7 +20,7 @@ class TestQualityIndicator {
 	QualityIndicator quality;
 
 	/**
-	 * Initialises a QualityIndicator object for testing that can test every single
+	 * Initialises a QualityIndicator object for testing that goes through every single
 	 * case for calculations
 	 * 
 	 * @throws Exception - Exception is thrown if the object can't be created
