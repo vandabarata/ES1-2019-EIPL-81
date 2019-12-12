@@ -1,29 +1,52 @@
 package main.java.model;
 
 /**
- * Represents an Excel Row model
+ * Model which parses the content taken from an excel row to attributes we can
+ * use
  * 
  */
 public class ExcelRow {
 
+	/** Method ID, located in the first column */
 	private int id;
+
+	/** Package name, located in the second column */
 	private String packageName;
+
+	/** Class name, located in the third column */
 	private String className;
+
+	/** Method name, located in the fourth column */
 	private String methodName;
+
+	/** LOC metric, located in the fifth column */
 	private int LOC;
+
+	/** CYCLO metric, located in the sixth column */
 	private int CYCLO;
+
+	/** ATFD metric, located in the seventh column */
 	private int ATFD;
+
+	/** LAA metric, located in the eighth column */
 	private float LAA;
+
+	/** boolean isLongMethod, located in the ninth column */
 	private boolean isLongMethod;
+
+	/** boolean to indicate the iPlasma tool result, located in the tenth column */
 	private boolean iPlasma;
+
+	/** boolean to indicate the PMD tool result, located in the eleventh column */
 	private boolean PMD;
+
+	/** boolean isFeatureEnvy, located in the twelfth column */
 	private boolean isFeatureEnvy;
 
 	/**
-	 * Create an ExcelRow
+	 * Creates an ExcelRow parsing the given column values to usable attributes
 	 * 
-	 * @param unformatted row's data
-	 * @return row's is_feature_envy value
+	 * @param rowData - unformatted row's data
 	 */
 	public ExcelRow(String[] rowData) {
 		this.id = Integer.parseInt(rowData[0]);
@@ -41,101 +64,119 @@ public class ExcelRow {
 	}
 
 	/**
+	 * Returns the row's MethodID
 	 * 
-	 * @return row's id value
+	 * @return int id - MethodID
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
+	 * Returns Package name
 	 * 
-	 * @return row's package name value
+	 * @return String packageName
 	 */
 	public String getPackageName() {
 		return packageName;
 	}
 
 	/**
+	 * Returns Class name
 	 * 
-	 * @return row's class name value
+	 * @return String className
 	 */
 	public String getClassName() {
 		return className;
 	}
 
 	/**
+	 * Returns Method name
 	 * 
-	 * @return row's method name value
+	 * @return String methodName
 	 */
 	public String getMethodName() {
 		return methodName;
 	}
 
 	/**
+	 * Returns LOC value
 	 * 
-	 * @return row's LOC value
+	 * @return int LOC
 	 */
 	public int getLOC() {
 		return LOC;
 	}
 
 	/**
+	 * Returns CYCLO value
 	 * 
-	 * @return row's CYCLO value
+	 * @return int CYCLO
 	 */
 	public int getCYCLO() {
 		return CYCLO;
 	}
 
 	/**
+	 * Returns ATFD value
 	 * 
-	 * @return row's ATFD value
+	 * @return int ATFD
 	 */
 	public int getATFD() {
 		return ATFD;
 	}
 
 	/**
+	 * Returns LAA value
 	 * 
-	 * @return row's LAA value
+	 * @return float LAA
 	 */
 	public float getLAA() {
 		return LAA;
 	}
 
 	/**
+	 * Returns isLongMethod boolean result
 	 * 
-	 * @return row's is_long_method value
+	 * @return boolean isLongMethod
 	 */
 	public boolean isLongMethod() {
 		return isLongMethod;
 	}
 
 	/**
+	 * Returns iPlasma tool's result
 	 * 
-	 * @return row's iPlasma value
+	 * @return boolean iPlasma
 	 */
 	public boolean getIPlasmaResult() {
 		return iPlasma;
 	}
 
 	/**
+	 * Returns PMD tool's result
 	 * 
-	 * @return row's PMD value
+	 * @return boolean PMD
 	 */
 	public boolean getPMDResult() {
 		return PMD;
 	}
 
 	/**
+	 * Returns isFeatureEnvy boolean result
 	 * 
-	 * @return row's is_feature_envy value
+	 * @return boolean isFeatureEnvy
 	 */
 	public boolean isFeatureEnvy() {
 		return isFeatureEnvy;
 	}
 
+	/**
+	 * String value representing this excel row and its attributes accompanied by the
+	 * attribute's name, ordered by column number
+	 * 
+	 * @return String ExcelRow's attirbutes
+	 */
 	@Override
 	public String toString() {
 		return "ID: " + id + "\nPackage: " + packageName + "\nClass: " + className + "\nMethod: " + methodName

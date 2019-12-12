@@ -13,9 +13,14 @@ import org.junit.runner.RunWith;
 
 import main.java.model.ExcelImporter;
 
+/**
+ * Tests for the ExcelImporterModel
+ *
+ */
 @RunWith(JUnitPlatform.class)
 class TestExcelImporterModel {
 
+	/** The object being tested */
 	ExcelImporter ei;
 
 	@BeforeEach
@@ -23,14 +28,17 @@ class TestExcelImporterModel {
 		ei = new ExcelImporter("Long-Method.xlsx");
 	}
 
+	/**
+	 * Validates that an invalid file format isn't accepted
+	 */
 	@Test
 	void testInvalidExcelImporter() {
 		ei = new ExcelImporter("potato");
 	}
 
 	/**
-	 * This test compares the expected content from the first row with the content
-	 * from a row returned with the getSingleRow() method
+	 * Compares the expected content from the first row with the content from a row
+	 * returned with the getSingleRow() method
 	 */
 	@Test
 	void testSingleRowContent() {
@@ -57,8 +65,8 @@ class TestExcelImporterModel {
 	}
 
 	/**
-	 * This test compares the content from a row with a certain index from
-	 * getSingleRow() with the same index in list returned by getAllRows() method
+	 * Compares the content from a row with a certain index from getSingleRow() with
+	 * the same index in list returned by getAllRows() method
 	 */
 	@Test
 	void testRowIndexContent() {

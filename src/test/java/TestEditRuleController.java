@@ -18,18 +18,21 @@ import main.java.gui.EditRulePopup;
 import main.java.model.CodeQualityRule;
 
 /**
- * Tests the TestEditRuleController controller
+ * Tests the TestEditRuleController
  */
 @RunWith(JUnitPlatform.class)
 class TestEditRuleController {
 
 	/** A rule to be used for tests */
 	CodeQualityRule testRule;
-	/** A default rule for long methods test */
+
+	/** A default rule for long method test */
 	CodeQualityRule testDefaultRuleLongMethod;
+
 	/** A default rule for feature envy test */
 	CodeQualityRule testDefaultRuleFeatureEnvy;
-	/** A EditRuleController to be used for testing */
+
+	/** An EditRuleController to be used for testing */
 	EditRuleController controller;
 
 	/**
@@ -37,15 +40,14 @@ class TestEditRuleController {
 	 */
 	@BeforeEach
 	void setUp() {
-		testRule = new CodeQualityRule("test", "LOC > 10", false, false);
+		testRule = new CodeQualityRule("test", "LOC > 10", false, true);
 		testDefaultRuleLongMethod = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true, true);
 		testDefaultRuleFeatureEnvy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true,
 				true);
-
 	}
 
 	/**
-	 * Tests that can instantiate an EditRuleController with a rule to be edited
+	 * Tests that an EditRuleController can be instantiated with a rule to be edited
 	 */
 	@Test
 	void testEditRuleControllerWithRule() {
@@ -53,7 +55,7 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that can instantiate an EditRuleController with no rule
+	 * Tests that an EditRuleController can be instantiated with no rule
 	 */
 	@Test
 	void testEditRuleControllerNoRule() {
@@ -61,9 +63,9 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that can delete a regular rule from the rulesList.
+	 * Tests that a non default rule can be deleted from the rulesList.
 	 * 
-	 * @throws Exception If fails to delete the rule, throws an exception
+	 * @throws Exception - Exception is thrown if it fails to delete the rule
 	 */
 	@Test
 	void testDeleteRule() throws Exception {
@@ -80,7 +82,7 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that cannot delete a default rule.
+	 * Tests that the user cannot delete a default rule.
 	 */
 	@Test
 	void testDeleteDefaultRule() {
@@ -97,7 +99,7 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that cannot delete a rule that is not in the rulesList
+	 * Tests that user cannot delete a rule that is not in the rulesList
 	 */
 	@Test
 	void testDeleteNoExistentRule() {
@@ -111,9 +113,9 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that can add a new rule to the rules list.
+	 * Tests that user can add a new rule to the rules list.
 	 * 
-	 * @throws Exception If fails to save the rule
+	 * @throws Exception - Exception is thrown if it fails to save the rule
 	 */
 	@Test
 	void testAddNewRule() throws Exception {
@@ -123,7 +125,7 @@ class TestEditRuleController {
 		controller = new EditRuleController();
 
 		EditRulePopup popup = controller.getEditRulePopup();
-		popup.getNameText().setText(newName);
+		popup.getRuleNameField().setText(newName);
 		popup.getAdvancedModeButton().doClick();
 		popup.getRuleTextArea().setText(newRuleConditions);
 
@@ -134,9 +136,9 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that can edit a rule condition and save it.
+	 * Tests that user can edit a rule condition and save it.
 	 * 
-	 * @throws Exception If fails to save the rule
+	 * @throws Exception - Exception is thrown if it fails to save the rule
 	 */
 	@Test
 	void testEditAndSaveRule() throws Exception {
@@ -159,7 +161,7 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that cannot save a rule without a name
+	 * Tests that user cannot save a rule without a name
 	 */
 	@Test
 	void testAddNewRuleWithoutName() {
@@ -178,7 +180,7 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that cannot save a rule without rule conditions.
+	 * Tests that user cannot save a rule without rule conditions.
 	 */
 	@Test
 	void testAddNewRuleWithoutRuleCondition() {
@@ -187,7 +189,7 @@ class TestEditRuleController {
 		controller = new EditRuleController();
 
 		EditRulePopup popup = controller.getEditRulePopup();
-		popup.getNameText().setText(newName);
+		popup.getRuleNameField().setText(newName);
 
 		assertThrows(Exception.class, () -> controller.saveRule());
 
@@ -196,7 +198,7 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that cannot save a rule with an invalid string format
+	 * Tests that user cannot save a rule with an invalid string format
 	 */
 	@Test
 	void testAddNewRuleWithInvalidFormat() {
@@ -206,7 +208,7 @@ class TestEditRuleController {
 		controller = new EditRuleController();
 
 		EditRulePopup popup = controller.getEditRulePopup();
-		popup.getNameText().setText(newName);
+		popup.getRuleNameField().setText(newName);
 		popup.getAdvancedModeButton().doClick();
 		popup.getRuleTextArea().setText(newRuleConditions);
 
@@ -217,9 +219,9 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that can edit a default rule's condition and save the changes.
+	 * Tests that user can edit a default rule's conditions and save the changes.
 	 * 
-	 * @throws Exception If fails to save the rule
+	 * @throws Exception - Exception is thrown if it fails to save the rule
 	 */
 	@Test
 	void testSaveDefaultRule() throws Exception {
@@ -237,8 +239,8 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that will not save a default rule if edited anything other than the
-	 * thresholds
+	 * Tests that the controller won't save a default rule when the user edited more
+	 * than just the thresholds
 	 */
 	@Test
 	void testSaveDefaultRuleWithInvalidFormat() {
@@ -251,8 +253,8 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that won't validate and save a default rule that doesn't have a
-	 * validation mapped to it.
+	 * Tests that default rules are validated on save and user can't add another
+	 * default rule
 	 */
 	@Test
 	void testValidateNonMappedDefaultRule() {
@@ -265,7 +267,8 @@ class TestEditRuleController {
 	}
 
 	/**
-	 * Tests that will convert a string with pseudo code to valid Javascript format.
+	 * Tests that the getJavascriptIfStatementString method will convert a string
+	 * with pseudo code to valid Javascript format.
 	 */
 	@Test
 	void testGetJavascriptIfStatementString() {

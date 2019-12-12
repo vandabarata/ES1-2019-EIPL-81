@@ -11,17 +11,26 @@ import main.java.gui.EditRulePopup;
 import main.java.model.CodeQualityRule;
 import main.java.model.Metric;
 
+/**
+ * Controller responsible for managing the rule edition and addition GUI
+ *
+ */
 public class EditRuleController {
 
 	/** GUI for editing and creating rules */
 	private EditRulePopup editRulePopup;
+
 	/** The rule being edited or created */
 	private CodeQualityRule rule;
+
 	/** MainController singleton */
 	private MainController mainC = MainController.getMainControllerInstance();
 
 	/**
-	 * @param rule The Controller receives a CodeQualityRule to be edited in the GUI
+	 * Constructor that takes a CodeQualityRule to manipulate in the EditRulePopup
+	 * 
+	 * @param rule - The Controller receives a CodeQualityRule to be edited in the
+	 *             GUI
 	 */
 	public EditRuleController(CodeQualityRule rule) {
 		this.rule = rule;
@@ -64,7 +73,7 @@ public class EditRuleController {
 	 * default rule and if it is present in the rules list. Throws an exception
 	 * otherwise.
 	 * 
-	 * @throws Exception Exception with the error message of the issue found.
+	 * @throws Exception - Exception with the error message of the issue found.
 	 */
 	public void deleteRule() throws Exception {
 		if (rule.isDefault()) {
@@ -100,10 +109,10 @@ public class EditRuleController {
 	 * save a new rule without a name or set conditions. It also validates the
 	 * conditions' validity before saving. Throws an exception otherwise.
 	 * 
-	 * @throws Exception
+	 * @throws Exception - Exception with the error message of the issue found.
 	 */
 	public void saveRule() throws Exception {
-		String newName = editRulePopup.getNameText().getText();
+		String newName = editRulePopup.getRuleNameField().getText();
 
 		// Verify if name is valid
 		if (newName.isEmpty()) {
@@ -137,8 +146,8 @@ public class EditRuleController {
 			rule.setName(newName);
 		}
 		rule.setRule(newRule);
-		rule.setIsAdvanced(true);
-		
+		rule.setAdvanced(true);
+
 		// Gets the rules list from the main controller
 		ArrayList<CodeQualityRule> rulesList = mainC.getRulesList();
 		if (!rulesList.contains(rule)) {
@@ -151,6 +160,7 @@ public class EditRuleController {
 	 * Parses the rule string from the Edit Rule Popup to use keywords valid for
 	 * Javascript code.
 	 * 
+	 * @param rawRuleConditions - receives a string with the rule's conditions
 	 * @return Returns a javascript-ready string for evaluation.
 	 */
 	public String getJavascriptIfStatementString(String rawRuleConditions) {
@@ -165,9 +175,9 @@ public class EditRuleController {
 	 * doesn't eliminate the necessity of using a try/catch when running the rule
 	 * against the real data.
 	 * 
-	 * @param rule An if statement rule in Javascript format to be validated
-	 * @throws ScriptException When evaluation of the rule finds an issue, it throws
-	 *                         an exception
+	 * @param rule - An if statement rule in Javascript format to be validated
+	 * @throws ScriptException - When the validation of the rule's conditions finds an issue, it
+	 *                         throws an exception
 	 */
 	private void preValidateJavascriptCode(String rule) throws ScriptException {
 		ScriptEngineManager engineManager = new ScriptEngineManager();
@@ -186,9 +196,9 @@ public class EditRuleController {
 	 * each custom rule to validate the edited rule. In case the rule name provided
 	 * isn't of a known default rule, returns false.
 	 *
-	 * @param ruleName The name of the rule to be validated
-	 * @param rule     The rule string to be validated
-	 * @return boolean If the rule has a valid format
+	 * @param ruleName - The name of the rule to be validated
+	 * @param rule     - The rule string to be validated
+	 * @return boolean - If the rule has a valid format
 	 */
 	private boolean isValidDefaultRuleThresholdsUpdate(String ruleName, String rule) {
 		switch (ruleName) {
@@ -202,7 +212,7 @@ public class EditRuleController {
 	}
 
 	/**
-	 * Getter for editRulePopup instance
+	 * Getter for an instance of EditRulePopup
 	 * 
 	 * @return EditRulePopup controlled by this controller instance
 	 */
@@ -211,7 +221,7 @@ public class EditRuleController {
 	}
 
 	/**
-	 * Getter for the rule being edit or added
+	 * Getter for the rule being edited or added
 	 * 
 	 * @return CodeQualityRule
 	 */

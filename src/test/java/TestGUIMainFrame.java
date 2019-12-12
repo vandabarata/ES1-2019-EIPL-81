@@ -6,7 +6,6 @@ import main.java.controller.MainController;
 import main.java.gui.MainFrame;
 import main.java.model.CodeQualityRule;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
@@ -14,37 +13,41 @@ import org.junit.runner.RunWith;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 
+/**
+ * Tests for the MainFrame
+ *
+ */
 @RunWith(JUnitPlatform.class)
 class TestGUIMainFrame {
-	
+
 	private static MainFrame guiWithTable;
-	private static MainFrame guiWithEmptyTable;
 	private MainFrame frame;
-	
+
 	@BeforeEach
 	void setUp() {
 		MainController main = MainController.getMainControllerInstance();
 		frame = new MainFrame(new JTable(), main.getRulesList());
 	}
-	
+
 	/**
-	 * This tests the creation of a JTable in the GUI comparing the frames width
+	 * Tests the creation of a JTable in the GUI comparing the number of expected
+	 * columns with the ones being presented
 	 */
 	@Test
 	void testJTableCreation() {
-		String[] header = {"header1", "header2"};
-		String[][] content = {{"cell0",  "cell1"},{"cell2", "cell3"}};
-		guiWithTable = new MainFrame(new JTable(content, header), MainController.getMainControllerInstance().getRulesList());
+		String[] header = { "header1", "header2" };
+		String[][] content = { { "cell0", "cell1" }, { "cell2", "cell3" } };
+		guiWithTable = new MainFrame(new JTable(content, header),
+				MainController.getMainControllerInstance().getRulesList());
 		assertEquals(2, guiWithTable.getExcelTable().getColumnCount());
 	}
-	
+
 	/**
-	 *  Tests if the buttons were created and are not null after the MainFrame construction 
+	 * Tests if the buttons were created and are not null after the MainFrame
+	 * construction
 	 */
 	@Test
 	final void testGetCheckQualityButton() {
@@ -52,9 +55,9 @@ class TestGUIMainFrame {
 		assertNotNull(frame.getEditButton());
 		assertNotNull(frame.getAddButton());
 	}
-	
+
 	/**
-	 *  Tests if the getFrameWidth method returns the correct width value
+	 * Tests if the getFrameWidth method returns the correct width value
 	 */
 	@Test
 	final void testGetFrameWidth() {
@@ -70,21 +73,18 @@ class TestGUIMainFrame {
 	}
 
 	/**
-	 * Tests updateRulesComboBox by creating 2 new rules and checking if the updated ComboBox has the 
-	 * same number of rules.
-	 */	
+	 * Tests updateRulesComboBox by creating 2 new rules and checking if the updated
+	 * ComboBox has the same number of rules.
+	 */
 	@Test
 	final void testUpdateRulesComboBox() {
-		CodeQualityRule	ruleDefault = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
+		CodeQualityRule ruleDefault = new CodeQualityRule("is_long_method", "LOC > 80 && CYCLO > 10", true, false);
 		CodeQualityRule potatoRule = new CodeQualityRule("is_potato", "ATFD > 4 && LAA < 0.42", false, false);
 		ArrayList<CodeQualityRule> codeQualityArray = new ArrayList<CodeQualityRule>();
 		codeQualityArray.add(ruleDefault);
 		codeQualityArray.add(potatoRule);
 		frame.updateRulesComboBox(codeQualityArray);
 		assertEquals(2, frame.getRulesComboBox().getItemCount());
-		
-	}	
+
+	}
 }
-
-
-

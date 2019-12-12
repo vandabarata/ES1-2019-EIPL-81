@@ -9,10 +9,19 @@ import java.util.Date;
  */
 public class CodeQualityRule {
 
+	/** Rule's name */
 	private String name;
+
+	/** The rule's conditions */
 	private String rule;
+
+	/** If the rule is a default rule or new rule added by the user */
 	private boolean isDefault;
+
+	/** If the rule should be opened in advanced mode for edition */
 	private boolean isAdvanced;
+
+	/** Timestamp which allows us to ID the rules */
 	private long id;
 
 	/**
@@ -31,15 +40,15 @@ public class CodeQualityRule {
 		id = new Date().getTime();
 		if (isDefault) {
 			this.isAdvanced = true;
-		}
-		else {
+		} else {
 			this.isAdvanced = isAdvanced;
 		}
 	}
 
 	/**
-	 * @param String - rule's new name Only changes the rule's name if it isn't a
-	 *               default rule
+	 * Changes the rule's name to a new one
+	 * 
+	 * @param name - rule's new name. Only changes if it isn't a default rule
 	 */
 	public void setName(String name) {
 		if (!isDefault)
@@ -47,22 +56,27 @@ public class CodeQualityRule {
 	}
 
 	/**
-	 * @return String - rule's name
+	 * Returns the rule's name
+	 * 
+	 * @return String name - rule's name
 	 */
 	public String getName() {
 		return name;
 	}
 
 	/**
-	 * @param String - rule's new content Only allows to (freely) change a rule's
-	 *               content if it's not a default rule
+	 * Changes the rule's conditions
+	 * 
+	 * @param rule - rule's new conditions.
 	 */
 	public void setRule(String rule) {
 		this.rule = rule;
 	}
 
 	/**
-	 * @return String with rule's content
+	 * Returns the rule's conditions
+	 * 
+	 * @return String rule - rule's conditions
 	 */
 	public String getRule() {
 		return rule;
@@ -72,7 +86,7 @@ public class CodeQualityRule {
 	 * Returns boolean that determines if a rule is default or not A default rule is
 	 * a rule that can't have its metrics edited only its thresholds
 	 * 
-	 * @return Boolean - isDefault
+	 * @return boolean isDefault - if a rule is default or not
 	 */
 	public boolean isDefault() {
 		return isDefault;
@@ -80,11 +94,11 @@ public class CodeQualityRule {
 
 	/**
 	 * Sets the state of the rule, determining if it is an advanced rule or a basic
-	 * one
+	 * one. If it's a default rule, considers it for edition only in advanced mode.
 	 * 
-	 * @param Boolean - isAdvanced
+	 * @param isAdvanced - if a rule should be opened in advanced mode
 	 */
-	public void setIsAdvanced(boolean isAdvanced) {
+	public void setAdvanced(boolean isAdvanced) {
 		if (isDefault) {
 			this.isAdvanced = true;
 		} else {
@@ -93,25 +107,51 @@ public class CodeQualityRule {
 	}
 
 	/**
-	 * Returns boolean that determines if a rule is advanced or not A advanced rule
-	 * is a rule that can't be edited with the basic rule editor
+	 * Returns boolean that determines if a rule is advanced or not. An advanced
+	 * rule can't be edited with the basic rule editor
 	 * 
-	 * @return Boolean - isAdvanced
+	 * @return boolean isAdvanced - if a rule should be opened in advanced mode
 	 */
 	public boolean isAdvanced() {
 		return isAdvanced;
 	}
 
 	/**
-	 * @return rule's name
+	 * Makes it so that a CodeQualityRule is displayed by its name
+	 * 
+	 * @return String name - rule's name
 	 */
 	public String toString() {
 		return this.name;
 	}
 
-	public boolean equals(CodeQualityRule other) {
-		
-		return this.id == other.id;
+	/**
+	 * Establishes a way of comparing rules based on their id
+	 * 
+	 * @param otherRule - receives another rule and compares it to this one based on
+	 *                  their id
+	 * @return true if rules have the same id, false otherwise
+	 */
+	public boolean equals(CodeQualityRule otherRule) {
+		return this.id == otherRule.id;
+	}
+	
+	/**
+	 * Sets a new ID for the rule
+	 * 
+	 * @param newId - the new long value being set
+	 */
+	public void setId(long newId) {
+		this.id = newId;
+	}
+	
+	/**
+	 * Getter for the rule's ID value
+	 * 
+	 * @return long value with the rule's ID
+	 */
+	public long getID() {
+		return this.id;
 	}
 
 }

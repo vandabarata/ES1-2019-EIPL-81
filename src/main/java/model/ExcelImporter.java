@@ -11,13 +11,22 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 /**
- * A class that reads an Excel file.
+ * Object that reads an imported Excel file.
  * 
  */
 public class ExcelImporter {
 
+	/**
+	 * The excel workbook object generated from the information of the imported
+	 * excel file
+	 */
 	private Workbook wb;
 
+	/**
+	 * Receives an excel file and parses it to a workbook object, if valid
+	 * 
+	 * @param file - excel file to be imported
+	 */
 	public ExcelImporter(String file) {
 		try {
 			this.wb = WorkbookFactory.create(new FileInputStream(file));
@@ -29,9 +38,9 @@ public class ExcelImporter {
 	/**
 	 * Gets the data from a row of the excel in a selected sheet
 	 * 
-	 * @param sheetIndex Index of the Excel sheet
-	 * @param rowIndex   Index of the row from the Excel
-	 * @return An array with the cell values from the row chosen
+	 * @param sheetIndex - Index of the Excel sheet
+	 * @param rowIndex   - Index of the row from the Excel
+	 * @return rowContent - An array with the cell values from the chosen row
 	 */
 	public String[] getSingleRow(int sheetIndex, int rowIndex) {
 		ArrayList<String> rowContent = new ArrayList<String>();
@@ -46,12 +55,13 @@ public class ExcelImporter {
 
 		return rowContent.toArray(new String[0]);
 	}
-	
+
 	/**
 	 * Gets the data from a row of the excel from the first sheet
 	 * 
-	 * @param rowIndex Index of the row from the Excel
-	 * @return An array with the cell values from the row chosen of the first sheet
+	 * @param rowIndex - Index of the row from the Excel
+	 * @return rowContent - An array with the cell values taken from the chosen row
+	 *         from the first sheet
 	 */
 	public String[] getSingleRow(int rowIndex) {
 		ArrayList<String> rowContent = new ArrayList<String>();
@@ -68,10 +78,10 @@ public class ExcelImporter {
 	}
 
 	/**
-	 * Gets the data from all rows of the excel
+	 * Gets the data from all rows of the excel file
 	 * 
-	 * @param sheetIndex Index of the Excel sheet
-	 * @return A list with an array for each row with it's cell's values
+	 * @param sheetIndex - Index of the Excel sheet
+	 * @return rowsList - A list with an array for each row with their cell values
 	 */
 	public ArrayList<String[]> getAllRows(int sheetIndex) {
 		ArrayList<String[]> rowsList = new ArrayList<String[]>();
@@ -85,7 +95,7 @@ public class ExcelImporter {
 				rowContent.add(new DataFormatter().formatCellValue(cell));
 			}
 			rowsList.add(rowContent.toArray(new String[0]));
-			
+
 			rowContent.clear();
 		}
 
@@ -93,10 +103,9 @@ public class ExcelImporter {
 	}
 
 	/**
-	 * Gets the data from all row of the excel's first sheet
+	 * Gets the data from all rows from the excel's first sheet
 	 * 
-	 * @return A list with an array for each row of the first sheet with it's cell's
-	 *         values
+	 * @return rowsList - A list with an array for each row with their cell values
 	 */
 	public ArrayList<String[]> getAllRows() {
 		ArrayList<String[]> rowsList = new ArrayList<String[]>();

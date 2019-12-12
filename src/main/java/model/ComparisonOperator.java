@@ -1,22 +1,32 @@
 package main.java.model;
 
 /**
- * Simple enumerator for comparators. Available comparators are GT (Greater
- * Than), LT (Lesser Than), GE (Greater or Equal Than), LE (Less or Equal than)
- * EQ (Equal) and DF (Different).
+ * Simple enum for comparison operators. Choices are GT (Greater Than), LT
+ * (Lesser Than), GE (Greater or Equal), LE (Less or Equal), EQ (Equal), and DF
+ * (Different).
  * 
- * @author hugo.barroca
  */
 public enum ComparisonOperator {
 	GT(">"), LT("<"), GE(">="), LE("<="), EQ("=="), DF("!=");
 
-	private String symbol;
+	/** String which holds the given operator */
+	private String operator;
 
-	private ComparisonOperator(String symbol) {
-		this.symbol = symbol;
+	/**
+	 * Constructor that setups the string value of the ComparisonOperator enum
+	 * 
+	 * @param operator - the given operator to use in the enum
+	 */
+	private ComparisonOperator(String operator) {
+		this.operator = operator;
 	}
 
-	public String getSymbol() {
-		return symbol;
+	/**
+	 * Returns the string value of a ComparisonOperator enum
+	 * 
+	 * @return String operator - the value of the enum
+	 */
+	public String getOperator() {
+		return operator;
 	}
 }
