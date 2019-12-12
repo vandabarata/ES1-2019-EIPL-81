@@ -14,6 +14,11 @@ import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import main.java.model.CodeQualityRule;
 
+/**
+ * The Main Frame where the excel information is displayed and from where the
+ * user can edit and add rules, as well as calculate the code quality results
+ *
+ */
 public class MainFrame {
 
 	/** The frame of our MainFrame GUI */
@@ -48,10 +53,9 @@ public class MainFrame {
 	 * excel file, as well as a list containing all the rules and quality
 	 * indicators, stored in the main controller
 	 * 
-	 * @param JTable                     excelTable - A JTable generated from the
-	 *                                   imported excel file
-	 * @param ArrayList<CodeQualityRule> rulesList - a list with the available rules
-	 *                                   - starts with 2 default rules
+	 * @param excelTable - A JTable generated from the imported excel file
+	 * @param rulesList  - a list with the available rules - starts with 2 default
+	 *                   rules
 	 * 
 	 */
 	public MainFrame(JTable excelTable, ArrayList<CodeQualityRule> rulesList) {
@@ -118,7 +122,7 @@ public class MainFrame {
 	 * Creates and adds the add/edit buttons, drop drown with list of rules and
 	 * checkQuality buttons to a panel
 	 * 
-	 * @param JPanel buttonsPanel - the panel user to display the buttons.
+	 * @param buttonsPanel - the panel user to display the buttons.
 	 */
 	private void addContentToButtonsPanel(JPanel buttonsPanel) {
 
@@ -193,8 +197,7 @@ public class MainFrame {
 	/**
 	 * Receives an updated Rules List and updates the ComboBox
 	 * 
-	 * @param ArrayList<CodeQualityRule> updatedRulesList - receives an updated list
-	 *                                   of rules
+	 * @param updatedRulesList - receives an updated list of rules
 	 * 
 	 */
 	public void updateRulesComboBox(ArrayList<CodeQualityRule> updatedRulesList) {

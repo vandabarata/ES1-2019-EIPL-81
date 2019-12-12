@@ -9,6 +9,10 @@ import org.junit.runner.RunWith;
 
 import main.java.model.CodeQualityRule;
 
+/**
+ * Tests for the CodeQualityRuleModel
+ *
+ */
 @RunWith(JUnitPlatform.class)
 class TestCodeQualityRuleModel {
 

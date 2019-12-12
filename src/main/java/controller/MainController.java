@@ -26,12 +26,6 @@ import main.java.model.QualityIndicator;
  * the model or view. In addition to dividing the application into these
  * components, the model-view-controller design defines the interactions between
  * them.
- * <p>
- * <b>Model-View-Controller (MVC):</b> The Model is responsible for managing the
- * data of the application. It receives user input from the controller. The View
- * means presentation of the model in a particular format. The Controller
- * receives the input, optionally validates it and then passes the input to the
- * model.
  */
 public class MainController {
 
@@ -47,8 +41,10 @@ public class MainController {
 	/** Object that deals with importing the excel file */
 	private ExcelImporter ei;
 
-	/** ArrayList with arrays of strings, containing raw data from the excel in
-	 * string form */
+	/**
+	 * ArrayList with arrays of strings, containing raw data from the excel in
+	 * string form
+	 */
 	private ArrayList<String[]> excelRows;
 
 	/** ArrayList of ExcelRows with all the excel information */
@@ -57,6 +53,10 @@ public class MainController {
 	/** ArrayList of CodeQualityRules, listing all the existent rules */
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
 
+	/**
+	 * Constants that determine the column where the specified results that can be
+	 * retrived from
+	 */
 	private final int METHOD_ID_INDEX = 0;
 	private final int PMD_INDEX = 10;
 	private final int IPLASMA_INDEX = 9;
@@ -88,7 +88,7 @@ public class MainController {
 	/**
 	 * Public method that returns the main controller singleton instance
 	 * 
-	 * @return MainController
+	 * @return MainController instance
 	 */
 	public static MainController getMainControllerInstance() {
 		if (instance == null) {
@@ -108,13 +108,19 @@ public class MainController {
 
 	/**
 	 * This method is used to run the action of the Import Button.
+	 * 
+	 * @param importButton - button used to import the file
+	 * @param uploadFile   - frame where the file is imported
 	 */
 	private void initImportButtonAction(JButton importButton, PopupUploadFile uploadFile) {
 		importButton.addActionListener(e -> validateFile(uploadFile));
 	}
 
 	/**
-	 * This method is used to validate if the selected file is a valid Excel format,
+	 * This method is used to validate if the selected file is a valid Excel format
+	 * 
+	 * @param pathFile - the path to the imported file's location
+	 * @return boolean to validate if file is valid or not
 	 */
 	public boolean isValid(String pathFile) {
 		return pathFile.endsWith(".xlsx") || pathFile.endsWith(".xls");
@@ -123,6 +129,8 @@ public class MainController {
 	/**
 	 * This method is used to import the file and create a main frame if the file is
 	 * valid, otherwise it will show a warning message.
+	 * 
+	 * @param uploadFile - frame where the excel file is imported
 	 */
 	private void validateFile(PopupUploadFile uploadFile) {
 
@@ -197,6 +205,9 @@ public class MainController {
 
 	/**
 	 * Opens the EditRuleController which controls the Rule Edition GUI
+	 * 
+	 * @param editButton  - button used to open a new window to edit the rules
+	 * @param ruleListBox - the combobox which lists all the available rules
 	 */
 	private void editButton(JButton editButton, JComboBox<CodeQualityRule> ruleListBox) {
 
@@ -215,6 +226,8 @@ public class MainController {
 
 	/**
 	 * Sets the add Button in the MainFrame to open an empty Rule Edition Popup
+	 * 
+	 * @param addButton - button that opens a new window to add new rules
 	 */
 	private void addButton(JButton addButton) {
 		addButton.addActionListener(e -> new EditRuleController());
@@ -224,8 +237,6 @@ public class MainController {
 	 * Verify the code quality based on the Rules created and sends the results to
 	 * be displayed in the QualityRulesResultFrame
 	 * 
-	 * @throws ScriptException - Exception thrown by an error in running the rules'
-	 *                         conditions
 	 */
 	private void checkCodeQualityAndShow() {
 		String[][] results = null;
@@ -257,9 +268,9 @@ public class MainController {
 	 * 
 	 * Returns the results of the calculation of each rule, for each method.
 	 * 
-	 * @return String[][] - An matrix of strings where each line is a row with the
-	 *         code quality results for a method, and each column is a rule or tool,
-	 *         for which we're presenting results
+	 * @return A matrix of strings where each line is a row with the code quality
+	 *         results for a method, and each column is a rule or tool, for which
+	 *         we're presenting results
 	 */
 	private String[][] getCodeQualityResults() {
 		String[][] results = new String[excelRowsConverted.size()][5 + rulesList.size()];
@@ -295,10 +306,11 @@ public class MainController {
 	 * 
 	 * @param rule - The rule, the result of which we require.
 	 * @param row  - The excel row containing the methodID over which we wish to run
-	 *               the rule.
-	 * @return String - Returns the result of running the rule over the methodID of the given
-	 *         ExcelRow, in string form.
-	 * @throws ScriptException - An exception is thrown if there are invalid rule conditions
+	 *             the rule.
+	 * @return result - Returns the result of running the rule over the methodID of
+	 *         the given ExcelRow, in string form.
+	 * @throws ScriptException - An exception is thrown if there are invalid rule
+	 *                         conditions
 	 */
 	private String getResult(CodeQualityRule rule, ExcelRow row) throws ScriptException {
 		ScriptEngineManager engineManager = new ScriptEngineManager();
@@ -313,9 +325,9 @@ public class MainController {
 	 * Creates and returns a string ready to be passed on to a javascript engine,
 	 * which initializes all the necessary metric variables.
 	 * 
-	 * @param row The excel row with the values for our metrics.
-	 * @return filledRule The String of metrics turned into variables to use in the
-	 *         JS engine for running the rules.
+	 * @param row - The excel row with the values for our metrics.
+	 * @return String filledRule - The String of metrics turned into variables to
+	 *         use in the JS engine for running the rules.
 	 */
 	public String registerVariables(ExcelRow row) {
 		int ATFD = row.getATFD();
@@ -330,7 +342,7 @@ public class MainController {
 	/**
 	 * Returns the entire rules list
 	 * 
-	 * @return ArrayList<CodeQualityRule> - List with all the rules
+	 * @return List with all the rules
 	 */
 	public ArrayList<CodeQualityRule> getRulesList() {
 		return rulesList;
@@ -348,7 +360,7 @@ public class MainController {
 	/**
 	 * Receives an updated list of rules and replaces the old rules list with it
 	 * 
-	 * @param ArrayList<CodeQualityRule> newRules - New list of rules to consider
+	 * @param newRules - New list of rules to consider
 	 */
 	public void updateRulesList(ArrayList<CodeQualityRule> newRules) {
 		rulesList = newRules;

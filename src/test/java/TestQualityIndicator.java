@@ -9,6 +9,10 @@ import org.junit.runner.RunWith;
 
 import main.java.model.QualityIndicator;
 
+/**
+ * Tests for the Quality Indicator Model
+ *
+ */
 @RunWith(JUnitPlatform.class)
 class TestQualityIndicator {
 

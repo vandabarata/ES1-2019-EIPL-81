@@ -60,14 +60,14 @@ public class QualityRulesResultFrame {
 	/**
 	 * Displays the table with the results, as well as the quality indicators
 	 * 
-	 * @param String[][]       data - An Array of String arrays where which line is
-	 *                         a row in the results table, and each column is the
-	 *                         value of that result line for that column
-	 * @param String[]         colNames - An array of strings with the column names
-	 *                         for each column of the data parameter
-	 * @param QualityIndicator qualityIndicators - A model holding the needed
-	 *                         quality indicators after performing calculations for
-	 *                         the DCI, DII, ADCI and ADII stats
+	 * @param data              - An Array of String arrays where which line is a
+	 *                          row in the results table, and each column is the
+	 *                          value of that result line for that column
+	 * @param colNames          - An array of strings with the column names for each
+	 *                          column of the data parameter
+	 * @param qualityIndicators - A model holding the needed quality indicators
+	 *                          after performing calculations for the DCI, DII, ADCI
+	 *                          and ADII stats
 	 */
 	public void fillFrame(String[][] data, String[] colNames, QualityIndicator qualityIndicators) {
 		resultsTable = new JTable(data, colNames);
@@ -122,8 +122,8 @@ public class QualityRulesResultFrame {
 	 * JLabels is added accordingly with the layout pretended and displays the
 	 * quality indicators extracted from reading the excel file.
 	 * 
-	 * @param JPanel fileResultsPanel- the panel used to add the JLabels and display
-	 *               the results.
+	 * @param fileResultsPanel- the panel used to add the JLabels and display the
+	 *                          results.
 	 */
 	private void addContentToFileResultsforPanel(JPanel fileResultsPanel) {
 		fileResultsPanel.add(new JLabel(""));

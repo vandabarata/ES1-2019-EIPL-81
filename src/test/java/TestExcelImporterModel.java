@@ -13,6 +13,10 @@ import org.junit.runner.RunWith;
 
 import main.java.model.ExcelImporter;
 
+/**
+ * Tests for the ExcelImporterModel
+ *
+ */
 @RunWith(JUnitPlatform.class)
 class TestExcelImporterModel {
 

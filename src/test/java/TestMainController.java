@@ -13,6 +13,10 @@ import main.java.controller.MainController;
 import main.java.model.CodeQualityRule;
 import main.java.model.ExcelRow;
 
+/**
+ * Tests for the Main Controller
+ *
+ */
 @RunWith(JUnitPlatform.class)
 class TestMainController {
 

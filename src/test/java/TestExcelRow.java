@@ -10,6 +10,10 @@ import org.junit.runner.RunWith;
 import main.java.model.ExcelImporter;
 import main.java.model.ExcelRow;
 
+/**
+ * Tests for the ExcelRow model
+ *
+ */
 @RunWith(JUnitPlatform.class)
 class TestExcelRow {
 

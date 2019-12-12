@@ -25,7 +25,7 @@ public class ExcelImporter {
 	/**
 	 * Receives an excel file and parses it to a workbook object, if valid
 	 * 
-	 * @param String file
+	 * @param file - excel file to be imported
 	 */
 	public ExcelImporter(String file) {
 		try {
@@ -38,10 +38,9 @@ public class ExcelImporter {
 	/**
 	 * Gets the data from a row of the excel in a selected sheet
 	 * 
-	 * @param int sheetIndex - Index of the Excel sheet
-	 * @param int rowIndex - Index of the row from the Excel
-	 * @return String[] rowContent - An array with the cell values from the chosen
-	 *         row
+	 * @param sheetIndex - Index of the Excel sheet
+	 * @param rowIndex   - Index of the row from the Excel
+	 * @return rowContent - An array with the cell values from the chosen row
 	 */
 	public String[] getSingleRow(int sheetIndex, int rowIndex) {
 		ArrayList<String> rowContent = new ArrayList<String>();
@@ -60,9 +59,9 @@ public class ExcelImporter {
 	/**
 	 * Gets the data from a row of the excel from the first sheet
 	 * 
-	 * @param int rowIndex - Index of the row from the Excel
-	 * @return String[] rowContent - An array with the cell values taken from the
-	 *         chosen row from the first sheet
+	 * @param rowIndex - Index of the row from the Excel
+	 * @return rowContent - An array with the cell values taken from the chosen row
+	 *         from the first sheet
 	 */
 	public String[] getSingleRow(int rowIndex) {
 		ArrayList<String> rowContent = new ArrayList<String>();
@@ -81,9 +80,8 @@ public class ExcelImporter {
 	/**
 	 * Gets the data from all rows of the excel file
 	 * 
-	 * @param int sheetIndex - Index of the Excel sheet
-	 * @return ArrayList<String[]> rowsList - A list with an array for each row with
-	 *         their cell values
+	 * @param sheetIndex - Index of the Excel sheet
+	 * @return rowsList - A list with an array for each row with their cell values
 	 */
 	public ArrayList<String[]> getAllRows(int sheetIndex) {
 		ArrayList<String[]> rowsList = new ArrayList<String[]>();
@@ -107,8 +105,7 @@ public class ExcelImporter {
 	/**
 	 * Gets the data from all rows from the excel's first sheet
 	 * 
-	 * @return ArrayList<String[]> rowsList - A list with an array for each row with
-	 *         their cell values
+	 * @return rowsList - A list with an array for each row with their cell values
 	 */
 	public ArrayList<String[]> getAllRows() {
 		ArrayList<String[]> rowsList = new ArrayList<String[]>();

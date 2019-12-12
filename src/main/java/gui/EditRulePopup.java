@@ -33,7 +33,7 @@ public class EditRulePopup {
 
 	/** The rule being edited or created */
 	private CodeQualityRule rule;
-	
+
 	/**
 	 * An array of string with the rules conditions where every position is a new
 	 * line in the condition
@@ -60,7 +60,7 @@ public class EditRulePopup {
 
 	/**
 	 * The Combo Box displaying the available comparison operators for rule creation
-	 * (>, <, >=, \<=, ==, !=), in Basic Mode
+	 * in Basic Mode
 	 */
 	private JComboBox<String> comparisonOperatorListBox;
 
@@ -115,9 +115,11 @@ public class EditRulePopup {
 	/**
 	 * Constructs and initializes the GUI pop-up. It opens the Basic or Advanced
 	 * Mode depending on the rule it's using.
+	 * 
+	 * @param r - receives a rule for edition
 	 */
 	public EditRulePopup(CodeQualityRule r) {
-		rule = r;
+		this.rule = r;
 		advancedMode = rule.isAdvanced();
 		defaultRule = rule.isDefault();
 		initializePanels();
@@ -491,8 +493,8 @@ public class EditRulePopup {
 	 * Returns the JComboBox which holds the logical operators for a new rule
 	 * condition (AND and OR).
 	 * 
-	 * @return JComboBox<String> logicalOperatorListBox - the combobox with the 2
-	 *         available logical operators
+	 * @return logicalOperatorListBox - the combobox with the 2 available logical
+	 *         operators
 	 */
 	public JComboBox<String> getLogicalOperator() {
 		return logicalOperatorListBox;
@@ -502,8 +504,7 @@ public class EditRulePopup {
 	 * 
 	 * Returns the JComboBox which holds the values for metrics (LOC, LAA, etc).
 	 * 
-	 * @return JComboBox<String> metricsListBox - the combobox with the available
-	 *         metrics
+	 * @return metricsListBox - the combobox with the available metrics
 	 */
 	public JComboBox<String> getMetrics() {
 		return metricsListBox;
@@ -512,10 +513,9 @@ public class EditRulePopup {
 	/**
 	 * 
 	 * Returns the JComboBox which holds the possible comparisons for a new operator
-	 * (>, >=, <, <=, ==, !=).
 	 * 
-	 * @return JComboBox<String> comparisonOperatorListBox - the combobox with the
-	 *         available comparison operators
+	 * @return comparisonOperatorListBox - the combobox with the available
+	 *         comparison operators
 	 */
 	public JComboBox<String> getComparison() {
 		return comparisonOperatorListBox;
@@ -579,7 +579,7 @@ public class EditRulePopup {
 	 * Get the correct rule conditions, based on edition mode enabled, with no
 	 * parsing of the string.
 	 * 
-	 * @return String - The rule conditions string with no parsing
+	 * @return rawRuleConditions - The rule conditions string with no parsing
 	 */
 	public String getRawRuleConditions() {
 		String rawRuleConditions = "";

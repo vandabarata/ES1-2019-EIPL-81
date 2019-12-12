@@ -11,6 +11,10 @@ import main.java.gui.EditRulePopup;
 import main.java.model.CodeQualityRule;
 import main.java.model.Metric;
 
+/**
+ * Controller responsible for managing the rule edition and addition GUI
+ *
+ */
 public class EditRuleController {
 
 	/** GUI for editing and creating rules */
@@ -156,6 +160,7 @@ public class EditRuleController {
 	 * Parses the rule string from the Edit Rule Popup to use keywords valid for
 	 * Javascript code.
 	 * 
+	 * @param rawRuleConditions - receives a string with the rule's conditions
 	 * @return Returns a javascript-ready string for evaluation.
 	 */
 	public String getJavascriptIfStatementString(String rawRuleConditions) {
@@ -207,7 +212,7 @@ public class EditRuleController {
 	}
 
 	/**
-	 * Getter for an instance of EditRulePopup 
+	 * Getter for an instance of EditRulePopup
 	 * 
 	 * @return EditRulePopup controlled by this controller instance
 	 */

@@ -46,7 +46,7 @@ public class ExcelRow {
 	/**
 	 * Creates an ExcelRow parsing the given column values to usable attributes
 	 * 
-	 * @param String[] rowData - unformatted row's data
+	 * @param rowData - unformatted row's data
 	 */
 	public ExcelRow(String[] rowData) {
 		this.id = Integer.parseInt(rowData[0]);

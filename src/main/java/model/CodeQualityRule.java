@@ -27,12 +27,11 @@ public class CodeQualityRule {
 	/**
 	 * Creates a CodeQualityRule object based on:
 	 *
-	 * @param String  name - rule's name, shown in UI
-	 * @param String  rule - rule's content, ie, the conditions that define it
-	 * @param boolean isDefault - if a rule is default, only its thresholds can be
-	 *                edited
-	 * @param boolean isAdvanced - if a rule is advanced, it can never be opened in
-	 *                the basic UI
+	 * @param name       - rule's name, shown in UI
+	 * @param rule       - rule's content, ie, the conditions that define it
+	 * @param isDefault  - if a rule is default, only its thresholds can be edited
+	 * @param isAdvanced - if a rule is advanced, it can never be opened in the
+	 *                   basic UI
 	 */
 	public CodeQualityRule(String name, String rule, boolean isDefault, boolean isAdvanced) {
 		this.name = name;
@@ -49,7 +48,7 @@ public class CodeQualityRule {
 	/**
 	 * Changes the rule's name to a new one
 	 * 
-	 * @param String - rule's new name. Only changes if it isn't a default rule
+	 * @param name - rule's new name. Only changes if it isn't a default rule
 	 */
 	public void setName(String name) {
 		if (!isDefault)
@@ -68,7 +67,7 @@ public class CodeQualityRule {
 	/**
 	 * Changes the rule's conditions
 	 * 
-	 * @param String - rule's new conditions.
+	 * @param rule - rule's new conditions.
 	 */
 	public void setRule(String rule) {
 		this.rule = rule;
@@ -97,7 +96,7 @@ public class CodeQualityRule {
 	 * Sets the state of the rule, determining if it is an advanced rule or a basic
 	 * one. If it's a default rule, considers it for edition only in advanced mode.
 	 * 
-	 * @param boolean isAdvanced - if a rule should be opened in advanced mode
+	 * @param isAdvanced - if a rule should be opened in advanced mode
 	 */
 	public void setAdvanced(boolean isAdvanced) {
 		if (isDefault) {
@@ -129,8 +128,9 @@ public class CodeQualityRule {
 	/**
 	 * Establishes a way of comparing rules based on their id
 	 * 
-	 * @param CodeQualityRule otherRule - receives another rule and compares it to
-	 *                        this one based on their id
+	 * @param otherRule - receives another rule and compares it to this one based on
+	 *                  their id
+	 * @return true if rules have the same id, false otherwise
 	 */
 	public boolean equals(CodeQualityRule otherRule) {
 		return this.id == otherRule.id;

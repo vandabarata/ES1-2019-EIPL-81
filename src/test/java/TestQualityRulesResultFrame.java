@@ -4,9 +4,17 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
 import main.java.gui.QualityRulesResultFrame;
 import main.java.model.QualityIndicator;
 
+/**
+ * Tests for the QualitRulesyResultFrame
+ *
+ */
+@RunWith(JUnitPlatform.class)
 class TestQualityRulesResultFrame {
 
 	/* QualityRuleResultFrame that will be user for each test */

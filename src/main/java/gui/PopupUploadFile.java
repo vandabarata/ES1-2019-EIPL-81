@@ -83,6 +83,8 @@ public class PopupUploadFile {
 
 	/**
 	 * Displays a warning with the given message
+	 * 
+	 * @param message - the messaged to be displayed on the warning
 	 */
 	public void displayErrorMessage(String message) {
 		JOptionPane.showMessageDialog(frame, message, "Warning", JOptionPane.WARNING_MESSAGE);

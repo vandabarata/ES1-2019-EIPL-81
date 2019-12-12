@@ -110,8 +110,8 @@ public class QualityIndicator {
 	 * Creates a QualityIndicator object based on excelRows, that will calculate the
 	 * Quality Indicators based on information taken from the Excel file
 	 * 
-	 * @param String[][] resultsRows - matrix holding the quality results for the
-	 *                   tools and rules in the excel and defined by the user
+	 * @param resultsRows - matrix holding the quality results for the tools and
+	 *                    rules in the excel and defined by the user
 	 */
 	public QualityIndicator(String[][] resultsRows) {
 		PMDDCI = 0;

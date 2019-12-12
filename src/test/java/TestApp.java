@@ -1,9 +1,16 @@
 package test.java;
 
 import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
 
 import main.java.App;
 
+/**
+ * Tests for the main app
+ *
+ */
+@RunWith(JUnitPlatform.class)
 class TestApp {
 
 	/**
