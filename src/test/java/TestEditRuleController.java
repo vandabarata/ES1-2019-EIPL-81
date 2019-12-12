@@ -40,7 +40,7 @@ class TestEditRuleController {
 	 */
 	@BeforeEach
 	void setUp() {
-		testRule = new CodeQualityRule("test", "LOC > 10", false, false);
+		testRule = new CodeQualityRule("test", "LOC > 10", false, true);
 		testDefaultRuleLongMethod = new CodeQualityRule("custom_is_long_method", "LOC > 80 && CYCLO > 10", true, true);
 		testDefaultRuleFeatureEnvy = new CodeQualityRule("custom_is_feature_envy", "ATFD > 4 && LAA < 0.42", true,
 				true);
