@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>QualityRulesResultFrame.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 14:59:49)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main.java.gui</a> &gt; <span class="el_source">QualityRulesResultFrame.java</span></div><h1>QualityRulesResultFrame.java</h1><pre class="source lang-java linenums">/**
+ * 
+ */
+package main.java.gui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.EmptyBorder;
+
+import main.java.model.QualityIndicator;
+
+/**
+ * The Code Quality Rules Results Frame will display a table with the results
+ * for running the CodeQualityRules against the methods data uploaded by the
+ * user.
+ */
+public class QualityRulesResultFrame {
+
+	/** Frame that displays the results of the code quality rules and tools */
+	private JFrame qualityFrame;
+
+	/** Panel in the center of the frame where the results are presented */
+	private JPanel centralPanel;
+
+	/** Table with the rules and tools results for code quality */
+	private JTable resultsTable;
+
+	/** Panel in the bottom of the frame presenting the quality indicators stats */
+	private JPanel southPanel;
+
+	/**
+	 * qualityIndicator - Object responsible for calculating the quality indicators
+	 * such as DCI, DII, ADCI and ADII
+	 */
+	private QualityIndicator qualityIndicators;
+
+	/** Constants that help with dimensioning and positioning the frame */
+	private static final int WIDTH = 800;
+	private static final int HEIGHT = 500;
+<span class="fc" id="L48">	private static final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="fc" id="L49">	private static final int SCREEN_WIDTH = dimension.width;</span>
+<span class="fc" id="L50">	private static final int SCREEN_HEIGHT = dimension.height;</span>
+
+	/**
+	 * Frame that presents the results for code quality, based on the tools, rules
+	 * and given indicators
+	 */
+<span class="fc" id="L56">	public QualityRulesResultFrame() {</span>
+<span class="fc" id="L57">		buildFrame();</span>
+<span class="fc" id="L58">	}</span>
+
+	/**
+	 * Displays the table with the results, as well as the quality indicators
+	 * 
+	 * @param data              - An Array of String arrays where which line is a
+	 *                          row in the results table, and each column is the
+	 *                          value of that result line for that column
+	 * @param colNames          - An array of strings with the column names for each
+	 *                          column of the data parameter
+	 * @param qualityIndicators - A model holding the needed quality indicators
+	 *                          after performing calculations for the DCI, DII, ADCI
+	 *                          and ADII stats
+	 */
+	public void fillFrame(String[][] data, String[] colNames, QualityIndicator qualityIndicators) {
+<span class="fc" id="L73">		resultsTable = new JTable(data, colNames);</span>
+<span class="fc" id="L74">		this.qualityIndicators = qualityIndicators;</span>
+<span class="fc" id="L75">		updateCentralPanel();</span>
+<span class="fc" id="L76">		updateSouthPanel();</span>
+<span class="fc" id="L77">	}</span>
+
+	/**
+	 * Displays the QualityRulesResultFrame
+	 */
+	public void show() {
+<span class="fc" id="L83">		qualityFrame.repaint();</span>
+<span class="fc" id="L84">		qualityFrame.setVisible(true);</span>
+<span class="fc" id="L85">	}</span>
+
+	/**
+	 * Closes the QualityRulesResultFrame
+	 */
+	public void hide() {
+<span class="fc" id="L91">		qualityFrame.setVisible(false);</span>
+<span class="fc" id="L92">		qualityFrame.dispose();</span>
+<span class="fc" id="L93">	}</span>
+
+	/**
+	 * Updates the rule results whenever the frame is (re)created
+	 */
+	private void updateCentralPanel() {
+<span class="fc" id="L99">		centralPanel = new JPanel();</span>
+<span class="fc" id="L100">		centralPanel.setLayout(new BorderLayout());</span>
+<span class="fc" id="L101">		JScrollPane tableScrollPane = new JScrollPane(resultsTable);</span>
+<span class="fc" id="L102">		centralPanel.add(tableScrollPane);</span>
+<span class="fc" id="L103">		qualityFrame.add(centralPanel, BorderLayout.CENTER);</span>
+<span class="fc" id="L104">	}</span>
+
+	/**
+	 * Updates the quality indicators panel
+	 */
+	private void updateSouthPanel() {
+<span class="fc" id="L110">		southPanel = new JPanel();</span>
+<span class="fc" id="L111">		southPanel.setBorder(new EmptyBorder(6, 6, 6, 6));</span>
+<span class="fc" id="L112">		southPanel.setLayout(new BorderLayout(5, 5));</span>
+<span class="fc" id="L113">		JPanel fileResultsPanel = new JPanel();</span>
+<span class="fc" id="L114">		fileResultsPanel.setLayout(new GridLayout(5, 5, 5, 5));</span>
+<span class="fc" id="L115">		addContentToFileResultsforPanel(fileResultsPanel);</span>
+<span class="fc" id="L116">		southPanel.add(fileResultsPanel, BorderLayout.CENTER);</span>
+<span class="fc" id="L117">		qualityFrame.add(southPanel, BorderLayout.SOUTH);</span>
+<span class="fc" id="L118">	}</span>
+
+	/**
+	 * Fills a panel with a grid layout of 3 by 5 with JLabels. Each one of the
+	 * JLabels is added accordingly with the layout pretended and displays the
+	 * quality indicators extracted from reading the excel file.
+	 * 
+	 * @param fileResultsPanel- the panel used to add the JLabels and display the
+	 *                          results.
+	 */
+	private void addContentToFileResultsforPanel(JPanel fileResultsPanel) {
+<span class="fc" id="L129">		fileResultsPanel.add(new JLabel(&quot;&quot;));</span>
+<span class="fc" id="L130">		fileResultsPanel.add(new JLabel(&quot;DCI&quot;));</span>
+<span class="fc" id="L131">		fileResultsPanel.add(new JLabel(&quot;DII&quot;));</span>
+<span class="fc" id="L132">		fileResultsPanel.add(new JLabel(&quot;ADCI&quot;));</span>
+<span class="fc" id="L133">		fileResultsPanel.add(new JLabel(&quot;ADII&quot;));</span>
+
+<span class="fc" id="L135">		fileResultsPanel.add(new JLabel(&quot;iPlasma&quot;));</span>
+<span class="fc" id="L136">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDCI())));</span>
+<span class="fc" id="L137">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaDII())));</span>
+<span class="fc" id="L138">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADCI())));</span>
+<span class="fc" id="L139">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getIPlasmaADII())));</span>
+
+<span class="fc" id="L141">		fileResultsPanel.add(new JLabel(&quot;PMD&quot;));</span>
+<span class="fc" id="L142">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDCI())));</span>
+<span class="fc" id="L143">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDDII())));</span>
+<span class="fc" id="L144">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADCI())));</span>
+<span class="fc" id="L145">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getPMDADII())));</span>
+
+<span class="fc" id="L147">		fileResultsPanel.add(new JLabel(&quot;custom_is_long_method&quot;));</span>
+<span class="fc" id="L148">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongDCI())));</span>
+<span class="fc" id="L149">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongDII())));</span>
+<span class="fc" id="L150">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongADCI())));</span>
+<span class="fc" id="L151">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomLongADII())));</span>
+
+<span class="fc" id="L153">		fileResultsPanel.add(new JLabel(&quot;custom_is_feature_envy&quot;));</span>
+<span class="fc" id="L154">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyDCI())));</span>
+<span class="fc" id="L155">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyDII())));</span>
+<span class="fc" id="L156">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyADCI())));</span>
+<span class="fc" id="L157">		fileResultsPanel.add(new JLabel(String.valueOf(qualityIndicators.getCustomEnvyADII())));</span>
+<span class="fc" id="L158">	}</span>
+
+	/**
+	 * Builds the main frame for QualityRulesResultFrame and positions it in the
+	 * center of the screen
+	 */
+	private void buildFrame() {
+<span class="fc" id="L165">		qualityFrame = new JFrame();</span>
+<span class="fc" id="L166">		qualityFrame.setTitle(&quot;Quality Code Results&quot;);</span>
+<span class="fc" id="L167">		qualityFrame.setLayout(new BorderLayout(5, 5));</span>
+
+<span class="fc" id="L169">		Dimension windowSize = new Dimension(WIDTH, HEIGHT);</span>
+<span class="fc" id="L170">		qualityFrame.setMinimumSize(windowSize);</span>
+<span class="fc" id="L171">		qualityFrame.setLocation(SCREEN_WIDTH / 2 - (WIDTH / 2), SCREEN_HEIGHT / 2 - (HEIGHT / 2));</span>
+<span class="fc" id="L172">	}</span>
+
+	/**
+	 * Updates the content of the frame with the new results
+	 */
+	public void updateFrame() {
+<span class="fc" id="L178">		updateCentralPanel();</span>
+<span class="fc" id="L179">		updateSouthPanel();</span>
+<span class="fc" id="L180">		show();</span>
+<span class="fc" id="L181">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 14:59:49)</div></body></html>

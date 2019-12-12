@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>EditRulePopup.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 14:59:49)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">main.java.gui</a> &gt; <span class="el_source">EditRulePopup.java</span></div><h1>EditRulePopup.java</h1><pre class="source lang-java linenums">package main.java.gui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
+import java.util.ArrayList;
+
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
+
+import main.java.model.CodeQualityRule;
+import main.java.model.LogicalOperator;
+import main.java.model.Metric;
+import main.java.model.ComparisonOperator;
+
+/**
+ * GUI pop-up responsible for allowing the user to edit and add different rules
+ * for visualising the excel table.
+ */
+public class EditRulePopup {
+
+	/** The rule being edited or created */
+	private CodeQualityRule rule;
+
+	/**
+	 * An array of string with the rules conditions where every position is a new
+	 * line in the condition
+	 */
+<span class="fc" id="L41">	private ArrayList&lt;String&gt; ruleConditions = new ArrayList&lt;String&gt;();</span>
+
+	/** The frame of the rule edition GUI */
+	private JFrame frame;
+
+	/** The rule name text field in the GUI */
+	private JTextField ruleNameField;
+
+	/**
+	 * The Combo Box displaying the options of logical operators available for rule
+	 * creation (AND, OR), for Basic Mode
+	 */
+	private JComboBox&lt;String&gt; logicalOperatorListBox;
+
+	/**
+	 * The Combo Box displaying the available metrics for rule creation (LOC, CYCLO,
+	 * ATFD, LAA), for Basic Mode
+	 */
+	private JComboBox&lt;String&gt; metricsListBox;
+
+	/**
+	 * The Combo Box displaying the available comparison operators for rule creation
+	 * in Basic Mode
+	 */
+	private JComboBox&lt;String&gt; comparisonOperatorListBox;
+
+	/**
+	 * The Text Area the displays the rule conditions and that can be edited by the
+	 * user on Advanced Mode
+	 */
+	private JTextArea ruleTextArea;
+
+	/** The Delete rule button */
+	private JButton deleteButton;
+
+	/** The Save rule button */
+	private JButton saveButton;
+
+	/** The Save rule button */
+	private JButton advancedModeButton;
+
+	/** The main JPanel of the GUI */
+	private JPanel mainPanel;
+
+	/** The JPanel to display the rule's name */
+	private JPanel namePanel;
+
+	/** The JPanel to display the rule's conditions */
+	private JPanel ruleConditionsPanel;
+	/**
+	 * The JPanel to display the buttons to switch between Basic and Advanced modes
+	 */
+	private JPanel editorComplexityTogglePanel;
+
+	/** The JPanel to display the current rule conditions added in Basic Mode */
+	private JPanel ruleConditionsListPanel;
+
+	/**
+	 * The JPanel to display the interface to add a new rule condition in Basic Mode
+	 */
+	private JPanel addNewRuleConditionPanel;
+
+	/** The JPanel to display the action buttons (Clear/Delete/Save) */
+	private JPanel controlPanel;
+
+	/** The JPanel for the content in the center of the GUI */
+	private JPanel centerPanel;
+
+	/** If the GUI is on Advanced Mode */
+	private boolean advancedMode;
+
+	/** If the rule being edited is a Default Rule */
+	private boolean defaultRule;
+
+	/**
+	 * Constructs and initializes the GUI pop-up. It opens the Basic or Advanced
+	 * Mode depending on the rule it's using.
+	 * 
+	 * @param r - receives a rule for edition
+	 */
+<span class="fc" id="L121">	public EditRulePopup(CodeQualityRule r) {</span>
+<span class="fc" id="L122">		rule = r;</span>
+<span class="fc" id="L123">		advancedMode = rule.isAdvanced();</span>
+<span class="fc" id="L124">		defaultRule = rule.isDefault();</span>
+<span class="fc" id="L125">		initializePanels();</span>
+<span class="fc" id="L126">		frame = new JFrame(&quot;Personalized Rules&quot;);</span>
+<span class="fc" id="L127">		frame.add(createMainPanel());</span>
+<span class="fc" id="L128">		frame.setLocationRelativeTo(null);</span>
+<span class="fc" id="L129">		final int FRAME_X = 685;</span>
+<span class="fc" id="L130">		final int FRAME_Y = 300;</span>
+<span class="fc" id="L131">		frame.setMinimumSize(new Dimension(FRAME_X, FRAME_Y));</span>
+<span class="fc" id="L132">		frame.setSize(new Dimension(FRAME_X, FRAME_Y));</span>
+<span class="fc" id="L133">		final Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();</span>
+<span class="fc" id="L134">		final int SCREEN_WIDTH = dimension.width;</span>
+<span class="fc" id="L135">		final int SCREEN_HEIGHT = dimension.height;</span>
+<span class="fc" id="L136">		frame.setLocation(SCREEN_WIDTH / 2 - (FRAME_X / 2), SCREEN_HEIGHT / 2 - (FRAME_Y / 2));</span>
+
+<span class="fc" id="L138">		frame.setVisible(true);</span>
+
+<span class="fc" id="L140">	}</span>
+
+	/**
+	 * Returns the JPanel where all other JPanels are nested
+	 * 
+	 * @return JPanel - the panel which shows the EditRule GUI
+	 */
+	private JPanel createMainPanel() {
+<span class="fc" id="L148">		mainPanel.setLayout(new BorderLayout());</span>
+<span class="fc" id="L149">		createNamePanel();</span>
+<span class="fc" id="L150">		createCenterPanel();</span>
+<span class="fc" id="L151">		createControlPanel();</span>
+<span class="fc" id="L152">		mainPanel.add(namePanel, BorderLayout.NORTH);</span>
+<span class="fc" id="L153">		mainPanel.add(centerPanel, BorderLayout.CENTER);</span>
+<span class="fc" id="L154">		mainPanel.add(controlPanel, BorderLayout.SOUTH);</span>
+<span class="fc" id="L155">		return mainPanel;</span>
+	}
+
+	/**
+	 * Creates the JPanel responsible for holding the rule's name. In case of a
+	 * default rule, name is a non editable text field because it cannot be changed.
+	 */
+	private void createNamePanel() {
+<span class="fc" id="L163">		JLabel nameLabel = new JLabel(&quot;Name: &quot;, SwingConstants.LEFT);</span>
+<span class="fc" id="L164">		namePanel.setBorder(new EmptyBorder(0, 0, 10, 0));</span>
+<span class="fc" id="L165">		namePanel.add(nameLabel, BorderLayout.CENTER);</span>
+<span class="fc" id="L166">		ruleNameField = new JTextField();</span>
+<span class="fc" id="L167">		ruleNameField.setText(rule.getName());</span>
+<span class="fc" id="L168">		ruleNameField.setMinimumSize(new Dimension(500, 25));</span>
+<span class="fc" id="L169">		ruleNameField.setPreferredSize(new Dimension(500, 25));</span>
+
+<span class="fc bfc" id="L171" title="All 2 branches covered.">		if (rule.isDefault()) {</span>
+<span class="fc" id="L172">			ruleNameField.setEditable(false);</span>
+		}
+<span class="fc" id="L174">		namePanel.add(ruleNameField, BorderLayout.EAST);</span>
+<span class="fc" id="L175">	}</span>
+
+	/**
+	 * Returns the JPanel responsible for holding both the ruleConditionsPanel,
+	 * which allows edits to the current rule, and the complexity toggle panel,
+	 * which allows changing in between the Basic and Advanced modes.
+	 * 
+	 * @return JPanel centerPanel - the panel at the center which occupies most of
+	 *         the rule edition GUI
+	 */
+	private JPanel createCenterPanel() {
+<span class="fc" id="L186">		createRuleConditionsPanel();</span>
+<span class="fc" id="L187">		createEditorComplexityTogglePanel();</span>
+<span class="fc" id="L188">		centerPanel.setLayout(new BorderLayout());</span>
+<span class="fc" id="L189">		centerPanel.add(ruleConditionsPanel, BorderLayout.CENTER);</span>
+<span class="fc" id="L190">		centerPanel.add(editorComplexityTogglePanel, BorderLayout.EAST);</span>
+<span class="fc" id="L191">		return centerPanel;</span>
+	}
+
+	/**
+	 * Returns the JPanel responsible for holding both the current list of rule
+	 * conditions, and the line which allows the addition of more conditions. In
+	 * advanced mode, this panel holds a JTextArea, which can be freely edited by
+	 * the user.
+	 * 
+	 * @return JPanel ruleConditionsPanel - panel within the centerPanel which holds
+	 *         the rules conditions. Varies depending on being in advanced or basic
+	 *         mode
+	 */
+	private JPanel createRuleConditionsPanel() {
+<span class="pc bpc" id="L205" title="2 of 6 branches missed.">		if (advancedMode || defaultRule || rule.getName() != &quot;&quot;) {</span>
+
+<span class="fc" id="L207">			ruleConditionsPanel.removeAll();</span>
+<span class="fc" id="L208">			ruleConditionsPanel.setLayout(new BorderLayout());</span>
+
+			String text;
+			JLabel ruleConditionsTextPaneLabel;
+
+<span class="fc bfc" id="L213" title="All 2 branches covered.">			if (rule.getRule().isEmpty()) {</span>
+<span class="fc" id="L214">				ruleConditionsTextPaneLabel = new JLabel(&quot;Add rule conditions as follows: &quot;);</span>
+
+<span class="fc" id="L216">				text = &quot;Delete anything that doesn't follow the following format, including this helping text: \nLOC &gt; 10\nAND LAA == 15&quot;;</span>
+<span class="fc" id="L217">			}</span>
+
+			else {
+<span class="fc" id="L220">				ruleConditionsTextPaneLabel = new JLabel(&quot;Rule conditions:&quot;);</span>
+<span class="fc" id="L221">				String parsedRule = rule.getRule().replaceAll(&quot;\\&amp;\\&amp;&quot;, &quot;AND&quot;).replaceAll(&quot;\\|\\|&quot;, &quot;OR&quot;);</span>
+<span class="fc" id="L222">				text = parsedRule;</span>
+			}
+
+<span class="fc" id="L225">			ruleTextArea.setText(text);</span>
+
+<span class="fc" id="L227">			final JScrollPane advancedRuleConditionsPane = new JScrollPane(ruleTextArea,</span>
+<span class="fc" id="L228">					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);</span>
+
+<span class="fc" id="L230">			ruleConditionsPanel.setBorder(new EmptyBorder(10, 10, 10, 10));</span>
+
+<span class="fc" id="L232">			String availableMetricsText = new String();</span>
+<span class="fc bfc" id="L233" title="All 2 branches covered.">			for (Metric metric : Metric.values()) {</span>
+<span class="fc" id="L234">				availableMetricsText = availableMetricsText + metric.name() + &quot; &quot;;</span>
+			}
+
+<span class="fc" id="L237">			JLabel availableMetrics = new JLabel(&quot;Available metrics: \n&quot; + availableMetricsText);</span>
+
+<span class="fc" id="L239">			ruleConditionsPanel.add(advancedRuleConditionsPane, BorderLayout.CENTER);</span>
+<span class="fc" id="L240">			ruleConditionsPanel.add(ruleConditionsTextPaneLabel, BorderLayout.NORTH);</span>
+<span class="fc" id="L241">			ruleConditionsPanel.add(availableMetrics, BorderLayout.SOUTH);</span>
+
+<span class="fc" id="L243">		} else {</span>
+
+<span class="fc" id="L245">			ruleConditionsPanel.removeAll();</span>
+<span class="fc" id="L246">			ruleConditionsListPanel.setLayout(new BoxLayout(ruleConditionsListPanel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L247">			ruleConditionsListPanel.setMinimumSize(new Dimension(500, 500));</span>
+<span class="fc" id="L248">			final JScrollPane ruleConditionsScrollpane = new JScrollPane(ruleConditionsListPanel,</span>
+<span class="fc" id="L249">					JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);</span>
+
+<span class="fc" id="L251">			createAddRuleConditionPanel();</span>
+<span class="fc" id="L252">			ruleConditionsPanel.setLayout(new BorderLayout());</span>
+<span class="fc" id="L253">			ruleConditionsPanel.add(addNewRuleConditionPanel, BorderLayout.NORTH);</span>
+<span class="fc" id="L254">			ruleConditionsPanel.add(ruleConditionsScrollpane, BorderLayout.CENTER);</span>
+<span class="fc" id="L255">			fillRuleConditionsListPanel();</span>
+<span class="fc" id="L256">			setLogicalOperatorBoxVisibility();</span>
+<span class="fc" id="L257">			ruleConditionsListPanel.revalidate();</span>
+<span class="fc" id="L258">			ruleConditionsListPanel.repaint();</span>
+		}
+<span class="fc" id="L260">		return ruleConditionsPanel;</span>
+	}
+
+	/**
+	 * 
+	 * Returns the JPanel holding the line which allows users to add new rule
+	 * conditions into the rule's conditions list. For Basic Mode.
+	 * 
+	 * @return JPanel addNewRuleConditionPanel - the panel in basic mode which
+	 *         allows user to create conditions and shows new rule conditions when
+	 *         these are added
+	 */
+	private JPanel createAddRuleConditionPanel() {
+<span class="fc" id="L273">		addNewRuleConditionPanel.removeAll();</span>
+<span class="fc" id="L274">		addNewRuleConditionPanel.setLayout(new GridLayout(1, 6));</span>
+<span class="fc" id="L275">		logicalOperatorListBox = new JComboBox&lt;&gt;();</span>
+<span class="fc" id="L276">		setLogicalOperatorBoxVisibility();</span>
+<span class="fc" id="L277">		JLabel ifCondition = new JLabel(&quot;IF&quot;, SwingConstants.CENTER);</span>
+
+<span class="fc" id="L279">		metricsListBox = new JComboBox&lt;&gt;();</span>
+<span class="fc bfc" id="L280" title="All 2 branches covered.">		for (Metric metric : Metric.values()) {</span>
+<span class="fc" id="L281">			metricsListBox.addItem(metric.name());</span>
+		}
+
+<span class="fc" id="L284">		comparisonOperatorListBox = new JComboBox&lt;&gt;();</span>
+<span class="fc bfc" id="L285" title="All 2 branches covered.">		for (ComparisonOperator comp : ComparisonOperator.values()) {</span>
+<span class="fc" id="L286">			comparisonOperatorListBox.addItem(comp.getOperator());</span>
+		}
+
+<span class="fc" id="L289">		JTextField threshold = new JTextField(&quot;&quot;);</span>
+
+<span class="fc" id="L291">		JButton addRuleConditionButton = new JButton(&quot;Add&quot;);</span>
+<span class="fc" id="L292">		addRuleConditionButton.addActionListener(e -&gt; {</span>
+			String ruleCondition;
+<span class="nc" id="L294">			String baseRuleCondition = &quot; &quot; + comparisonOperatorListBox.getSelectedItem() + &quot; &quot; + threshold.getText()</span>
+<span class="nc" id="L295">					+ &quot; &quot;;</span>
+			try {
+<span class="nc" id="L297">				Integer.parseInt(threshold.getText());</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">				if (ruleConditions.isEmpty()) {</span>
+<span class="nc" id="L299">					ruleCondition = &quot;IF &quot; + metricsListBox.getSelectedItem() + baseRuleCondition;</span>
+<span class="nc" id="L300">				} else {</span>
+<span class="nc" id="L301">					ruleCondition = logicalOperatorListBox.getSelectedItem() + &quot; &quot; + metricsListBox.getSelectedItem()</span>
+<span class="nc" id="L302">							+ baseRuleCondition;</span>
+				}
+<span class="nc" id="L304">				ruleConditions.add(ruleCondition);</span>
+<span class="nc" id="L305">			} catch (NumberFormatException ex) {</span>
+<span class="nc" id="L306">				JOptionPane.showMessageDialog(null, &quot;Please check if your threshold input is correct!&quot;);</span>
+			}
+
+<span class="nc" id="L309">			fillRuleConditionsListPanel();</span>
+<span class="nc" id="L310">			setLogicalOperatorBoxVisibility();</span>
+<span class="nc" id="L311">			ruleConditionsListPanel.revalidate();</span>
+<span class="nc" id="L312">			ruleConditionsListPanel.repaint();</span>
+<span class="nc" id="L313">		});</span>
+
+<span class="fc" id="L315">		addNewRuleConditionPanel.add(logicalOperatorListBox);</span>
+<span class="fc" id="L316">		addNewRuleConditionPanel.add(ifCondition);</span>
+<span class="fc" id="L317">		addNewRuleConditionPanel.add(metricsListBox);</span>
+<span class="fc" id="L318">		addNewRuleConditionPanel.add(comparisonOperatorListBox);</span>
+<span class="fc" id="L319">		addNewRuleConditionPanel.add(threshold);</span>
+<span class="fc" id="L320">		addNewRuleConditionPanel.add(addRuleConditionButton);</span>
+<span class="fc" id="L321">		addNewRuleConditionPanel.setPreferredSize(new Dimension(650, 25));</span>
+<span class="fc" id="L322">		addNewRuleConditionPanel.setMaximumSize(new Dimension(650, 25));</span>
+<span class="fc" id="L323">		return addNewRuleConditionPanel;</span>
+
+	}
+
+	/**
+	 * 
+	 * Returns the JPanel which holds the buttons to switch between advanced and
+	 * basic modes.
+	 * 
+	 * @return JPanel editorComplexityTogglePanel - Panel which allows the user to
+	 *         toggle between basic and advanced modes
+	 */
+	private JPanel createEditorComplexityTogglePanel() {
+<span class="fc" id="L336">		editorComplexityTogglePanel.setLayout(new BoxLayout(editorComplexityTogglePanel, BoxLayout.Y_AXIS));</span>
+<span class="fc" id="L337">		JButton basicModeButton = new JButton(&quot;Basic&quot;);</span>
+<span class="fc" id="L338">		advancedModeButton = new JButton(&quot;Advanced&quot;);</span>
+<span class="fc" id="L339">		basicModeButton.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="fc" id="L340">		advancedModeButton.setAlignmentX(Component.CENTER_ALIGNMENT);</span>
+<span class="fc" id="L341">		basicModeButton.setPreferredSize(advancedModeButton.getPreferredSize());</span>
+<span class="fc" id="L342">		basicModeButton.setMaximumSize(advancedModeButton.getMaximumSize());</span>
+<span class="fc" id="L343">		basicModeButton.setMinimumSize(advancedModeButton.getMinimumSize());</span>
+<span class="fc" id="L344">		basicModeButton.setEnabled(false);</span>
+<span class="fc bfc" id="L345" title="All 2 branches covered.">		if (rule.getName() != &quot;&quot;) {</span>
+<span class="fc" id="L346">			advancedModeButton.setEnabled(false);</span>
+		}
+
+<span class="fc" id="L349">		basicModeButton.addActionListener(e -&gt; {</span>
+<span class="nc bnc" id="L350" title="All 4 branches missed.">			if (!(rule.isDefault() || rule.getName() != &quot;&quot;)) {</span>
+<span class="nc" id="L351">				advancedModeButton.setEnabled(true);</span>
+<span class="nc" id="L352">				advancedMode = false;</span>
+<span class="nc" id="L353">				createRuleConditionsPanel();</span>
+<span class="nc" id="L354">				ruleConditionsPanel.revalidate();</span>
+<span class="nc" id="L355">				ruleConditionsPanel.repaint();</span>
+<span class="nc" id="L356">				basicModeButton.setEnabled(false);</span>
+			}
+
+<span class="nc" id="L359">		});</span>
+
+<span class="fc" id="L361">		advancedModeButton.addActionListener(e -&gt; {</span>
+<span class="pc bpc" id="L362" title="2 of 4 branches missed.">			if (rule.isDefault() || rule.getName() == &quot;&quot;) {</span>
+<span class="fc" id="L363">				basicModeButton.setEnabled(true);</span>
+<span class="fc" id="L364">			} else {</span>
+<span class="nc" id="L365">				basicModeButton.setEnabled(false);</span>
+			}
+<span class="fc" id="L367">			advancedMode = true;</span>
+<span class="fc" id="L368">			createRuleConditionsPanel();</span>
+<span class="fc" id="L369">			ruleConditionsPanel.revalidate();</span>
+<span class="fc" id="L370">			ruleConditionsPanel.repaint();</span>
+<span class="fc" id="L371">			advancedModeButton.setEnabled(false);</span>
+<span class="fc" id="L372">		});</span>
+<span class="fc" id="L373">		editorComplexityTogglePanel.add(basicModeButton);</span>
+<span class="fc" id="L374">		editorComplexityTogglePanel.add(advancedModeButton);</span>
+
+<span class="fc" id="L376">		return editorComplexityTogglePanel;</span>
+	}
+
+	/**
+	 * Returns the JPanel responsible for holding the JButtons which allow all rule
+	 * conditions to be cleared, and rule to be saved or deleted.
+	 * 
+	 * @return JPanel controlPanel - Panel which allows the user to clear metrics,
+	 *         delete rule or save it
+	 */
+	private JPanel createControlPanel() {
+<span class="fc" id="L387">		controlPanel.setLayout(new GridLayout(1, 3));</span>
+
+<span class="fc" id="L389">		JButton clearButton = new JButton(&quot;Clear Rule Conditions&quot;);</span>
+<span class="fc" id="L390">		deleteButton = new JButton(&quot;Delete Rule&quot;);</span>
+<span class="fc" id="L391">		saveButton = new JButton(&quot;Save Rule&quot;);</span>
+
+<span class="fc" id="L393">		clearButton.addActionListener(e -&gt; {</span>
+<span class="nc" id="L394">			clearRuleConditionsListPanel();</span>
+<span class="nc" id="L395">		});</span>
+
+<span class="fc" id="L397">		controlPanel.add(clearButton);</span>
+<span class="fc" id="L398">		controlPanel.add(deleteButton);</span>
+<span class="fc" id="L399">		controlPanel.add(saveButton);</span>
+<span class="fc" id="L400">		return controlPanel;</span>
+
+	}
+
+	/**
+	 * Initialises all the JPanels at once.
+	 */
+	private void initializePanels() {
+<span class="fc" id="L408">		mainPanel = new JPanel();</span>
+<span class="fc" id="L409">		namePanel = new JPanel();</span>
+<span class="fc" id="L410">		ruleConditionsPanel = new JPanel();</span>
+<span class="fc" id="L411">		editorComplexityTogglePanel = new JPanel();</span>
+<span class="fc" id="L412">		ruleConditionsListPanel = new JPanel();</span>
+<span class="fc" id="L413">		addNewRuleConditionPanel = new JPanel();</span>
+<span class="fc" id="L414">		controlPanel = new JPanel();</span>
+<span class="fc" id="L415">		centerPanel = new JPanel();</span>
+<span class="fc" id="L416">		ruleTextArea = new JTextArea();</span>
+<span class="fc" id="L417">	}</span>
+
+	/**
+	 * Fills the rule's conditions list in the UI with the contents found in the
+	 * ruleConditions ArrayList.
+	 */
+	private void fillRuleConditionsListPanel() {
+<span class="fc" id="L424">		ruleConditionsListPanel.removeAll();</span>
+
+<span class="pc bpc" id="L426" title="1 of 2 branches missed.">		for (String condition : ruleConditions) {</span>
+<span class="nc" id="L427">			JPanel panel = new JPanel();</span>
+<span class="nc" id="L428">			panel.setLayout(new GridLayout(1, 2));</span>
+<span class="nc" id="L429">			JLabel conditionLabel = new JLabel(condition);</span>
+<span class="nc" id="L430">			conditionLabel.setHorizontalAlignment(JLabel.CENTER);</span>
+<span class="nc" id="L431">			panel.add(conditionLabel);</span>
+<span class="nc" id="L432">			ruleConditionsListPanel.add(panel);</span>
+		}
+
+<span class="fc" id="L435">		ruleConditionsListPanel.revalidate();</span>
+<span class="fc" id="L436">		ruleConditionsListPanel.repaint();</span>
+<span class="fc" id="L437">	}</span>
+
+	/**
+	 * Clears all current rule conditions from both the GUI and the ruleConditions
+	 * ArrayList.
+	 */
+	private void clearRuleConditionsListPanel() {
+<span class="nc" id="L444">		ruleConditions.clear();</span>
+<span class="nc" id="L445">		ruleTextArea.setText(&quot;&quot;);</span>
+<span class="nc" id="L446">		ruleConditionsListPanel.removeAll();</span>
+<span class="nc bnc" id="L447" title="All 2 branches missed.">		if (!advancedMode) {</span>
+<span class="nc" id="L448">			setLogicalOperatorBoxVisibility();</span>
+		}
+<span class="nc" id="L450">		ruleConditionsListPanel.revalidate();</span>
+<span class="nc" id="L451">		ruleConditionsListPanel.repaint();</span>
+<span class="nc" id="L452">	}</span>
+
+	/**
+	 * Handles setting the visibility of the Logical Operator ComboBox in the line
+	 * responsible for allowing the user to add new rule conditions to the list.
+	 * Basically, it stops the first rule condition, and the first rule condition
+	 * only, from having an AND or an OR attached to it.
+	 */
+	private void setLogicalOperatorBoxVisibility() {
+<span class="pc bpc" id="L461" title="1 of 2 branches missed.">		if (!ruleConditions.isEmpty()) {</span>
+<span class="nc" id="L462">			logicalOperatorListBox.setVisible(true);</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">			if (logicalOperatorListBox.getItemCount() &lt;= 0)</span>
+<span class="nc bnc" id="L464" title="All 2 branches missed.">				for (LogicalOperator operator : LogicalOperator.values()) {</span>
+<span class="nc" id="L465">					logicalOperatorListBox.addItem(operator.toString());</span>
+				}
+<span class="nc" id="L467">		} else {</span>
+<span class="fc" id="L468">			logicalOperatorListBox.setVisible(false);</span>
+<span class="fc" id="L469">			logicalOperatorListBox.setSelectedItem(&quot;&quot;);</span>
+		}
+<span class="fc" id="L471">	}</span>
+
+	/**
+	 * Method that generates an alert with the received message
+	 * 
+	 * @param message - a String with the expected message
+	 */
+	public void showMessage(String message) {
+<span class="nc" id="L479">		JOptionPane.showMessageDialog(null, message);</span>
+<span class="nc" id="L480">	}</span>
+
+	/**
+	 * Returns the rule edition GUI frame
+	 * 
+	 * @return JFrame frame - the GUI for the rule edition popup
+	 */
+	public JFrame getFrame() {
+<span class="fc" id="L488">		return frame;</span>
+	}
+
+	/**
+	 * 
+	 * Returns the JComboBox which holds the logical operators for a new rule
+	 * condition (AND and OR).
+	 * 
+	 * @return logicalOperatorListBox - the combobox with the 2 available logical
+	 *         operators
+	 */
+	public JComboBox&lt;String&gt; getLogicalOperator() {
+<span class="fc" id="L500">		return logicalOperatorListBox;</span>
+	}
+
+	/**
+	 * 
+	 * Returns the JComboBox which holds the values for metrics (LOC, LAA, etc).
+	 * 
+	 * @return metricsListBox - the combobox with the available metrics
+	 */
+	public JComboBox&lt;String&gt; getMetrics() {
+<span class="fc" id="L510">		return metricsListBox;</span>
+	}
+
+	/**
+	 * 
+	 * Returns the JComboBox which holds the possible comparisons for a new operator
+	 * 
+	 * @return comparisonOperatorListBox - the combobox with the available
+	 *         comparison operators
+	 */
+	public JComboBox&lt;String&gt; getComparison() {
+<span class="fc" id="L521">		return comparisonOperatorListBox;</span>
+	}
+
+	/**
+	 * Returns the JButton for saving the rule changes
+	 * 
+	 * @return JButton saveButton
+	 */
+	public JButton getSaveButton() {
+<span class="fc" id="L530">		return saveButton;</span>
+	}
+
+	/**
+	 * Returns the JButton for deleting the rule
+	 * 
+	 * @return JButton deleteButton
+	 */
+	public JButton getDeleteButton() {
+<span class="fc" id="L539">		return deleteButton;</span>
+	}
+
+	/**
+	 * Returns the JButton for changing the edition mode to advanced
+	 * 
+	 * @return JButton advancedModeButton
+	 */
+	public JButton getAdvancedModeButton() {
+<span class="fc" id="L548">		return advancedModeButton;</span>
+	}
+
+	/**
+	 * Returns the Rule's JTextField for the name input
+	 * 
+	 * @return JTextField ruleNameField
+	 */
+	public JTextField getRuleNameField() {
+<span class="fc" id="L557">		return ruleNameField;</span>
+	}
+
+	/**
+	 * Returns the JTextArea for the rules conditions
+	 * 
+	 * @return JTextArea ruleTextArea
+	 */
+	public JTextArea getRuleTextArea() {
+<span class="fc" id="L566">		return ruleTextArea;</span>
+	}
+
+	/**
+	 * Returns if GUI is in advanced mode or not
+	 * 
+	 * @return boolean advancedMode
+	 */
+	public boolean isAdvancedMode() {
+<span class="fc" id="L575">		return advancedMode;</span>
+	}
+
+	/**
+	 * Get the correct rule conditions, based on edition mode enabled, with no
+	 * parsing of the string.
+	 * 
+	 * @return rawRuleConditions - The rule conditions string with no parsing
+	 */
+	public String getRawRuleConditions() {
+<span class="fc" id="L585">		String rawRuleConditions = &quot;&quot;;</span>
+
+<span class="fc bfc" id="L587" title="All 2 branches covered.">		if (isAdvancedMode()) {</span>
+<span class="fc" id="L588">			rawRuleConditions = ruleTextArea.getText().replaceAll(&quot;\n&quot;, &quot; &quot;);</span>
+<span class="fc" id="L589">		} else {</span>
+<span class="fc" id="L590">			rawRuleConditions = String.join(&quot; &quot;, ruleConditions);</span>
+		}
+<span class="fc" id="L592">		return rawRuleConditions;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 14:59:49)</div></body></html>

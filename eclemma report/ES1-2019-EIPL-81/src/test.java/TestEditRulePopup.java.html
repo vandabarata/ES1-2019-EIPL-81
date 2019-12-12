@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../jacoco-resources/report.gif" type="image/gif"/><title>TestEditRulePopup.java</title><link rel="stylesheet" href="../../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">java (12-Dec-2019 14:59:49)</a> &gt; <a href="../../index.html" class="el_group">ES1-2019-EIPL-81</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">test.java</a> &gt; <span class="el_source">TestEditRulePopup.java</span></div><h1>TestEditRulePopup.java</h1><pre class="source lang-java linenums">package test.java;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+
+import main.java.controller.MainController;
+import main.java.gui.EditRulePopup;
+import main.java.gui.MainFrame;
+import main.java.model.CodeQualityRule;
+
+/**
+ * Tests for the EditRulePopup
+ *
+ */
+@RunWith(JUnitPlatform.class)
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">class TestEditRulePopup {</span>
+
+	/* An EditRulePopup that will be used to test the rule edition frame */
+	EditRulePopup editpopup;
+
+	/* An EditRulePopup that will be used to test the rule addition frame */
+	EditRulePopup addpopup;
+
+	@BeforeEach
+	void setUp() throws Exception {
+<span class="fc" id="L33">		editpopup = new EditRulePopup(new CodeQualityRule(&quot;name&quot;, &quot;LOC &gt; 10&quot;, true, false));</span>
+<span class="fc" id="L34">		addpopup = new EditRulePopup(new CodeQualityRule(&quot;&quot;, &quot;LAA &lt; 5&quot;, false, false));</span>
+<span class="fc" id="L35">	}</span>
+
+	/**
+	 * Tests the condition returned by the EditRulePopup getter for the rule's
+	 * condition
+	 */
+	@Test
+	void testGetCondition() {
+<span class="fc" id="L43">		assertNotNull(addpopup.getLogicalOperator());</span>
+<span class="fc" id="L44">		assertEquals(0, addpopup.getLogicalOperator().getItemCount());</span>
+<span class="fc" id="L45">	}</span>
+
+	/**
+	 * Tests the metrics combobox returned by the EditRulePopup getter for the
+	 * rule's metrics Asserts that it's null in advanced mode (editpopup) Asserts
+	 * that it's not null in basic mode (addpopup) And finally asserts that it
+	 * specifically returns 4 metrics in basic mode (addpopup)
+	 */
+	@Test
+	void testGetValue() {
+<span class="fc" id="L55">		assertNull(editpopup.getMetrics());</span>
+<span class="fc" id="L56">		assertNotNull(addpopup.getMetrics());</span>
+<span class="fc" id="L57">		assertEquals(4, addpopup.getMetrics().getItemCount());</span>
+<span class="fc" id="L58">	}</span>
+
+	/**
+	 * Tests the logical operators' combobox returned by the EditRulePopup getter
+	 * for rule comparison Asserts that it's not null and returns 6 possible
+	 * operators in basic mode (addpopup)
+	 */
+	@Test
+	void testGetComparison() {
+<span class="fc" id="L67">		assertNotNull(addpopup.getComparison());</span>
+<span class="fc" id="L68">		assertEquals(6, addpopup.getComparison().getItemCount());</span>
+<span class="fc" id="L69">	}</span>
+
+	/**
+	 * Tests the save button returned by the EditRulePopup getter for saving a rule
+	 */
+	@Test
+	void testGetSaveButton() {
+<span class="fc" id="L76">		assertNotNull(addpopup.getSaveButton());</span>
+<span class="fc" id="L77">	}</span>
+
+	/**
+	 * Tests the delete button returned by the EditRulePopup getter for deleting a
+	 * rule
+	 */
+	@Test
+	void testGetDeleteButton() {
+<span class="fc" id="L85">		assertNotNull(addpopup.getDeleteButton());</span>
+
+<span class="fc" id="L87">	}</span>
+
+	/**
+	 * Tests if a new rule (for which advanced mode is false) returns the correct
+	 * boolean
+	 */
+	@Test
+	void testIsAdvancedMode() {
+<span class="fc" id="L95">		boolean newRule = addpopup.isAdvancedMode();</span>
+<span class="fc" id="L96">		assertFalse(newRule);</span>
+<span class="fc" id="L97">	}</span>
+
+	/**
+	 * Tests the rule conditions returned by the EditRulePopup getter for the rule's
+	 * conditions Asserts that the conditions are the expected ones passed in the
+	 * constructor
+	 */
+	@Test
+	void testGetRawRuleConditions() {
+<span class="fc" id="L106">		assertEquals(&quot;LOC &gt; 10&quot;, editpopup.getRawRuleConditions());</span>
+<span class="fc" id="L107">		assertEquals(&quot;&quot;, addpopup.getRawRuleConditions());</span>
+<span class="fc" id="L108">	}</span>
+
+	/**
+	 * Tests the window size of the EdiRulePopup frame by asserting its height and
+	 * width with expected values
+	 */
+	@Test
+	void testWindowSizeAtStart() {
+<span class="fc" id="L116">		EditRulePopup m = new EditRulePopup(new CodeQualityRule(&quot;&quot;, &quot;&quot;, true, false));</span>
+<span class="pc bpc" id="L117" title="2 of 4 branches missed.">		assert (m.getFrame().getBounds().height == 300);</span>
+<span class="pc bpc" id="L118" title="2 of 4 branches missed.">		assert (m.getFrame().getBounds().width == 685);</span>
+<span class="fc" id="L119">	}</span>
+
+	/**
+	 * Asserts that the number of rules displayed on the combobox in the main frame
+	 * is the same as the number of existing rules in the controller
+	 */
+	@Test
+	void testJComboBoxesElementNumber() {
+<span class="fc" id="L127">		MainController main = MainController.getMainControllerInstance();</span>
+<span class="fc" id="L128">		main.init();</span>
+<span class="fc" id="L129">		String[] header = { &quot;header1&quot;, &quot;header2&quot; };</span>
+<span class="fc" id="L130">		String[][] content = { { &quot;cell0&quot;, &quot;cell1&quot; }, { &quot;cell2&quot;, &quot;cell3&quot; } };</span>
+<span class="fc" id="L131">		MainFrame frame = new MainFrame(new JTable(content, header), main.getRulesList());</span>
+<span class="fc" id="L132">		int numberOfRules = main.getRulesList().size();</span>
+<span class="fc" id="L133">		assertEquals(frame.getRulesComboBox().getItemCount(), numberOfRules);</span>
+<span class="fc" id="L134">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span>java (12-Dec-2019 14:59:49)</div></body></html>
