@@ -21,7 +21,7 @@ public class CodeQualityRule {
 	/** If the rule should be opened in advanced mode for edition */
 	private boolean isAdvanced;
 
-	/** timestamp which allows us to ID the rules */
+	/** Timestamp which allows us to ID the rules */
 	private long id;
 
 	/**
@@ -148,7 +148,7 @@ public class CodeQualityRule {
 	/**
 	 * Getter for the rule's ID value
 	 * 
-	 * @return long value with rule's ID
+	 * @return long value with the rule's ID
 	 */
 	public long getID() {
 		return this.id;

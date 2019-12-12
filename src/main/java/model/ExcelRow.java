@@ -19,16 +19,16 @@ public class ExcelRow {
 	/** Method name, located in the fourth column */
 	private String methodName;
 
-	/** LOC quality indicator, located in the fifth column */
+	/** LOC metric, located in the fifth column */
 	private int LOC;
 
-	/** CYCLO quality indicator, located in the sixth column */
+	/** CYCLO metric, located in the sixth column */
 	private int CYCLO;
 
-	/** ATFD quality indicator, located in the seventh column */
+	/** ATFD metric, located in the seventh column */
 	private int ATFD;
 
-	/** LAA quality indicator, located in the eighth column */
+	/** LAA metric, located in the eighth column */
 	private float LAA;
 
 	/** boolean isLongMethod, located in the ninth column */
@@ -172,7 +172,7 @@ public class ExcelRow {
 	}
 
 	/**
-	 * Makes an excel row be displayed by its attributes accompanied by the
+	 * String value representing this excel row and its attributes accompanied by the
 	 * attribute's name, ordered by column number
 	 * 
 	 * @return String ExcelRow's attirbutes

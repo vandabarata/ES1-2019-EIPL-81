@@ -40,8 +40,7 @@ public class MainController {
 	private ExcelImporter ei;
 
 	/**
-	 * ArrayList with arrays of strings, containing raw data from the excel in
-	 * string form
+	 * ArrayList with arrays of strings, containing raw data from the excel
 	 */
 	private ArrayList<String[]> excelRows;
 
@@ -96,7 +95,7 @@ public class MainController {
 	}
 
 	/**
-	 * Initialises the file upload frame and the button listeners
+	 * Initialises the file upload frame and the button's listeners
 	 */
 	public void init() {
 		PopupUploadFile uploadFile = new PopupUploadFile();
@@ -166,8 +165,7 @@ public class MainController {
 	 * Formats all data to a valid format to a JTable and returns a JTable with the
 	 * cells' content
 	 * 
-	 * @return JTable - Excel Table with the cells' contents, coverted from the
-	 *         initial excel file
+	 * @return JTable - A JTable with the cells' contents from the original Excel file
 	 */
 	private JTable createExcelTable() {
 		String[][] dataForTable = new String[excelRows.size() - 1][excelRows.get(1).length];
@@ -202,7 +200,7 @@ public class MainController {
 	}
 
 	/**
-	 * Opens the EditRuleController which controls the Rule Edition GUI
+	 * Adds an action listener to trigger the edition of a rule selected in the ruleListBox
 	 * 
 	 * @param editButton  - button used to open a new window to edit the rules
 	 * @param ruleListBox - the combobox which lists all the available rules
@@ -302,10 +300,10 @@ public class MainController {
 	/**
 	 * Runs a rule over an excelRow and returns the result.
 	 * 
-	 * @param rule - The rule, the result of which we require.
-	 * @param row  - The excel row containing the methodID over which we wish to run
+	 * @param rule - The rule to be to applied to an ExcelRow
+	 * @param row  - The ExcelRow containing the methodID to have a rule applied to
 	 *             the rule.
-	 * @return result - Returns the result of running the rule over the methodID of
+	 * @return result - The result of applying the rule to the methodID of
 	 *         the given ExcelRow, in string form.
 	 * @throws ScriptException - An exception is thrown if there are invalid rule
 	 *                         conditions

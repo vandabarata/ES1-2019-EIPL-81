@@ -45,7 +45,7 @@ public class MainFrame {
 	/** The list of available rules */
 	private ArrayList<CodeQualityRule> rulesList;
 
-	/** The JComboBox contaning all the rules in the rulesList */
+	/** The JComboBox containing all the rules in the rulesList */
 	private JComboBox<Object> rulesDropDown;
 
 	/**
@@ -103,7 +103,6 @@ public class MainFrame {
 
 	/**
 	 * Creates the south panel of the main frame and adds to it a panel that will
-	 * display the results of reading the excel file, and another panel that will
 	 * display buttons.
 	 */
 	private void createSouthPanel() {
@@ -119,7 +118,7 @@ public class MainFrame {
 	}
 
 	/**
-	 * Creates and adds the add/edit buttons, drop drown with list of rules and
+	 * Creates and adds the add and edit buttons, dropdown with list of rules and
 	 * checkQuality buttons to a panel
 	 * 
 	 * @param buttonsPanel - the panel user to display the buttons.

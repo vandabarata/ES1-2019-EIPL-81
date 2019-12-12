@@ -1,7 +1,7 @@
 package main.java.model;
 
 /**
- * Simple enum for comparison operators. Choices are are GT (Greater Than), LT
+ * Simple enum for comparison operators. Choices are GT (Greater Than), LT
  * (Lesser Than), GE (Greater or Equal), LE (Less or Equal), EQ (Equal), and DF
  * (Different).
  * 
@@ -13,7 +13,7 @@ public enum ComparisonOperator {
 	private String operator;
 
 	/**
-	 * Construtor that setups the string value of the ComparisonOperator enum
+	 * Constructor that setups the string value of the ComparisonOperator enum
 	 * 
 	 * @param operator - the given operator to use in the enum
 	 */

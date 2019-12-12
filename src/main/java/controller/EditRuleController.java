@@ -27,7 +27,7 @@ public class EditRuleController {
 	private MainController mainC = MainController.getMainControllerInstance();
 
 	/**
-	 * Controller to manipulate the EditRulePopup
+	 * Constructor that takes a CodeQualityRule to manipulate in the EditRulePopup
 	 * 
 	 * @param rule - The Controller receives a CodeQualityRule to be edited in the
 	 *             GUI

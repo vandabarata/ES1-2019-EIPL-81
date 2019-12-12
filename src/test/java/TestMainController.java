@@ -102,7 +102,7 @@ class TestMainController {
 	}
 
 	/**
-	 * Validates that the main fram is being correctly initialised
+	 * Validates that the main frame is being correctly initialised
 	 */
 	@Test
 	void testGetMainFrame() {

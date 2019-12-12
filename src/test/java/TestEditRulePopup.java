@@ -46,8 +46,8 @@ class TestEditRulePopup {
 
 	/**
 	 * Tests the metrics combobox returned by the EditRulePopup getter for the
-	 * rule's metrics Asserts that it's null in advanced mode (editpopup) Asserts
-	 * that it's not null in basic mode (addpopup) And finally asserts that it
+	 * rule's metrics. Asserts that it's null in advanced mode (editpopup). Asserts
+	 * that it's not null in basic mode (when adding a new rule) and finally asserts that it
 	 * specifically returns 4 metrics in basic mode (addpopup)
 	 */
 	@Test
@@ -59,7 +59,7 @@ class TestEditRulePopup {
 
 	/**
 	 * Tests the logical operators' combobox returned by the EditRulePopup getter
-	 * for rule comparison Asserts that it's not null and returns 6 possible
+	 * for rule comparison. Asserts that it's not null and returns 6 possible
 	 * operators in basic mode (addpopup)
 	 */
 	@Test
@@ -98,7 +98,7 @@ class TestEditRulePopup {
 
 	/**
 	 * Tests the rule conditions returned by the EditRulePopup getter for the rule's
-	 * conditions Asserts that the conditions are the expected ones passed in the
+	 * conditions. Asserts that the conditions are the expected ones passed in the
 	 * constructor
 	 */
 	@Test

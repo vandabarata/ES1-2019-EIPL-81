@@ -16,7 +16,7 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
  * The Model is responsible for managing the data of the application. It
  * receives user input from the controller.
  * <p>
- * The View means presentation of the model in a particular format.
+ * The View is the presentation layer of the model in a particular format.
  * <p>
  * The Controller receives the input, optionally validates it and then passes
  * the input to the model. In addition to dividing the application into these
