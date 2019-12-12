@@ -45,7 +45,7 @@ public class MainFrame {
 	/** The list of available rules */
 	private ArrayList<CodeQualityRule> rulesList;
 
-	/** The JComboBox contaning all the rules in the rulesList */
+	/** The JComboBox containing all the rules in the rulesList */
 	private JComboBox<Object> rulesDropDown;
 
 	/**
