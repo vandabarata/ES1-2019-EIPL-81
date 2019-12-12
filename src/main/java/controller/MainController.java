@@ -52,7 +52,7 @@ public class MainController {
 	private ArrayList<CodeQualityRule> rulesList = new ArrayList<CodeQualityRule>();
 
 	/**
-	 * Constants that determine the column where the specified results that can be
+	 * Constants that determine the column where the specified results can be
 	 * retrived from
 	 */
 	private final int METHOD_ID_INDEX = 0;
@@ -96,16 +96,16 @@ public class MainController {
 	}
 
 	/**
-	 * This method is used to initiate the button listener
+	 * Initialises the file upload frame and the button listeners
 	 */
 	public void init() {
 		PopupUploadFile uploadFile = new PopupUploadFile();
-		JButton import_button = uploadFile.getImportJButton();
-		initImportButtonAction(import_button, uploadFile);
+		JButton importButton = uploadFile.getImportJButton();
+		initImportButtonAction(importButton, uploadFile);
 	}
 
 	/**
-	 * This method is used to run the action of the Import Button.
+	 * Initialises the import button action listeners
 	 * 
 	 * @param importButton - button used to import the file
 	 * @param uploadFile   - frame where the file is imported
@@ -115,7 +115,7 @@ public class MainController {
 	}
 
 	/**
-	 * This method is used to validate if the selected file is a valid Excel format
+	 * Validates if the selected file is a valid Excel format
 	 * 
 	 * @param pathFile - the path to the imported file's location
 	 * @return boolean to validate if file is valid or not
@@ -125,8 +125,8 @@ public class MainController {
 	}
 
 	/**
-	 * This method is used to import the file and create a main frame if the file is
-	 * valid, otherwise it will show a warning message.
+	 * Imports the file and creates a main frame if the file is valid. Shows a
+	 * warning message otherwise.
 	 * 
 	 * @param uploadFile - frame where the excel file is imported
 	 */
@@ -148,8 +148,8 @@ public class MainController {
 	}
 
 	/**
-	 * Initialise the MainFrame and support Frames. Create necessary objects to
-	 * support it.
+	 * Initialises the MainFrame and necessary objects to support it, as well as the
+	 * buttons' action listeners
 	 */
 	private void initMainFrame() {
 		ei = new ExcelImporter(path);
