@@ -9,7 +9,7 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
 
 /**
  * Where the main application is run. This application is organized by the MVC
- * model. This can be summarised as such:
+ * software design pattern. This can be summarised as such:
  * <p>
  * <b>Model-View-Controller (MVC):</b> The Model is responsible for managing the
  * data of the application. It receives user input from the controller. The View

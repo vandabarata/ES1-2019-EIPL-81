@@ -176,7 +176,7 @@ public class EditRuleController {
 	 * against the real data.
 	 * 
 	 * @param rule - An if statement rule in Javascript format to be validated
-	 * @throws ScriptException - When evaluation of the rule finds an issue, it
+	 * @throws ScriptException - When the validation of the rule's conditions finds an issue, it
 	 *                         throws an exception
 	 */
 	private void preValidateJavascriptCode(String rule) throws ScriptException {

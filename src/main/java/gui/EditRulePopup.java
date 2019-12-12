@@ -119,7 +119,7 @@ public class EditRulePopup {
 	 * @param r - receives a rule for edition
 	 */
 	public EditRulePopup(CodeQualityRule r) {
-		this.rule = r;
+		rule = r;
 		advancedMode = rule.isAdvanced();
 		defaultRule = rule.isDefault();
 		initializePanels();
