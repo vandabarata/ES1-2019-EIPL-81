@@ -59,7 +59,7 @@ class TestEditRulePopup {
 
 	/**
 	 * Tests the logical operators' combobox returned by the EditRulePopup getter
-	 * for rule comparison Asserts that it's not null and returns 6 possible
+	 * for rule comparison. Asserts that it's not null and returns 6 possible
 	 * operators in basic mode (addpopup)
 	 */
 	@Test
@@ -98,7 +98,7 @@ class TestEditRulePopup {
 
 	/**
 	 * Tests the rule conditions returned by the EditRulePopup getter for the rule's
-	 * conditions Asserts that the conditions are the expected ones passed in the
+	 * conditions. Asserts that the conditions are the expected ones passed in the
 	 * constructor
 	 */
 	@Test

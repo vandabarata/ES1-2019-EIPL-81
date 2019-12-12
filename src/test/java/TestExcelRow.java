@@ -17,10 +17,10 @@ import main.java.model.ExcelRow;
 @RunWith(JUnitPlatform.class)
 class TestExcelRow {
 
-	/** Initialises an ExcelImporter object for testing */
+	/** ExcelImporter object for testing */
 	ExcelImporter ei;
 
-	/** Initialises an ExcelRow object for testing the data */
+	/** ExcelRow object for testing the data */
 	ExcelRow row;
 
 	/**
@@ -145,7 +145,7 @@ class TestExcelRow {
 
 	/**
 	 * Validates the ExcelRow's model toString content to check it if matches the
-	 * intended
+	 * expected
 	 */
 	@Test
 	void testToString() {
