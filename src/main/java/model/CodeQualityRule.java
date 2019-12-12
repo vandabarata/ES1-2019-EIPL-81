@@ -148,7 +148,7 @@ public class CodeQualityRule {
 	/**
 	 * Getter for the rule's ID value
 	 * 
-	 * @return long value with rule's ID
+	 * @return long value with the rule's ID
 	 */
 	public long getID() {
 		return this.id;

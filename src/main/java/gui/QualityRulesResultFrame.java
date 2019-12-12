@@ -50,7 +50,7 @@ public class QualityRulesResultFrame {
 	private static final int SCREEN_HEIGHT = dimension.height;
 
 	/**
-	 * Frame that presents the results for code quality, based on the tools, rules
+	 * Frame that displays the results for code quality, based on the tools, rules
 	 * and given indicators
 	 */
 	public QualityRulesResultFrame() {

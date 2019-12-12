@@ -103,7 +103,6 @@ public class MainFrame {
 
 	/**
 	 * Creates the south panel of the main frame and adds to it a panel that will
-	 * display the results of reading the excel file, and another panel that will
 	 * display buttons.
 	 */
 	private void createSouthPanel() {
